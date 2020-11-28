@@ -1,13 +1,14 @@
 {
 	"require": {
-	        "johnpbloch/wordpress": ">=5.5"
+	        "johnpbloch/wordpress": ">=5.5",
+		"wpackagist-theme/twentytwenty": "*"
 	},
 	"extra": {
 	        "installer-paths": {
-	            "plugins/{$name}/": [
+	            "wp-content/plugins/{$name}/": [
 	                "type:wordpress-plugin"
 	            ],
-	            "themes/{$name}/": [
+	            "wp-content/themes/{$name}/": [
 	                "type:wordpress-theme"
 	            ]
 	        },
