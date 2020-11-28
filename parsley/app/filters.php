@@ -2,6 +2,8 @@
 
 namespace App;
 
+remove_filter('the_content', 'wpautop');
+
 /**
  * Add <body> classes
  */

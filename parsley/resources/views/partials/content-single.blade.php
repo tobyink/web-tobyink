@@ -1,8 +1,10 @@
 <article @php post_class() @endphp>
-  <header>
-    <h1 class="entry-title">{!! get_the_title() !!}</h1>
-    @include('partials/entry-meta')
-  </header>
+  @if ( ! get_field( 'hide_title', \App\acf_page_id() ) )
+    <header>
+      <h1 class="entry-title">{!! get_the_title() !!}</h1>
+      @include('partials/entry-meta')
+    </header>
+  @endif
   <div class="entry-content">
     @php the_content() @endphp
   </div>

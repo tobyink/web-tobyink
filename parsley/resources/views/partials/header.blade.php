@@ -10,4 +10,18 @@
       @endif
     </div>
   </div>
+  @php
+    $bannerimg = get_field( 'fullwidth_banner', \App\acf_page_id() );
+    if ( ! empty($bannerimg) ) {
+      printf( '<div class="fullwidth-banner"><img src="%s" alt="" class="fullwidth"></div>', htmlspecialchars($bannerimg['url']) );
+    }
+  @endphp
 </header>
+
+@php
+  if( function_exists('bcn_display') && ! get_field( 'hide_breadcrumbs', \App\acf_page_id() ) ) {
+    echo '<div class="container breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">';
+    bcn_display();
+    echo '</div>';
+  }
+@endphp

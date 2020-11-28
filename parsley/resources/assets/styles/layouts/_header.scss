@@ -4,6 +4,28 @@
   a {
     @extend .text-white;
   }
+
+  button { border: 1px solid !important; }
+  button, a { color: theme-color-level(primary, -10); }
+  button:hover, a:hover, .current-menu-item a { color: $white; }
+  button { border: 1px solid !important; }
+  button span { position: relative; top: 0.333rem }
+  
+  .container {
+    @extend .px-0;
+    .navbar {
+      padding-right: 15px;
+      padding-left: 15px;
+    }
+  }
+
+  .fullwidth {
+    width: 100%;
+    height: auto;
+    @include media-breakpoint-down(md) {
+      display: none;
+    }
+  }
 }
 
 .banner .nav li {
@@ -12,4 +34,8 @@
 
 .banner .nav a {
   @extend .nav-link;
+}
+
+div.breadcrumbs {
+  @extend .small, .py-3;
 }

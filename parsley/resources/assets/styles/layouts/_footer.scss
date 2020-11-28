@@ -3,4 +3,7 @@ footer.content-info {
   a {
     @extend .text-white;
   }
+  section {
+    @extend .text-center;
+  }
 }

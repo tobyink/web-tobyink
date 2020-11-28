@@ -136,3 +136,13 @@ function display_sidebar()
     isset($display) || $display = apply_filters('sage/display_sidebar', false);
     return $display;
 }
+
+function acf_page_id () {
+    static $id;
+    if ( ! isset($id) ) {
+      $id = get_the_ID();
+      if ( is_home() ) {
+        $id = get_option( 'page_for_posts' );
+      }
+    }
+}
