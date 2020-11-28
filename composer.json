@@ -1,7 +1,9 @@
 {
 	"require": {
 	        "johnpbloch/wordpress": ">=5.5",
-		"wpackagist-theme/twentytwenty": "*"
+		"wpackagist-theme/twentytwenty": "*",
+		"wpackagist-plugin/advanced-custom-fields": "*",
+		"wpackagist-plugin/widget-logic": "*"
 	},
 	"extra": {
 	        "installer-paths": {

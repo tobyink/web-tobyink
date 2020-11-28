@@ -2,8 +2,16 @@
 @import "~bootstrap/scss/functions";
 
 $theme-colors: (
-  primary: #525ddc
+  primary: #525ddc,
+  secondary: #882d61,
+  tertiary: #2e4272,
+  light: #eee,
+  dark: #555
 );
+
+$link-color: lighten(theme-color(tertiary), 20%);
+$enable-gradients: true;
+$spacer: 1.2rem;
 
 /** Bootstrap navbar fix (https://git.io/fADqW) */
 $navbar-dark-toggler-icon-bg: none;
