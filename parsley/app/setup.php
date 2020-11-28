@@ -147,8 +147,8 @@ add_action('init', function () {
 /**
  * Initialize Shortcodes
  */
-#add_action('init', function () {
-#    collect(glob(config('theme.dir').'/app/shortcodes/'.'*.php'))->map(function ($field) {
-#        return require_once($field);
-#    });
-#});
+add_action('init', function () {
+    collect(glob(config('theme.dir').'/app/shortcodes/'.'*.php'))->map(function ($field) {
+        return require_once($field);
+    });
+});
