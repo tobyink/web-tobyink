@@ -1,6 +1,10 @@
 /wp-config.php
 /wordpress/
 /wp-content/
-/plugins/
-/themes/
 /vendor/
+/parsley/.cache-loader
+/parsley/dist
+/parsley/node_modules
+/parsley/npm-debug.log
+/parsley/yarn-error.log
+/parsley/vendor/
