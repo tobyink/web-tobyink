@@ -3,7 +3,9 @@
 	        "johnpbloch/wordpress": ">=5.5",
 		"wpackagist-theme/twentytwenty": "*",
 		"wpackagist-plugin/advanced-custom-fields": "*",
-		"wpackagist-plugin/widget-logic": "*"
+		"wpackagist-plugin/widget-logic": "*",
+		"wpackagist-plugin/classic-editor": "*",
+		"wpackagist-plugin/breadcrumb-navxt": "*"
 	},
 	"extra": {
 	        "installer-paths": {
