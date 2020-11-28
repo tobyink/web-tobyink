@@ -1,0 +1,6 @@
+footer.content-info {
+  @extend .bg-dark, .text-white, .py-5;
+  a {
+    @extend .text-white;
+  }
+}

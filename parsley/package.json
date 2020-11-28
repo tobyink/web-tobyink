@@ -4,6 +4,9 @@
   "author": "Roots <team@roots.io>",
   "homepage": "https://roots.io/sage/",
   "private": true,
+  "stylelint": {
+    "rules": {}
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/roots/sage.git"
