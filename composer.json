@@ -1,0 +1,22 @@
+{
+	"require": {
+	        "johnpbloch/wordpress": ">=5.5"
+	},
+	"extra": {
+	        "installer-paths": {
+	            "plugins/{$name}/": [
+	                "type:wordpress-plugin"
+	            ],
+	            "themes/{$name}/": [
+	                "type:wordpress-theme"
+	            ]
+	        },
+	        "wordpress-install-dir": "wordpress"
+	},
+	"repositories": [
+	        {
+	            "type": "composer",
+	            "url": "https://wpackagist.org"
+	        }
+	]
+}       
