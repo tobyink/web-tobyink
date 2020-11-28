@@ -1,3 +1,11 @@
+.banner {
+  @extend .bg-primary, .text-white;
+
+  a {
+    @extend .text-white;
+  }
+}
+
 .banner .nav li {
   @extend .nav-item;
 }
