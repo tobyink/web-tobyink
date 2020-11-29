@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0831a02b37af6d76aa97212ad365e864",
+    "content-hash": "7e05b56b1da72ba72a92ff4ea41663df",
     "packages": [
         {
             "name": "composer/installers",
@@ -288,6 +288,16 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:tobyink/php-wp-foogallery-bootstrapped-gallery-template.git",
+                "reference": "master"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
+            "name": "tobyink/foogallery-slick-gallery-template",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:tobyink/php-wp-foogallery-slick-gallery-template.git",
                 "reference": "master"
             },
             "type": "wordpress-plugin"

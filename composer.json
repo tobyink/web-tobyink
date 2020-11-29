@@ -9,8 +9,8 @@
 		"wpackagist-plugin/breadcrumb-navxt": "*",
 		"wpackagist-plugin/foogallery": "*",
                 "tobyink/foogallery-bootstrapped-gallery-template": "*",
+		"tobyink/foogallery-slick-gallery-template": "*",
                 "tobyink/tobyink-contact": "*"
-
 	},
 	"extra": {
 	        "installer-paths": {
@@ -36,6 +36,19 @@
                         "type": "wordpress-plugin",
                         "source": {
                             "url": "git@github.com:tobyink/php-wp-foogallery-bootstrapped-gallery-template.git",
+                            "type": "git",
+                            "reference": "master"
+                        }
+                    }
+                },
+                {
+                    "type": "package",
+                    "package": {
+                        "name": "tobyink/foogallery-slick-gallery-template",
+                        "version": "1.0.0",
+                        "type": "wordpress-plugin",
+                        "source": {
+                            "url": "git@github.com:tobyink/php-wp-foogallery-slick-gallery-template.git",
                             "type": "git",
                             "reference": "master"
                         }
