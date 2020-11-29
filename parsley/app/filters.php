@@ -2,8 +2,6 @@
 
 namespace App;
 
-remove_filter('the_content', 'wpautop');
-
 /**
  * Add <body> classes
  */
@@ -91,3 +89,13 @@ add_filter('comments_template', function ($comments_template) {
 
     return $comments_template;
 }, 100);
+
+
+remove_filter( 'the_content', 'wpautop' );
+
+add_filter( 'the_content', function ( $content ) {
+  if ( get_field( 'disable_wpautop', \App\acf_page_id() ) ) {
+    return $content;
+  }  
+  return wpautop($content);
+} );

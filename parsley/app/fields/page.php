@@ -34,6 +34,14 @@ $page
         'ui_off_text' => 'Normal',
     ]);
 
+$page
+    ->addTrueFalse('disable_wpautop', [
+        'label' => 'Exact HTML',
+        'ui' => 1,
+        'ui_on_text' => 'Enabled',
+        'ui_off_text' => 'Disabled',
+    ]);
+
 acf_add_local_field_group( $page->build() );
 
 $page = new FieldsBuilder( 'page_customizations', [ 'style' => 'seamless' ] );

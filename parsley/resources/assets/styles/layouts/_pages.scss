@@ -15,5 +15,8 @@
 }
 
 .text-large {
-  font-size: 150%;
+  font-size: 125%;
+  @include media-breakpoint-up(md) {
+    font-size: 150%;
+  }
 }
