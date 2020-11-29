@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ea9ec27f7aec8602f3794b1b95812b82",
+    "content-hash": "d05f1449abb17c23c150d81ad74ffbfe",
     "packages": [
         {
             "name": "composer/installers",
@@ -328,22 +328,22 @@
             "homepage": "https://wordpress.org/plugins/classic-editor/"
         },
         {
-            "name": "wpackagist-plugin/post-snippets",
-            "version": "3.1.2",
+            "name": "wpackagist-plugin/foogallery",
+            "version": "1.9.37",
             "source": {
                 "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/post-snippets/",
-                "reference": "tags/3.1.2"
+                "url": "https://plugins.svn.wordpress.org/foogallery/",
+                "reference": "trunk"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/post-snippets.3.1.2.zip"
+                "url": "https://downloads.wordpress.org/plugin/foogallery.zip?timestamp=1604348333"
             },
             "require": {
                 "composer/installers": "~1.0"
             },
             "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/post-snippets/"
+            "homepage": "https://wordpress.org/plugins/foogallery/"
         },
         {
             "name": "wpackagist-plugin/widget-logic",

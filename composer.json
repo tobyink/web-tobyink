@@ -3,10 +3,10 @@
 	        "johnpbloch/wordpress": ">=5.5",
 		"wpackagist-theme/twentytwenty": "*",
 		"wpackagist-plugin/advanced-custom-fields": "*",
-		"wpackagist-plugin/acf-repeater": "*",
 		"wpackagist-plugin/widget-logic": "*",
 		"wpackagist-plugin/classic-editor": "*",
-		"wpackagist-plugin/breadcrumb-navxt": "*"
+		"wpackagist-plugin/breadcrumb-navxt": "*",
+		"wpackagist-plugin/foogallery": "*"
 	},
 	"extra": {
 	        "installer-paths": {
