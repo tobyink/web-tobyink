@@ -90,7 +90,6 @@ add_filter('comments_template', function ($comments_template) {
     return $comments_template;
 }, 100);
 
-
 remove_filter( 'the_content', 'wpautop' );
 
 add_filter( 'the_content', function ( $content ) {
@@ -99,3 +98,11 @@ add_filter( 'the_content', function ( $content ) {
   }  
   return wpautop($content);
 } );
+
+add_filter('sage/display_sidebar', function ($display) {
+    static $display;
+
+    isset($display) || $display = is_active_sidebar('sidebar-primary');
+
+    return $display;
+});
