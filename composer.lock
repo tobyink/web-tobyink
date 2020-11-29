@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d05f1449abb17c23c150d81ad74ffbfe",
+    "content-hash": "ed56abf56338a3a292dd2f58e1a9109d",
     "packages": [
         {
             "name": "composer/installers",
@@ -272,6 +272,26 @@
                 "wordpress"
             ],
             "time": "2020-04-16T21:44:57+00:00"
+        },
+        {
+            "name": "tobyink/foogallery-bootstrapped-gallery-template",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:tobyink/php-wp-foogallery-bootstrapped-gallery-template.git",
+                "reference": "master"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
+            "name": "tobyink/tobyink-contact",
+            "version": "1.1",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:tobyink/php-wp-tobyink-contact.git",
+                "reference": "master"
+            },
+            "type": "wordpress-plugin"
         },
         {
             "name": "wpackagist-plugin/advanced-custom-fields",
