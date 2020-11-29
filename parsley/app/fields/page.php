@@ -44,7 +44,7 @@ $page
 
 acf_add_local_field_group( $page->build() );
 
-$page = new FieldsBuilder( 'page_customizations', [ 'style' => 'seamless' ] );
+$page = new FieldsBuilder( 'page_customizations', [ 'style' => 'seamless', 'menu_order' => 50 ] );
 
 $page
     ->setLocation('post_type', '==', 'post')
