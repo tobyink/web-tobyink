@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed56abf56338a3a292dd2f58e1a9109d",
+    "content-hash": "0831a02b37af6d76aa97212ad365e864",
     "packages": [
         {
             "name": "composer/installers",
@@ -142,6 +142,15 @@
                 }
             ],
             "time": "2020-04-07T06:57:05+00:00"
+        },
+        {
+            "name": "elliotcondon/acf-repeater",
+            "version": "2.1.0",
+            "dist": {
+                "type": "zip",
+                "url": "https://buzzword.org.uk/2020/acf-repeater.zip"
+            },
+            "type": "wordpress-plugin"
         },
         {
             "name": "johnpbloch/wordpress",

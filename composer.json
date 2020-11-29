@@ -3,12 +3,14 @@
 	        "johnpbloch/wordpress": ">=5.5",
 		"wpackagist-theme/twentytwenty": "*",
 		"wpackagist-plugin/advanced-custom-fields": "*",
+		"elliotcondon/acf-repeater": "=2.1.0",
 		"wpackagist-plugin/widget-logic": "*",
 		"wpackagist-plugin/classic-editor": "*",
 		"wpackagist-plugin/breadcrumb-navxt": "*",
 		"wpackagist-plugin/foogallery": "*",
                 "tobyink/foogallery-bootstrapped-gallery-template": "*",
                 "tobyink/tobyink-contact": "*"
+
 	},
 	"extra": {
 	        "installer-paths": {
@@ -51,6 +53,18 @@
                             "reference": "master"
                         }
                     }
-                }
+                },
+                {
+		    "type": "package",
+		    "package": {
+		        "name": "elliotcondon/acf-repeater",
+		        "version": "2.1.0",
+		        "type": "wordpress-plugin",
+			"dist": {
+			    "url": "https://buzzword.org.uk/2020/acf-repeater.zip",
+		 	    "type": "zip"
+			}
+		    }
+		}
 	]
 }
