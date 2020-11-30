@@ -18,6 +18,14 @@
       padding-left: 15px;
     }
   }
+
+  .dropdown-menu {
+    background: theme-color("primary");
+    .dropdown-item:hover {
+      color: $white;
+      background: lighten(theme-color("primary"), 10%);
+    }
+  }
 }
 
 .fullwidth {
