@@ -102,9 +102,15 @@ add_filter( 'the_content', function ( $content ) {
 add_filter('sage/display_sidebar', function ($display) {
     static $display;
 
-    isset($display) || $display =
-      is_active_sidebar('sidebar-primary')
-      && !( is_cart() || is_checkout() || is_wc_endpoint_url() || is_account_page() );
+    if ( function_exists('WC') ) {
+      isset($display) || $display =
+        is_active_sidebar('sidebar-primary')
+        && !( is_cart() || is_checkout() || is_wc_endpoint_url() || is_account_page() );
+    }
+    else {
+      isset($display) || $display =
+        is_active_sidebar('sidebar-primary');
+    }
 
     return $display;
 });
