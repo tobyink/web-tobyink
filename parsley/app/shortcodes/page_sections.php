@@ -29,7 +29,7 @@ add_shortcode( 'page_sections', function ( $atts, $content=null ) {
 
 			$classes = get_sub_field( 'wrapper_classes' );
 			$id      = get_sub_field( 'wrapper_id' );
-			$content = get_sub_field( 'content', false, $wpautop );
+			$content = get_sub_field( 'content', false, false );
 			$count++;
 
 			if ( empty($id) ) {
@@ -38,6 +38,11 @@ add_shortcode( 'page_sections', function ( $atts, $content=null ) {
 
 			if ( empty($classes) ) {
 				$classes = 'section-classless';
+			}
+
+			if ( $wpautop ) {
+				$content  = wpautop( $content );
+				$classes .= ' section-wpautop';
 			}
 
 			if ( $count % 2 ) {
