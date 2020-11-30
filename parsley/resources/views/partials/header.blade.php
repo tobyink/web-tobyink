@@ -1,4 +1,4 @@
-<header class="banner">
+<header class="banner sticky-top">
   <div class="container">
     <div class="navbar navbar-expand-md">
       <a class="navbar-brand" href="{{ home_url('/') }}">{{ get_bloginfo('name', 'display') }}</a>
@@ -10,13 +10,14 @@
       @endif
     </div>
   </div>
-  @php
-    $bannerimg = get_field( 'fullwidth_banner', \App\acf_page_id() );
-    if ( ! empty($bannerimg) ) {
-      printf( '<div class="fullwidth-banner"><img src="%s" alt="" class="fullwidth"></div>', htmlspecialchars($bannerimg['url']) );
-    }
-  @endphp
 </header>
+
+@php
+  $bannerimg = get_field( 'fullwidth_banner', \App\acf_page_id() );
+  if ( ! empty($bannerimg) ) {
+    printf( '<div class="fullwidth-banner"><img src="%s" alt="" class="fullwidth"></div>', htmlspecialchars($bannerimg['url']) );
+  }
+@endphp
 
 @php
   if( function_exists('bcn_display') && ! get_field( 'hide_breadcrumbs', \App\acf_page_id() ) ) {

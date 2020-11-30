@@ -1,5 +1,5 @@
 .banner {
-  @extend .bg-primary, .text-white;
+  @extend .bg-primary, .text-white, .shadow;
 
   a {
     @extend .text-white;
@@ -18,13 +18,13 @@
       padding-left: 15px;
     }
   }
+}
 
-  .fullwidth {
-    width: 100%;
-    height: auto;
-    @include media-breakpoint-down(md) {
-      display: none;
-    }
+.fullwidth {
+  width: 100%;
+  height: auto;
+  @include media-breakpoint-down(md) {
+    display: none;
   }
 }
 
