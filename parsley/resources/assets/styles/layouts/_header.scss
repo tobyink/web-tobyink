@@ -1,5 +1,5 @@
 .banner {
-  @extend .bg-primary, .text-white, .shadow;
+  @extend .bg-primary, .text-white, .shadow-lg;
 
   a {
     @extend .text-white;
