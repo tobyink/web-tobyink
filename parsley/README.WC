@@ -1,0 +1,3 @@
+To install the WooCommerce stuff:
+
+composer require roots/sage-woocommerce
