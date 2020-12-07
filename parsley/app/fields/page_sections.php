@@ -614,6 +614,33 @@ acf_add_local_field_group(array(
 								),
 							),
 						),
+                                                array(
+                                                        'key' => 'field_1fce5f181b110',
+                                                        'label' => 'Heading in Column',
+                                                        'name' => 'heading_in_column',
+                                                        'type' => 'true_false',
+                                                        'instructions' => 'Inserts the heading into the first column instead of before the columns.',
+                                                        'required' => 0,
+                                                        'conditional_logic' => array(
+                                                                array(
+                                                                        array(
+                                                                                'field' => 'field_5fce5f181b10f',
+                                                                                'operator' => '!=empty',
+                                                                                'value' => '',
+                                                                        ),
+                                                                ),
+                                                        ),
+							'wrapper' => array(
+                                                                'width' => '',
+                                                                'class' => '',
+                                                                'id' => '',
+                                                        ),
+                                                        'message' => '',
+                                                        'default_value' => 0,
+                                                        'ui' => 1,
+                                                        'ui_on_text' => 'Yes',
+                                                        'ui_off_text' => 'No',
+						),
 						array(
 							'key' => 'field_5fce5f551b117',
 							'label' => 'Before Columns',

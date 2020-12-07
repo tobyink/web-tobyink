@@ -87,6 +87,7 @@
         }
         $content  = do_shortcode( $before );
         $content .= '<div class="row">';
+        $heading_in_column = get_sub_field('heading_in_column');
         while ( have_rows('columns') ) {
           the_row();
           $col = [
@@ -99,6 +100,15 @@
           if ( $col_wpautop ) {
             $col_classes .= ' column-wpautop';
             $col_content  = wpautop( $col_content );
+          }
+          if ( $heading_in_column ) {
+            $classes .= ' section-with-heading-in-column';
+            $col_classes .= ' column-containing-the-heading';
+            if ( $heading_tag != 'none' ) {
+              $heading_classes .= ' heading-in-column';
+              $col_content = sprintf( '<%s classes="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag ) . $col_content;
+              $heading_tag = 'none'; // prevent duplicate heading
+            }
           }
           $content .= sprintf( '<div class="%s">%s</div>', $col_classes, do_shortcode($col_content) );
         }
