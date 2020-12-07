@@ -2,15 +2,15 @@
 	"require": {
 	        "johnpbloch/wordpress": ">=5.5",
 		"wpackagist-theme/twentytwenty": "*",
-		"wpackagist-plugin/advanced-custom-fields": "*",
-		"elliotcondon/acf-repeater": "=2.1.0",
 		"wpackagist-plugin/widget-logic": "*",
 		"wpackagist-plugin/classic-editor": "*",
 		"wpackagist-plugin/breadcrumb-navxt": "*",
 		"wpackagist-plugin/foogallery": "*",
                 "tobyink/foogallery-bootstrapped-gallery-template": "*",
 		"tobyink/foogallery-slick-gallery-template": "*",
-                "tobyink/tobyink-contact": "*"
+                "tobyink/tobyink-contact": "*",
+		"tobyink/ctrl-semicolon": "*",
+                "wp-premium/advanced-custom-fields-pro": "*"
 	},
 	"extra": {
 	        "installer-paths": {
@@ -44,6 +44,19 @@
                 {
                     "type": "package",
                     "package": {
+                        "name": "wp-premium/advanced-custom-fields-pro",
+                        "version": "5.9.1",
+                        "type": "wordpress-plugin",
+                        "source": {
+                            "url": "git@github.com:wp-premium/advanced-custom-fields-pro.git",
+                            "type": "git",
+                            "reference": "master"
+                        }
+                    }
+                },
+                {
+                    "type": "package",
+                    "package": {
                         "name": "tobyink/foogallery-slick-gallery-template",
                         "version": "1.0.0",
                         "type": "wordpress-plugin",
@@ -68,16 +81,17 @@
                     }
                 },
                 {
-		    "type": "package",
-		    "package": {
-		        "name": "elliotcondon/acf-repeater",
-		        "version": "2.1.0",
-		        "type": "wordpress-plugin",
-			"dist": {
-			    "url": "https://buzzword.org.uk/2020/acf-repeater.zip",
-		 	    "type": "zip"
-			}
-		    }
-		}
+                    "type": "package",
+                    "package": {
+                        "name": "tobyink/ctrl-semicolon",
+                        "version": "1.0",
+                        "type": "wordpress-plugin",
+                        "source": {
+                            "url": "git@github.com:tobyink/php-wp-ctrl-semicolon.git",
+                            "type": "git",
+                            "reference": "main"
+                        }
+                    }
+                }
 	]
 }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e05b56b1da72ba72a92ff4ea41663df",
+    "content-hash": "9f045c4557e88f2f7323089082d6ad2d",
     "packages": [
         {
             "name": "composer/installers",
@@ -144,15 +144,6 @@
             "time": "2020-04-07T06:57:05+00:00"
         },
         {
-            "name": "elliotcondon/acf-repeater",
-            "version": "2.1.0",
-            "dist": {
-                "type": "zip",
-                "url": "https://buzzword.org.uk/2020/acf-repeater.zip"
-            },
-            "type": "wordpress-plugin"
-        },
-        {
             "name": "johnpbloch/wordpress",
             "version": "5.5.3",
             "source": {
@@ -283,6 +274,16 @@
             "time": "2020-04-16T21:44:57+00:00"
         },
         {
+            "name": "tobyink/ctrl-semicolon",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:tobyink/php-wp-ctrl-semicolon.git",
+                "reference": "main"
+            },
+            "type": "wordpress-plugin"
+        },
+        {
             "name": "tobyink/foogallery-bootstrapped-gallery-template",
             "version": "1.0.1",
             "source": {
@@ -313,22 +314,14 @@
             "type": "wordpress-plugin"
         },
         {
-            "name": "wpackagist-plugin/advanced-custom-fields",
-            "version": "5.9.3",
+            "name": "wp-premium/advanced-custom-fields-pro",
+            "version": "5.9.1",
             "source": {
-                "type": "svn",
-                "url": "https://plugins.svn.wordpress.org/advanced-custom-fields/",
-                "reference": "tags/5.9.3"
+                "type": "git",
+                "url": "git@github.com:wp-premium/advanced-custom-fields-pro.git",
+                "reference": "master"
             },
-            "dist": {
-                "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/advanced-custom-fields.5.9.3.zip"
-            },
-            "require": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "homepage": "https://wordpress.org/plugins/advanced-custom-fields/"
+            "type": "wordpress-plugin"
         },
         {
             "name": "wpackagist-plugin/breadcrumb-navxt",
