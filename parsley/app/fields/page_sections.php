@@ -1168,7 +1168,7 @@ acf_add_local_field_group(array(
 							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
-								'width' => '',
+								'width' => '25',
 								'class' => '',
 								'id' => '',
 							),
@@ -1193,7 +1193,7 @@ acf_add_local_field_group(array(
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => '',
+							'layout' => 'table',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5fce5ceba0ec9',
@@ -1339,7 +1339,7 @@ acf_add_local_field_group(array(
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => '',
+							'layout' => 'row',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5fce5ceba0ecf',

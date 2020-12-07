@@ -5,7 +5,7 @@
     while ( have_rows('design_sections') ) {
       the_row();
 
-      if ( get_sub_field('hide') ) {
+      if ( get_sub_field('hidden') ) {
         continue;
       }
 
