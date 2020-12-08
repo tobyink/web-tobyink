@@ -152,3 +152,5 @@ add_action('init', function () {
         return require_once($field);
     });
 });
+
+require_once( __DIR__ . '/options.php' );

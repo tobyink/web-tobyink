@@ -5,3 +5,7 @@
 .slick-next:before {
   color: theme-color("tertiary");
 }
+
+.foogallery-gallery-slick img {
+  @extend .w-100;
+}

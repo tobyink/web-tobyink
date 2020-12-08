@@ -1,0 +1,34 @@
+[
+  {
+    "label": "Colours",
+    "options": [
+      { "type": "colour", "label": "Primary",    "key": "colour-primary",    "default": "#007bff" },
+      { "type": "colour", "label": "Secondary",  "key": "colour-secondary",  "default": "#6c757d" },
+      { "type": "colour", "label": "Tertiary",   "key": "colour-tertiary",   "default": "#fd7e14" },
+      { "type": "colour", "label": "Quaternary", "key": "colour-quaternary", "default": "#20c997" },
+      { "type": "colour", "label": "Dark",       "key": "colour-dark",       "default": "#343a40" },
+      { "type": "colour", "label": "Light",      "key": "colour-light",      "default": "#f8f9fa" },
+      { "type": "colour", "label": "Success",    "key": "colour-success",    "default": "#28a745" },
+      { "type": "colour", "label": "Danger",     "key": "colour-danger",     "default": "#dc3545" },
+      { "type": "colour", "label": "Warning",    "key": "colour-warning",    "default": "#ffc107" },
+      { "type": "colour", "label": "Info",       "key": "colour-info",       "default": "#17a2b8" }
+    ]
+  },
+  {
+    "label": "Fonts",
+    "options": [
+      { "type": "string", "label": "Serif",      "key": "font-serif",        "default": "Georgia, 'Times New Roman', Times, serif" },
+      { "type": "string", "label": "Sans",       "key": "font-sans",         "default": "'Helvetica Neue', Helvetica, Arial, sans-serif" },
+      { "type": "string", "label": "Monospace",  "key": "font-monospace",    "default": "Menlo, Monaco, Consolas, 'Courier New', monospace" },
+      { "type": "string", "label": "Display",    "key": "font-display",      "default": "Techno, Impact, sans-serif" },
+      { "type": "select", "label": "Headings",   "key": "font-headings",     "default": "display", "choices": [ "serif", "sans", "monospace", "display" ] },
+      { "type": "select", "label": "Base",       "key": "font-base",         "default": "serif",   "choices": [ "serif", "sans", "monospace", "display" ] }
+    ]
+  },
+  {
+    "label": "Advanced",
+    "options": [
+      { "type": "textarea", "label": "Imports", "key": "imports", "default": "" }
+    ]
+  }
+]

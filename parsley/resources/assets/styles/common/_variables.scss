@@ -1,27 +1,41 @@
 /** Import Bootstrap functions */
 @import "~bootstrap/scss/functions";
 
-$primary:   #4b2d73;
-$secondary: #882d61;
-$tertiary:  #2e4272;
-$light:     #eee;
-$dark:      #333;
+$primary:    $wp-theme-colour-primary;
+$secondary:  $wp-theme-colour-secondary;
+$tertiary:   $wp-theme-colour-tertiary;
+$quaternary: $wp-theme-colour-quaternary;
+$light:      $wp-theme-colour-light;
+$dark:       $wp-theme-colour-dark;
+$success:    $wp-theme-colour-success;
+$danger:     $wp-theme-colour-danger;
+$warning:    $wp-theme-colour-warning;
+$info:       $wp-theme-colour-info;
 
 $theme-colors: (
-  primary:   $primary,
-  secondary: $secondary,
-  tertiary:  $tertiary,
-  light:     $light,
-  dark:      $dark
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "tertiary":   $tertiary,
+  "quaternary": $quaternary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
 );
 
 $link-color: lighten($tertiary, 10%);
 $enable-gradients: true;
 $spacer: 1.2rem;
 
-$font-family-display:    "Sansita Swashed", serif;
-$font-family-sans-serif: "Open Sans", sans-serif;
-$headings-font-family:   $font-family-display;
+$font-family-display:    $wp-theme-font-display;
+$font-family-sans-serif: $wp-theme-font-sans;
+$font-family-serif:      $wp-theme-font-serif;
+$font-family-monospace:  $wp-theme-font-monospace;
+$font-family-base:       $wp-theme-font-base;
+$headings-font-family:   $wp-theme-font-headings;
+
 
 /** Bootstrap navbar fix (https://git.io/fADqW) */
 $navbar-dark-toggler-icon-bg: none;
