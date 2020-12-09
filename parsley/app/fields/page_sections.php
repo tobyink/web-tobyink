@@ -49,6 +49,7 @@ $ACF_heading_classes = array(
 );
 
 acf_add_local_field_group(array(
+	'name' => 'page_sections',
 	'key' => 'group_5fce523299c83',
 	'title' => 'Advanced Page Layout',
 	'fields' => array(
