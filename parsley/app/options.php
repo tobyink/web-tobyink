@@ -69,7 +69,7 @@ function theme_write_sass ( $options ) {
 function theme_compile_sass () {
   $olddir = getcwd();
   chdir( __DIR__ . '/..'  );
-  system( './yarn build:production' );
+  system( './yarn build' );
   system( 'chmod -R g+rwX ./dist' );
   chdir( $olddir );
 }
@@ -113,6 +113,10 @@ if ( is_admin() ) {
             if ( $opt->type == 'colour' ) {
               $html .= '<input type="text" class="colour" name="theme_options[' . $opt->key . ']" id="' . $opt->key . '" value="' . $hval . '" data-default-color="' . $opt->default . '" />';
             }
+            elseif ( $opt->type == 'colourx') {
+              $html .= '<input type="text" class="colourx" style="width:100%;max-width:30rem" name="theme_options[' . $opt->key . ']" id="' . $opt->key . '" value="' . $hval . '" />';
+              $html .= '<button onclick="document.getElementById(\''.$opt->key.'\').value=\''.htmlspecialchars(addslashes($opt->default)).'\';return false">Default</button>';
+            }
             elseif ( $opt->type == 'select' ) {
               $html .= '<select name="theme_options[' . $opt->key . ']" id="' . $opt->key . '">';
               foreach ( $opt->choices as $choice ) {
@@ -136,7 +140,39 @@ if ( is_admin() ) {
             $html .= '</div>';
           }
         }
-        $html .= '<script>jQuery(function () { jQuery(".colour").wpColorPicker() })</script>';
+        $html .= '<script>
+          var palette_map = {};
+          var palette     = [];
+          jQuery( document ).ready( function ($) {
+            $(".colour").wpColorPicker();
+
+            $(".colourx").iris( {
+              mode: "hsv",
+              controls: { horiz: "h", vert: "v", strip: "s" },
+              change: function ( e, ui ) {
+                var $this = $( e.target );
+                $this.iris( "hide" );
+                var c = ui.color.toString();
+                setTimeout( function () {
+                  if ( palette_map[c] ) {
+                    $this.val( "$wp-theme-" + palette_map[c] );
+                  }
+                }, 300 );
+              },
+            } ).click( function () {
+              var $this = $(this);
+              palette_map = {};
+              palette     = [];
+              $(".colour").each( function ( ix, e ) {
+                var $e = jQuery(e);
+                palette_map[ $e.val() ] = $e.attr( "id" );
+                palette.push( $e.val() );
+              } );
+              $this.iris( "option", "palettes", palette );
+              $this.iris( "show" );
+            } );
+          } );
+        </script>';
 
         echo '<div class="wrap">';
         echo '<h1>Theme Options</h1>';

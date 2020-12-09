@@ -5,6 +5,7 @@ $ACF_foregrounds = array(
 	'primary' => 'primary',
 	'secondary' => 'secondary',
 	'tertiary' => 'tertiary',
+	'quaternary' => 'quaternary',
 	'light' => 'light',
 	'dark' => 'dark',
 	'white' => 'white',

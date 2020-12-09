@@ -1,6 +1,6 @@
 [
   {
-    "label": "Colours",
+    "label": "Theme Colours",
     "options": [
       { "type": "colour", "label": "Primary",    "key": "colour-primary",    "default": "#007bff" },
       { "type": "colour", "label": "Secondary",  "key": "colour-secondary",  "default": "#6c757d" },
@@ -15,12 +15,21 @@
     ]
   },
   {
+    "label": "Page Colours",
+    "options": [
+      { "type": "colourx", "label": "Body Background", "key": "page-bg",    "default": "white" },
+      { "type": "colourx", "label": "Text Colour",     "key": "page-text",  "default": "$wp-theme-colour-dark" },
+      { "type": "colourx", "label": "Link Colour",     "key": "page-link",  "default": "lighten($wp-theme-colour-primary, 10%)" },
+      { "type": "colourx", "label": "Muted Colour",    "key": "page-muted", "default": "lighten($wp-theme-colour-dark, 30%)" }
+    ]
+  },
+  {
     "label": "Fonts",
     "options": [
-      { "type": "string", "label": "Serif",      "key": "font-serif",        "default": "Georgia, 'Times New Roman', Times, serif" },
-      { "type": "string", "label": "Sans",       "key": "font-sans",         "default": "'Helvetica Neue', Helvetica, Arial, sans-serif" },
-      { "type": "string", "label": "Monospace",  "key": "font-monospace",    "default": "Menlo, Monaco, Consolas, 'Courier New', monospace" },
-      { "type": "string", "label": "Display",    "key": "font-display",      "default": "Techno, Impact, sans-serif" },
+      { "type": "text",   "label": "Serif",      "key": "font-serif",        "default": "Georgia, 'Times New Roman', Times, serif" },
+      { "type": "text",   "label": "Sans",       "key": "font-sans",         "default": "'Helvetica Neue', Helvetica, Arial, sans-serif" },
+      { "type": "text",   "label": "Monospace",  "key": "font-monospace",    "default": "Menlo, Monaco, Consolas, 'Courier New', monospace" },
+      { "type": "text",   "label": "Display",    "key": "font-display",      "default": "Techno, Impact, sans-serif" },
       { "type": "select", "label": "Headings",   "key": "font-headings",     "default": "display", "choices": [ "serif", "sans", "monospace", "display" ] },
       { "type": "select", "label": "Base",       "key": "font-base",         "default": "serif",   "choices": [ "serif", "sans", "monospace", "display" ] }
     ]
