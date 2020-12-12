@@ -20,3 +20,7 @@
     font-size: 150%;
   }
 }
+
+::selection {
+  @extend .bg-primary, .text-white;
+}
