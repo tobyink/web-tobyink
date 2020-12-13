@@ -50,11 +50,11 @@ $ACF_heading_classes = array(
 
 $ACF_containment = array(
 	'container'       => 'Contained',
-	'container-sm'    => 'Contained from S up';
-	'container-md'    => 'Contained from M up';
-	'container-lg'    => 'Contained from L up';
-	'container-xl'    => 'Contained from XL up';
-	'container-xl'    => 'Fluid';
+	'container-sm'    => 'Contained from S up',
+	'container-md'    => 'Contained from M up',
+	'container-lg'    => 'Contained from L up',
+	'container-xl'    => 'Contained from XL up',
+	'container-xl'    => 'Fluid',
 	'wide'            => 'Full width',
 );
 
