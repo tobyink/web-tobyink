@@ -149,7 +149,14 @@
         $classes .= ' section-type-image';
         $heading_tag = 'none';
         $contain = false;
-        $content = wp_get_attachment_image( get_sub_field('image'), 'full', false, [ 'class' => 'h-auto w-100', 'loading' => 'lazy' ] );
+        $iatts = [ 'loading' => 'lazy' ];
+        if ( get_sub_field('img_class') ) {
+          $iatts['class'] = get_sub_field('img_class');
+        }
+        if ( get_sub_field('img_class') ) {
+          $iatts['id'] = get_sub_field('img_id');
+        }
+        $content = wp_get_attachment_image( get_sub_field('image'), 'full', false, $iatts );
       }
 
       printf( '<section id="%s" class="page-section %s">', $id, $classes );
