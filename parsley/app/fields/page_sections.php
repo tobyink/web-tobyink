@@ -48,6 +48,16 @@ $ACF_heading_classes = array(
 	'd-none' => 'd-none',
 );
 
+$ACF_containment = array(
+	'container'       => 'Contained',
+	'container-sm'    => 'Contained from S up';
+	'container-md'    => 'Contained from M up';
+	'container-lg'    => 'Contained from L up';
+	'container-xl'    => 'Contained from XL up';
+	'container-xl'    => 'Fluid';
+	'wide'            => 'Full width',
+);
+
 acf_add_local_field_group(array(
 	'name' => 'page_sections',
 	'key' => 'group_5fce523299c83',
@@ -94,11 +104,11 @@ acf_add_local_field_group(array(
 						),
 						array(
 							'key' => 'field_5fce57843e9d0',
-							'label' => 'Full width',
+							'label' => 'Width',
 							'name' => 'full_width',
-							'type' => 'true_false',
+							'type' => 'select',
 							'instructions' => '',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '25',
@@ -106,10 +116,14 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 0,
-							'ui' => 1,
-							'ui_on_text' => 'Wide',
-							'ui_off_text' => 'Contained',
+							'choices' => $ACF_containment,
+							'default_value' => 'container',
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
 						),
 						array(
 							'key' => 'field_5fce56c23e9cf',
@@ -395,11 +409,11 @@ acf_add_local_field_group(array(
 						),
 						array(
 							'key' => 'field_5fce5f181b114',
-							'label' => 'Full width',
+							'label' => 'Width',
 							'name' => 'full_width',
-							'type' => 'true_false',
+							'type' => 'select',
 							'instructions' => '',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '25',
@@ -407,10 +421,14 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 0,
-							'ui' => 1,
-							'ui_on_text' => 'Wide',
-							'ui_off_text' => 'Contained',
+							'choices' => $ACF_containment,
+							'default_value' => 'container',
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
 						),
 						array(
 							'key' => 'field_5fce5f181b115',
@@ -838,11 +856,11 @@ acf_add_local_field_group(array(
 						),
 						array(
 							'key' => 'field_5fce5b0ba0eb3',
-							'label' => 'Full width',
+							'label' => 'Width',
 							'name' => 'full_width',
-							'type' => 'true_false',
+							'type' => 'select',
 							'instructions' => '',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '25',
@@ -850,10 +868,14 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 0,
-							'ui' => 1,
-							'ui_on_text' => 'Wide',
-							'ui_off_text' => 'Contained',
+							'choices' => $ACF_containment,
+							'default_value' => 'container',
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
 						),
 						array(
 							'key' => 'field_5fce5b0ba0eb4',
@@ -1101,11 +1123,11 @@ acf_add_local_field_group(array(
 						),
 						array(
 							'key' => 'field_5fce5ceba0ed1',
-							'label' => 'Full width',
+							'label' => 'Width',
 							'name' => 'full_width',
-							'type' => 'true_false',
+							'type' => 'select',
 							'instructions' => '',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '25',
@@ -1113,10 +1135,14 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 0,
-							'ui' => 1,
-							'ui_on_text' => 'Wide',
-							'ui_off_text' => 'Contained',
+							'choices' => $ACF_containment,
+							'default_value' => 'container',
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
 						),
 						array(
 							'key' => 'field_5fce5ceba0ed2',
@@ -1385,11 +1411,11 @@ acf_add_local_field_group(array(
 						),
 						array(
 							'key' => 'field_5fce6787af29b',
-							'label' => 'Full width',
+							'label' => 'Width',
 							'name' => 'full_width',
-							'type' => 'true_false',
+							'type' => 'select',
 							'instructions' => '',
-							'required' => 0,
+							'required' => 1,
 							'conditional_logic' => 0,
 							'wrapper' => array(
 								'width' => '25',
@@ -1397,10 +1423,14 @@ acf_add_local_field_group(array(
 								'id' => '',
 							),
 							'message' => '',
-							'default_value' => 0,
-							'ui' => 1,
-							'ui_on_text' => 'Wide',
-							'ui_off_text' => 'Contained',
+							'choices' => $ACF_containment,
+							'default_value' => 'container',
+							'allow_null' => 1,
+							'multiple' => 0,
+							'ui' => 0,
+							'return_format' => 'value',
+							'ajax' => 0,
+							'placeholder' => '',
 						),
 						array(
 							'key' => 'field_5fce6787af29c',

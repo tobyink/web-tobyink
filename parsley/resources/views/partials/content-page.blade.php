@@ -10,7 +10,14 @@
       }
 
       $wpautop = ! get_sub_field( 'exact_html' );
-      $contain = ! get_sub_field( 'full_width' );
+
+      $contain =   get_sub_field( 'full_width' );
+      if ( $contain === true || $contain == 1 ) {
+        $contain = 'container';
+      }
+      elseif ( $contain === 'wide' || $contain === false || $contain == 0 ) {
+        $contain = false;
+      }
 
       $style = get_sub_field('style');
 
