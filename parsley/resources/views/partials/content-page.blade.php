@@ -149,7 +149,7 @@
         $classes .= ' section-type-image';
         $heading_tag = 'none';
         $contain = false;
-        $content = wp_get_attachment_image( get_sub_field('image'), 'full', false, [ 'class' => 'w-100', 'loading' => 'lazy' ] );
+        $content = wp_get_attachment_image( get_sub_field('image'), 'full', false, [ 'class' => 'h-auto w-100', 'loading' => 'lazy' ] );
       }
 
       printf( '<section id="%s" class="page-section %s">', $id, $classes );
