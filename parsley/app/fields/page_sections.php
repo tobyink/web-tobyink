@@ -54,7 +54,7 @@ $ACF_containment = array(
 	'container-md'    => 'Contained from M up',
 	'container-lg'    => 'Contained from L up',
 	'container-xl'    => 'Contained from XL up',
-	'container-xl'    => 'Fluid',
+	'container-fluid' => 'Fluid',
 	'wide'            => 'Full width',
 );
 
