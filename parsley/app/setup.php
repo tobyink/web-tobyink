@@ -44,7 +44,8 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation' => __('Primary Navigation', 'sage')
+        'primary_navigation' => __('Primary Navigation', 'sage'),
+        'floating_icons'     => __('Floating Icons', 'sage'),
     ]);
 
     /**
@@ -155,3 +156,4 @@ add_action('init', function () {
 
 require_once( __DIR__ . '/options.php' );
 require_once( __DIR__ . '/acf-tweaks.php' );
+require_once( __DIR__ . '/floating-icons.php' );

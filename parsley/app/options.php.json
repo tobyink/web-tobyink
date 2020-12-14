@@ -24,6 +24,15 @@
     ]
   },
   {
+    "label": "Floating Icon Menu",
+    "options": [
+      { "type": "colourx", "label": "Background", "key": "floating-icons-bg",    "default": "$wp-theme-colour-primary" },
+      { "type": "colourx", "label": "Foreground", "key": "floating-icons-text",  "default": "white" },
+      { "type": "colourx", "label": "Hover",      "key": "floating-icons-hover", "default": "lighten($wp-theme-colour-primary, 10%)" },
+      { "type": "select",  "label": "Placement",  "key": "floating-icons-class", "default": "floating-icons-left", "choices": [ "floating-icons-left", "floating-icons-right" ] }
+    ]
+  },
+  {
     "label": "Fonts",
     "options": [
       { "type": "text",   "label": "Serif",      "key": "font-serif",        "default": "Georgia, 'Times New Roman', Times, serif" },
@@ -41,3 +50,4 @@
     ]
   }
 ]
+
