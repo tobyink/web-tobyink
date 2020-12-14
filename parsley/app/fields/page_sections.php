@@ -1324,7 +1324,7 @@ acf_add_local_field_group(array(
 								'class' => '',
 								'id' => '',
 							),
-							'layout' => 'row',
+							'layout' => 'table',
 							'sub_fields' => array(
 								array(
 									'key' => 'field_5fce5ceba0ecf',
