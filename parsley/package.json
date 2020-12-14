@@ -79,7 +79,7 @@
     "yargs": "^16.1.0"
   },
   "dependencies": {
-    "bootstrap": "v4.3.1",
+    "bootstrap": "v4.4.1",
     "jquery": "^3.3.1",
     "popper.js": "^1.14.7",
     "slick-carousel": "^1.8.1",

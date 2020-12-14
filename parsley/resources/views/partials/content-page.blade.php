@@ -12,10 +12,7 @@
       $wpautop = ! get_sub_field( 'exact_html' );
 
       $contain =   get_sub_field( 'full_width' );
-      if ( $contain === true || $contain == 1 ) {
-        $contain = 'container';
-      }
-      elseif ( $contain === 'wide' || $contain === false || $contain == 0 ) {
+      if ( $contain == 'wide' ) {
         $contain = false;
       }
 
@@ -168,7 +165,7 @@
 
       printf( '<section id="%s" class="page-section %s">', $id, $classes );
       if ( $contain ) {
-        echo '<div class="container">';
+        echo '<div class="' . $contain . '">';
       }
       if ( $heading_tag != 'none' ) {
         printf( '<%s classes="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag );
