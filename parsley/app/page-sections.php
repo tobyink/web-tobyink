@@ -35,11 +35,11 @@ function _parsley_render_heading ( $heading_level, $heading_tag ) {
 				$classes .= ' ' . $heading_level['visual'];
 			}
 		}
-		if ( ! empty($style['padding']) ) {
-			$classes .= ' p-0 m-' . $style['padding'];
+		if ( ! empty($heading_level['padding']) ) {
+			$classes .= ' p-0 my-' . $heading_level['padding'];
 		}
-		if ( ! empty($style['additional_classes']) ) {
-			$classes .= ' ' . $style['additional_classes'];
+		if ( ! empty($heading_level['additional_classes']) ) {
+			$classes .= ' ' . $heading_level['additional_classes'];
 		}
 	}
 
