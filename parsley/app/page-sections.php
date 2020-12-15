@@ -200,7 +200,7 @@ function _parsley_render_col_card ( $chunklist ) {
 		
 		if ( $chunk == 'list-group' ) {
 			$got .= _parsley_render_col_listg( 'list-group list-group-flush' );
-			$col_content .= $got[1];
+			$col_content .= htmlspecialchars( print_r($got, true) );
 		}
 		elseif ( $content ) {
 			$chunkclasses = "card-$chunk";
