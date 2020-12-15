@@ -185,6 +185,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		'wide'            => 'Full width',
 	);
 
+	$builder->addText('notes');
 
 	if ( $callback ) {
 		call_user_func( $callback, $builder );
