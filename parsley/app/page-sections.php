@@ -93,67 +93,7 @@ function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_ta
 	return sprintf( '<div class="col-type-image %s">%s</div>', $col_classes, $col_content);
 }
 
-function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-
-	$opts = get_sub_field('options');
-	$col_wpautop = ! $opts['exact_html'];
-	$col_classes =   $opts['classes'];
-	if ( $col_wpautop ) {
-		$col_classes .= ' column-wpautop';
-	}
-
-	$card_classes = 'card';
-	if ( get_sub_field('card_border_colour') ) {
-		$card_classes .= ' border border-' . get_sub_field('card_border_colour');
-	}
-	$card_classes .= ' ' . get_sub_field('card_class');
-
-	$col_content = '<div class="' .trim($card_classes) . '"';
-	if ( get_sub_field('card_id') ) {
-		$col_content .= sprintf( ' id="%s"', htmlspecialchars( get_sub_field('card_id') ) );
-	}
-	$col_content .= '>';
-
-	foreach ( [ 'header', 'body', 'footer' ] as $chunk ) {
-
-		$content = get_sub_field( $chunk . '_content', false, false );
-		if ( $col_wpautop ) {
-			$content = wpautop( $content );
-		}
-
-		if ( $chunk == 'header' ) {
-			$title = get_sub_field( 'header_title' );
-			$title_tag = 'h3';
-			$title_classes = 'card-title';
-			if ( empty($title) ) {
-				$title_tag = 'none';
-			}
-			else {
-				$title_level = get_sub_field( 'header_title_level' );
-				if ( $title_level['real'] ) {
-					$title_tag = $title_level['real'];
-				}
-				$title_classes .= _parsley_render_heading( $title_level, $title_tag );
-			}
-			if ( $title_tag != 'none' ) {
-				$content = sprintf( '<%s class="%s"><span>%s</span></%s>', $title_tag, $title_classes, $title, $title_tag )
-					. $content;
-			}
-		}
-
-		if ( $content ) {
-			$chunkclasses = "card-$chunk";
-			$chunkclasses .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
-			$col_content .= sprintf('<div class="%s">%s</div>', $chunkclasses, $content);
-		}
-	}
-
-	$col_content .= '</div>';
-
-	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
-}
-
-function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+function _parsley_render_col_listg ( $starting_class='list-group' ) {
 
 	$opts = get_sub_field('options');
 	$col_classes =  $opts['classes'];
@@ -169,7 +109,7 @@ function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_ta
 		'padding'            => $S['padding'],
 	];
 	
-	$lg_classes = 'list-group';
+	$lg_classes = $starting_class ;
 	$lg_classes .= _parsley_render_styles( $lg_style );
 	
 	$lg_item_style = _parsley_render_styles( $lg_item_style );
@@ -179,6 +119,7 @@ function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_ta
 	$col_content = "<ul class=\"$lg_classes\">";
 	while ( have_rows('item') ) {
 		the_row();
+		
 		$item_classes = get_sub_field('class');
 		if ( ! $item_classes ) {
 			$item_classes = $default_item_class;
@@ -206,6 +147,80 @@ function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_ta
 	}
 	$col_content .= "</ul>";
 	
+	return [ $col_classes, $col_content ];
+}
+
+function _parsley_render_col_card ( $chunklist ) {
+
+	$opts = get_sub_field('options');
+	$col_wpautop = ! $opts['exact_html'];
+	$col_classes =   $opts['classes'];
+	if ( $col_wpautop ) {
+		$col_classes .= ' column-wpautop';
+	}
+
+	$card_classes = 'card';
+	if ( get_sub_field('card_border_colour') ) {
+		$card_classes .= ' border border-' . get_sub_field('card_border_colour');
+	}
+	$card_classes .= ' ' . get_sub_field('card_class');
+
+	$col_content = '<div class="' .trim($card_classes) . '"';
+	if ( get_sub_field('card_id') ) {
+		$col_content .= sprintf( ' id="%s"', htmlspecialchars( get_sub_field('card_id') ) );
+	}
+	$col_content .= '>';
+
+	foreach ( $chunklist as $chunk ) {
+
+		$content = get_sub_field( $chunk . '_content', false, false );
+		if ( $col_wpautop ) {
+			$content = wpautop( $content );
+		}
+
+		if ( $chunk == 'header' ) {
+			$title = get_sub_field( 'header_title' );
+			$title_tag = 'h3';
+			$title_classes = 'card-title';
+			if ( empty($title) ) {
+				$title_tag = 'none';
+			}
+			else {
+				$title_level = get_sub_field( 'header_title_level' );
+				if ( $title_level['real'] ) {
+					$title_tag = $title_level['real'];
+				}
+				$title_classes .= _parsley_render_heading( $title_level, $title_tag );
+			}
+			if ( $title_tag != 'none' ) {
+				$content = sprintf( '<%s class="%s"><span>%s</span></%s>', $title_tag, $title_classes, $title, $title_tag )
+					. $content;
+			}
+		}
+		
+		if ( $chunk == 'list-group' ) {
+			$col_content .= _parsley_render_col_listg( 'list-group list-group-flush' );
+		}
+		elseif ( $content ) {
+			$chunkclasses = "card-$chunk";
+			$chunkclasses .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
+			$col_content .= sprintf('<div class="%s">%s</div>', $chunkclasses, $content);
+		}
+	}
+
+	$col_content .= '</div>';
+
+	return [ $col_classes, $col_content ];
+}
+
+function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list ( $col_classes, $col_content ) = _parsley_render_col_card( [ 'header', 'body', 'footer' ] );
+	
+	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
+}
+
+function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list( $col_classes, $col_content ) = _parsley_render_col_listg();
 	return sprintf( '<div class="col-type-list-group %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 

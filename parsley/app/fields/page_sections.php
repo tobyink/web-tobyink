@@ -529,6 +529,89 @@ $SEC[] = parsley_acf_section_definition(
 			}
 		) );
 		
+		$f->addLayout( parsley_acf_column_definition(
+			new FieldsBuilder( 'col_listgcard', [
+				'label'   => 'List Group + Card',
+				'display' => 'block',
+			] ),
+			[
+				'options_callback' => function ( $builder ) {
+					_parsley_acf_style( $builder, 'lg_style' );
+					$builder->addText( 'lg_item_class', [
+						'label'         => 'Additional item classes',
+					] );
+					$builder->addSelect( 'card_border_colour', [
+						'label'         => 'Card border colour',
+						'allow_null'    => 1,
+						'choices'       => array(
+							'primary' => 'primary',
+							'secondary' => 'secondary',
+							'tertiary' => 'tertiary',
+							'quaternary' => 'quaternary',
+							'light' => 'light',
+							'dark' => 'dark',
+							'success' => 'success',
+							'danger' => 'danger',
+							'warning' => 'warning',
+							'info' => 'info',
+							'white' => 'white',
+						),
+						'default_value' => false,
+						'return_format' => 'value',
+					] );
+					$builder->addText( 'card_id', [
+						'label'         => 'ID',
+					] );
+					$builder->addText( 'card_class', [
+						'label'         => 'Additional classes',
+					] );
+				}
+			],
+			function ( $builder ) {
+				$builder->addTab( 'Header' );
+				_parsley_acf_style( $builder, 'header_style' );
+				_parsley_acf_heading( $builder, 'header_title', 'Header Title', 'h3' );
+				$builder->addWysiwyg( 'header_content', [
+					'label'         => 'Content',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 1,
+				]);
+				$builder->addTab( 'List Items' );
+				$r = $builder->addRepeater( 'item', [
+					'label'            => 'Items',
+					'required'         => 1,
+					'min'              => 1,
+					'max'              => 0,
+					'layout'           => 'table',
+					'button_label'     => 'Add Item',					
+				] );
+				$r->addText('html', [ 'wrapper' => [ 'width' => '50', 'class' => '', 'id' => '' ] ]);
+				$r->addSelect( 'nugget', [
+					'allow_null'    => 1,
+					'choices'       => array(
+						'fa-check' => 'tick',
+						'fa-times' => 'cross',
+						'icon'     => 'icon',
+						'text'     => 'text',
+					),
+					'default_value' => false,
+					'return_format' => 'value',					
+				]);
+				$r->addText('nugget_detail')->conditional('nugget', '==', 'icon')->or('nugget', '==', 'text');
+				$r->addText('class', [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ]);
+				$r->endRepeater();
+				$builder->addTab( 'Footer' );
+				_parsley_acf_style( $builder, 'footer_style' );
+				$builder->addWysiwyg( 'footer_content', [
+					'label'         => 'Content',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 1,
+				]);
+			}
+		) );
+
 		$f->endFlexibleContent();
 
 		$builder->addTab( 'Extras' );
