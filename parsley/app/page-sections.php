@@ -120,7 +120,7 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 				if ( $title_level['real'] ) {
 					$title_tag = $title_level['real'];
 				}
-				$title_classes .= _parsley_render_title( $title_level, $title_tag );
+				$title_classes .= _parsley_render_heading( $title_level, $title_tag );
 			}
 			if ( $title_tag != 'none' ) {
 				$content = sprintf( '<%s class="%s"><span>%s</span></%s>', $title_tag, $title_classes, $title, $title_tag )
