@@ -97,7 +97,7 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 
 	$opts = get_sub_field('options');
 	$col_classes =  $opts['classes'];
-	
+
 	$S = get_sub_field( 'lg_style' );
 	$lg_style = [
 		'border_colour'      => $S['border_colour'],
@@ -108,24 +108,24 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 		'background_colour'  => $S['background_colour'],
 		'padding'            => $S['padding'],
 	];
-	
+
 	$lg_classes = $starting_class ;
 	$lg_classes .= _parsley_render_styles( $lg_style );
-	
+
 	$lg_item_style = _parsley_render_styles( $lg_item_style );
-	
+
 	$default_item_class = get_sub_field('lg_item_class');
-	
+
 	$col_content = "<ul class=\"$lg_classes\">";
 	while ( have_rows('item') ) {
 		the_row();
-		
+
 		$item_classes = get_sub_field('class');
 		if ( ! $item_classes ) {
 			$item_classes = $default_item_class;
 		}
 		$item_classes .= $lg_item_style;
-		
+
 		$col_content .= sprintf(
 			'<li class="list-group-item %s">',
 			htmlspecialchars( $item_classes )
@@ -146,7 +146,7 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 		$col_content .= '</li>';
 	}
 	$col_content .= "</ul>";
-	
+
 	return [ $col_classes, $col_content ];
 }
 
@@ -173,9 +173,14 @@ function _parsley_render_col_card ( $chunklist ) {
 
 	foreach ( $chunklist as $chunk ) {
 
-		$content = get_sub_field( $chunk . '_content', false, false );
-		if ( $col_wpautop ) {
-			$content = wpautop( $content );
+		if ( $chunk == 'list-group' ) {
+			$content = '';
+		}
+		else {
+			$content = get_sub_field( $chunk . '_content', false, false );
+			if ( $col_wpautop ) {
+				$content = wpautop( $content );
+			}
 		}
 
 		if ( $chunk == 'header' ) {
@@ -197,10 +202,10 @@ function _parsley_render_col_card ( $chunklist ) {
 					. $content;
 			}
 		}
-		
+
 		if ( $chunk == 'list-group' ) {
-			$got .= _parsley_render_col_listg( 'list-group list-group-flush' );
-			$col_content .= htmlspecialchars( print_r($got, true) );
+			$got = _parsley_render_col_listg( 'list-group list-group-flush' );
+			$col_content .= $got[1];
 		}
 		elseif ( $content ) {
 			$chunkclasses = "card-$chunk";
