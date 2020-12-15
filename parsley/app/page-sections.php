@@ -215,13 +215,17 @@ function _parsley_render_col_card ( $chunklist ) {
 
 function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
 	list ( $col_classes, $col_content ) = _parsley_render_col_card( [ 'header', 'body', 'footer' ] );
-	
 	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
 function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
 	list( $col_classes, $col_content ) = _parsley_render_col_listg();
 	return sprintf( '<div class="col-type-list-group %s">%s</div>', $col_classes, do_shortcode($col_content) );
+}
+
+function parsley_render_col_listgcard ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list ( $col_classes, $col_content ) = _parsley_render_col_card( [ 'header', 'list-group', 'footer' ] );
+	return sprintf( '<div class="col-type-list-group-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
 function parsley_render_sections () {
