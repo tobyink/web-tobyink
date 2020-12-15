@@ -129,15 +129,15 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 		}
 
 		if ( $content ) {
-			$classes = "card-$chunk";
-			$classes .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
-			$col_content .= sprintf('<div class="%s">%s</div>', $classes, $content);
+			$chunkclasses = "card-$chunk";
+			$chunkclasses .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
+			$col_content .= sprintf('<div class="%s">%s</div>', $chunkclasses, $content);
 		}
 	}
 
 	$col_content .= '</div>';
 
-	return sprintf( '<div class="col-type-html %s">%s</div>', $col_classes, do_shortcode($col_content) );
+	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
 function parsley_render_sections () {
