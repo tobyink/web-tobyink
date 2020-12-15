@@ -156,4 +156,5 @@ add_action('init', function () {
 
 require_once( __DIR__ . '/options.php' );
 require_once( __DIR__ . '/acf-tweaks.php' );
+require_once( __DIR__ . '/page-sections.php' );
 require_once( __DIR__ . '/floating-icons.php' );
