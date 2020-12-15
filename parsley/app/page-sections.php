@@ -158,18 +158,36 @@ function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_ta
 	$opts = get_sub_field('options');
 	$col_classes =  $opts['classes'];
 	
+	$S = get_sub_field( 'lg_style' );
+	$lg_style = [
+		'border_colour'      => $S['border_colour'],
+		'additional_classes' => $S['additional_classes'],
+	];
+	$lg_item_style = [
+		'text_colour'        => $S['text_colour'],
+		'background_colour'  => $S['background_colour'],
+		'padding'            => $S['padding'],
+	];
+	
 	$lg_classes = 'list-group';
-	$lg_classes .= _parsley_render_styles( get_sub_field( 'lg_style' ) );
+	$lg_classes .= _parsley_render_styles( $lg_style );
+	
+	$lg_item_style = _parsley_render_styles( $lg_item_style );
 	
 	$default_item_class = get_sub_field('lg_item_class');
 	
 	$col_content = "<ul class=\"$lg_classes\">";
 	while ( have_rows('item') ) {
 		the_row();
+		$item_classes = get_sub_field('class');
+		if ( ! $item_classes ) {
+			$item_classes = $default_item_class;
+		}
+		$item_classes .= $lg_item_style;
+		
 		$col_content .= sprintf(
-			'<li class="list-group-item %s %s">',
-			htmlspecialchars( $default_item_class ),
-			htmlspecialchars( get_sub_field('class') )
+			'<li class="list-group-item %s">',
+			htmlspecialchars( $item_classes )
 		);
 		$nugget = get_sub_field('nugget');
 		if ( $nugget ) {
