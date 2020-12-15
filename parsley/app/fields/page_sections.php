@@ -487,6 +487,53 @@ $SEC[] = parsley_acf_section_definition(
 				]);
 			}
 		) );
+
+		$f->addLayout( parsley_acf_column_definition(
+			new FieldsBuilder( 'col_listg', [
+				'label'   => 'List Group',
+				'display' => 'block',
+			] ),
+			[
+				'options_callback' => function ( $builder ) {
+					_parsley_acf_style( $builder, 'lg_style' );
+					$builder->addText( 'lg_id', [
+						'label'         => 'ID',
+					] );
+					$builder->addText( 'lg_class', [
+						'label'         => 'Additional classes',
+					] );
+					$builder->addText( 'lg_item_class', [
+						'label'         => 'Additional item classes',
+					] );
+				}
+			],
+			function ( $builder ) {
+				$builder->addTab( 'List Items' );
+				$r = $builder->addRepeater( 'item', [
+					'label'            => 'Items',
+					'required'         => 1,
+					'min'              => 1,
+					'max'              => 0,
+					'layout'           => 'table',
+					'button_label'     => 'Add Item',					
+				] );
+				$r->addText('html');
+				$r->addSelect( 'nugget', [
+					'allow_null'    => 1,
+					'choices'       => array(
+						'fa-check' => 'tick',
+						'fa-times' => 'cross',
+						'icon'     => 'icon',
+						'text'     => 'text',
+					),
+					'default_value' => false,
+					'return_format' => 'value',					
+				]);
+				$r->addText('nugget_detail')->conditional('nugget', '==', 'icon')->or('nugget', '==', 'text');
+				$r->addText('class');
+				$r->endRepeater();
+			}
+		) );
 		
 		$f->endFlexibleContent();
 
