@@ -4,7 +4,7 @@ namespace App;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style' ) {
+function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style', $paddingsize=false ) {
 	
 	$g = $builder->addGroup( $group_name, [
 		'label'         => $group_label,
@@ -82,7 +82,7 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 		'instructions'  => 'A value from 0 (none) to 5 (most)',
 		'required'      => 0,
 		'allow_null'    => 1,
-		'default_value' => 3,
+		'default_value' => $paddingsize,
 		'min'           => 0,
 		'max'           => 5,
 		'step'          => 1,
@@ -240,7 +240,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 	] );
 
 	if ( $opts['styling'] ) {		
-		_parsley_acf_style( $builder );
+		_parsley_acf_style( $builder, 'style', 'Style', 3 );
 	}
 	
 	if ( array_key_exists( 'options_callback', $opts ) ) {
