@@ -83,6 +83,42 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		call_user_func( $callback, $builder );
 	}
 
+	if ( $opts['heading'] ) {
+
+		$builder->addTab( 'Heading' );
+
+		$builder->addText( 'heading', [
+			'label'         => 'Heading',
+		] );
+
+		$g = $builder->addGroup( 'heading_level', [
+			'label'  => 'Heading Level',
+			'layout' => 'table',
+		] )->conditional( 'heading', '!=empty', '' );
+
+		$g->addSelect( 'real', [
+			'label'         => 'Real tag',
+			'choices'       => $ACF_heading_tags,
+			'default_value' => 'h2',
+			'allow_null'    => 0,
+			'return_format' => 'value',
+		] );
+
+		$g->addSelect( 'visual', [
+			'label'         => 'Displayed as',
+			'choices'       => $ACF_heading_classes,
+			'default_value' => false,
+			'allow_null'    => 1,
+			'return_format' => 'value',
+		] )->conditional( 'real', '!=', 'none' );
+
+		$g->endGroup();
+		
+		if ( array_key_exists( 'heading_callback', $opts ) ) {
+			call_user_func( $opts['heading_callback'], $builder );
+		}
+	}
+
 	$builder->addTab( 'Section Options' );
 
 	$builder->addText( 'id', [
@@ -160,37 +196,9 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 
 		$g->endGroup();
 	}
-
-	if ( $opts['heading'] ) {
-
-		$builder->addTab( 'Heading' );
-
-		$builder->addText( 'heading', [
-			'label'         => 'Heading',
-		] );
-
-		$g = $builder->addGroup( 'heading_level', [
-			'label'  => 'Heading Level',
-			'layout' => 'table',
-		] )->conditional( 'heading', '!=empty', '' );
-
-		$g->addSelect( 'real', [
-			'label'         => 'Real tag',
-			'choices'       => $ACF_heading_tags,
-			'default_value' => 'h2',
-			'allow_null'    => 0,
-			'return_format' => 'value',
-		] );
-
-		$g->addSelect( 'visual', [
-			'label'         => 'Displayed as',
-			'choices'       => $ACF_heading_classes,
-			'default_value' => false,
-			'allow_null'    => 1,
-			'return_format' => 'value',
-		] )->conditional( 'real', '!=', 'none' );
-
-		$g->endGroup();
+	
+	if ( array_key_exists( 'options_callback', $opts ) ) {
+		call_user_func( $opts['options_callback'], $builder );
 	}
 
 	return $builder;
@@ -230,18 +238,22 @@ $SEC[] = parsley_acf_section_definition(
 		'label'   => 'Columns',
 		'display' => 'block',
 	] ),
-	[],
+	[
+		'heading_callback' => function ( $builder ) {
+			
+			$builder->addTrueFalse( 'heading_in_column', [
+				'label'         => 'Heading in First Column',
+				'instructions'  => 'Inserts the heading into the first column instead of before the columns.',
+				'ui'            => 1,
+				'ui_on_text'    => 'Yes',
+				'ui_off_text'   => 'No',
+			] )->conditional( 'heading', '!=empty', '' );
+			
+		},
+	],
 	function ( $builder ) {
 
 		$builder->addTab( 'Columns' );
-
-		$builder->addTrueFalse( 'heading_in_column', [
-			'label'         => 'Heading in First Column',
-			'instructions'  => 'Inserts the heading into the first column instead of before the columns.',
-			'ui'            => 1,
-			'ui_on_text'    => 'Yes',
-			'ui_off_text'   => 'No',
-		] )->conditional( 'heading', '!=empty', '' );
 
 		$r = $builder->addRepeater( 'columns', [
 			'label'         => 'Columns',
