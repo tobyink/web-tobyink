@@ -109,21 +109,21 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 		}
 		
 		if ( $chunk == 'header' ) {
-			$heading = get_sub_field( 'header_title' );
-			$heading_tag = 'h3';
-			$heading_classes = 'card-title';
-			if ( empty($heading) ) {
-				$heading_tag = 'none';
+			$title = get_sub_field( 'header_title' );
+			$title_tag = 'h3';
+			$title_classes = 'card-title';
+			if ( empty($title) ) {
+				$title_tag = 'none';
 			}
 			else {
-				$heading_level = get_sub_field( 'header_title_level' );
-				if ( $heading_level['real'] ) {
-					$heading_tag = $heading_level['real'];
+				$title_level = get_sub_field( 'header_title_level' );
+				if ( $title_level['real'] ) {
+					$title_tag = $title_level['real'];
 				}
-				$heading_classes .= _parsley_render_heading( $heading_level, $heading_tag );
+				$title_classes .= _parsley_render_title( $title_level, $title_tag );
 			}
-			if ( $heading_tag != 'none' ) {
-				$content = sprintf( '<%s class="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag )
+			if ( $title_tag != 'none' ) {
+				$content = sprintf( '<%s class="%s"><span>%s</span></%s>', $title_tag, $title_classes, $title, $title_tag )
 					. $content;
 			}
 		}
