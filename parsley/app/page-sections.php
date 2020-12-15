@@ -153,6 +153,44 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
+function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+
+	$opts = get_sub_field('options');
+	$col_classes =  $opts['classes'];
+	
+	$lg_classes = 'list-group';
+	$lg_classes .= _parsley_render_styles( get_sub_field( 'lg_style' ) );
+	
+	$default_item_class = get_sub_field('lg_item_class');
+	
+	$col_content = "<ul class=\"$lg_classes\">";
+	while ( have_rows('items') ) {
+		the_row();
+		$col_content .= sprintf(
+			'<li class="list-group-item %s %s">',
+			htmlspecialchars( $default_item_class ),
+			htmlspecialchars( get_sub_field('class') )
+		);
+		$nugget = get_sub_field('nugget');
+		if ( $nugget ) {
+			if ( $nugget === 'text' ) {
+				$col_content .= sprintf( '<span class="float-right">%s</span>', get_sub_field('nugget_detail') );
+			}
+			elseif ( $nugget === 'icon' ) {
+				$col_content .= sprintf( '<i class="fa %s float-right"></i>', get_sub_field('nugget_detail') );
+			}
+			else {
+				$col_content .= sprintf( '<i class="fa %s float-right"></i>', $nugget );
+			}
+		}
+		$col_content .= get_sub_field('html');
+		$col_content .= '</li>';
+	}
+	$col_content .= "</ul>";
+	
+	return sprintf( '<div class="col-type-list-group %s">%s</div>', $col_classes, do_shortcode($col_content) );
+}
+
 function parsley_render_sections () {
 	$count = 0;
 	while ( have_rows('design_sections') ) {

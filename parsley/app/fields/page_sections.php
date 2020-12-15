@@ -496,12 +496,6 @@ $SEC[] = parsley_acf_section_definition(
 			[
 				'options_callback' => function ( $builder ) {
 					_parsley_acf_style( $builder, 'lg_style' );
-					$builder->addText( 'lg_id', [
-						'label'         => 'ID',
-					] );
-					$builder->addText( 'lg_class', [
-						'label'         => 'Additional classes',
-					] );
 					$builder->addText( 'lg_item_class', [
 						'label'         => 'Additional item classes',
 					] );
