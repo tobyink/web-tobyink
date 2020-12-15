@@ -212,6 +212,45 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 	return $builder;
 }
 
+function parsley_acf_column_definition ( $builder, $opts=array(), $callback=false ) {
+	
+	if ( $callback ) {
+		call_user_func( $callback, $builder );
+	}
+
+	$builder->addTab( 'Column Options' );
+	
+	$g = $builder->addGroup( 'options', [
+		'label'         => 'Basic Options',
+		'layout'        => 'row',
+	] );
+
+	$g->addText( 'classes', [
+		'label'         => 'Classes',
+		'instructions'  => 'Classes to apply to the column; requires knowledge of the Bootstrap grid system.',
+		'default_value' => 'col',
+		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+	] );
+
+	$g->addTrueFalse( 'exact_html', [
+		'label'         => 'Exact HTML',
+		'instructions'  => 'If exact HTML, will avoid Wordpress paragraph munging.',
+		'default_value' => 0,
+		'ui'            => 1,
+		'ui_on_text'    => 'Exact',
+		'ui_off_text'   => 'Munge',
+		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+	] );
+
+	$g->endGroup();
+
+	if ( array_key_exists( 'options_callback', $opts ) ) {
+		call_user_func( $opts['options_callback'], $builder );
+	}
+	
+	return $builder;
+}
+
 $SEC = [];
 
 $SEC[] = parsley_acf_section_definition(
@@ -219,6 +258,26 @@ $SEC[] = parsley_acf_section_definition(
 		'label'   => 'Primary Content',
 		'display' => 'block',
 	] )
+);
+
+$SEC[] = parsley_acf_section_definition(
+	new FieldsBuilder( 'post', [
+		'label'   => 'Another Post',
+		'display' => 'block',
+	] ),
+	[],
+	function ( $builder ) {
+
+		$builder->addTab( 'Post' );
+
+		$builder->addPostObject( 'post_id', [
+			'label'         => 'Post',
+			'required'      => 1,
+			'return_format' => 'id',
+			'ui'            => 1,
+		] );
+
+	}
 );
 
 $SEC[] = parsley_acf_section_definition(
@@ -243,7 +302,7 @@ $SEC[] = parsley_acf_section_definition(
 
 $SEC[] = parsley_acf_section_definition(
 	new FieldsBuilder( 'columns', [
-		'label'   => 'Columns',
+		'label'   => 'Simple Columns',
 		'display' => 'block',
 	] ),
 	[
@@ -323,22 +382,109 @@ $SEC[] = parsley_acf_section_definition(
 );
 
 $SEC[] = parsley_acf_section_definition(
-	new FieldsBuilder( 'post', [
-		'label'   => 'Post',
+	new FieldsBuilder( 'columns2', [
+		'label'   => 'Advanced Columns',
 		'display' => 'block',
 	] ),
-	[],
+	[
+		'heading_callback' => function ( $builder ) {
+			
+			$builder->addTrueFalse( 'heading_in_column', [
+				'label'         => 'Heading in First Column',
+				'instructions'  => 'Inserts the heading into the first column instead of before the columns.',
+				'ui'            => 1,
+				'ui_on_text'    => 'Yes',
+				'ui_off_text'   => 'No',
+			] )->conditional( 'heading', '!=empty', '' );
+			
+		},
+	],
 	function ( $builder ) {
 
-		$builder->addTab( 'Post' );
+		$builder->addTab( 'Columns' );
 
-		$builder->addPostObject( 'post_id', [
-			'label'         => 'Post',
+		$f = $builder->addFlexibleContent( 'columns', [
+			'label'         => 'Columns',
 			'required'      => 1,
-			'return_format' => 'id',
-			'ui'            => 1,
+			'min'           => 1,
+			'max'           => 120,
+			'button_label'  => 'Add Column',
 		] );
 
+		$f->addLayout( parsley_acf_column_definition(
+			new FieldsBuilder( 'col_html', [
+				'label'   => 'HTML',
+				'display' => 'block',
+			] ),
+			[ ],
+			function ( $builder ) {
+				$builder->addTab( 'Content' );
+				$builder->addWysiwyg( 'content', [
+					'label'         => 'Content',
+					'tabs'          => 'all',
+					'toolbar'       => 'full',
+					'media_upload'  => 1,
+				]);
+			}
+		) );
+
+		$f->addLayout( parsley_acf_column_definition(
+			new FieldsBuilder( 'col_image', [
+				'label'   => 'Image',
+				'display' => 'block',
+			] ),
+			[ ],
+			function ( $builder ) {
+				$builder->addTab( 'Image' );
+				$builder->addImage( 'image', [
+					'label'         => 'Image',
+					'return_format' => 'id',
+					'preview_size'  => 'medium',
+					'required'      => 1,
+				] );
+				$builder->addTrueFalse( 'rounded', [
+					'label'         => 'Rounded corners',
+					'ui'            => 1,
+					'ui_on_text'    => 'Yes',
+					'ui_off_text'   => 'No',
+				] );
+				$builder->addTrueFalse( 'shadow', [
+					'label'         => 'Shadow',
+					'ui'            => 1,
+					'ui_on_text'    => 'Yes',
+					'ui_off_text'   => 'No',
+				] );
+				$builder->addText( 'img_id', [
+					'label'         => 'Image ID',
+					'instructions'  => 'HTML `id` attribute for styling and scripting (img tag)',
+					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+				] );
+				$builder->addText( 'img_class', [
+					'label'         => 'Image Classes',
+					'instructions'  => 'HTML `class` attribute for styling and scripting (img tag)',
+					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+					'default_value' => '',
+				] );
+			}
+		) );
+		
+		$f->endFlexibleContent();
+
+		$builder->addTab( 'Extras' );
+
+		$builder->addWysiwyg( 'before_columns', [
+			'label'         => 'Before Columns',
+			'tabs'          => 'all',
+			'toolbar'       => 'full',
+			'media_upload'  => 1,
+		] );
+
+		$builder->addWysiwyg( 'after_columns', [
+			'label'         => 'After Columns',
+			'tabs'          => 'all',
+			'toolbar'       => 'full',
+			'media_upload'  => 1,
+		] );
 	}
 );
 
