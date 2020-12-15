@@ -57,6 +57,26 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 		'return_format' => 'value',
 	] );
 
+	$g->addSelect( 'border_colour', [
+		'label'         => 'Border colour',
+		'allow_null'    => 1,
+		'choices'       => array(
+			'primary' => 'primary',
+			'secondary' => 'secondary',
+			'tertiary' => 'tertiary',
+			'quaternary' => 'quaternary',
+			'light' => 'light',
+			'dark' => 'dark',
+			'success' => 'success',
+			'danger' => 'danger',
+			'warning' => 'warning',
+			'info' => 'info',
+			'white' => 'white',
+		),
+		'default_value' => false,
+		'return_format' => 'value',
+	] );
+
 	$g->addNumber( 'padding', [
 		'label'         => 'Padding',
 		'instructions'  => 'A value from 0 (none) to 5 (most)',

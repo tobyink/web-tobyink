@@ -12,6 +12,9 @@ function _parsley_render_styles ( $style, $padding_type='p' ) {
 		if ( ! empty($style['background_colour']) ) {
 			$classes .= ' bg-' . $style['background_colour'];
 		}
+		if ( ! empty($style['border_colour']) ) {
+			$classes .= ' border border-' . $style['border_colour'];
+		}
 		if ( ! empty($style['padding']) ) {
 			$classes .= ' ' . $padding_type . '-' . $style['padding'];
 		}
