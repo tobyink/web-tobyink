@@ -429,7 +429,35 @@ $SEC[] = parsley_acf_section_definition(
 				'label'   => 'Card',
 				'display' => 'block',
 			] ),
-			[ ],
+			[
+				'options_callback' => function ( $builder ) {
+					$builder->addSelect( 'card_border_colour', [
+						'label'         => 'Card border colour',
+						'allow_null'    => 1,
+						'choices'       => array(
+							'primary' => 'primary',
+							'secondary' => 'secondary',
+							'tertiary' => 'tertiary',
+							'quaternary' => 'quaternary',
+							'light' => 'light',
+							'dark' => 'dark',
+							'success' => 'success',
+							'danger' => 'danger',
+							'warning' => 'warning',
+							'info' => 'info',
+							'white' => 'white',
+						),
+						'default_value' => false,
+						'return_format' => 'value',
+					] );
+					$builder->addText( 'card_id', [
+						'label'         => 'ID',
+					] );
+					$builder->addText( 'card_class', [
+						'label'         => 'Additional classes',
+					] );
+				}
+			],
 			function ( $builder ) {
 				$builder->addTab( 'Header' );
 				_parsley_acf_style( $builder, 'header_style' );

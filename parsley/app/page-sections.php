@@ -102,7 +102,17 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 		$col_classes .= ' column-wpautop';
 	}
 
-	$col_content = '<div class="card">';
+	$card_classes = 'card';
+	if ( get_sub_field('card_border_colour') ) {
+		$card_classes .= ' border border-' . get_sub_field('card_border_colour');
+	}
+	$card_classes .= ' ' . get_sub_field('card_class');
+
+	$col_content = '<div class="' .trim($card_classes) . '"';
+	if ( get_sub_field('card_id') ) {
+		$col_content .= sprintf( ' id="%s"', htmlspecialchars( get_sub_field('card_id') ) );
+	}
+	$col_content .= '>';
 
 	foreach ( [ 'header', 'body', 'footer' ] as $chunk ) {
 
