@@ -25,6 +25,10 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		'quaternary' => 'quaternary',
 		'light' => 'light',
 		'dark' => 'dark',
+		'success' => 'success',
+		'danger' => 'danger',
+		'warning' => 'warning',
+		'info' => 'info',
 		'white' => 'white',
 	);
 
@@ -35,13 +39,17 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		'quaternary' => 'quaternary',
 		'light' => 'light',
 		'dark' => 'dark',
-		'white' => 'white',
 		'gradient-primary' => 'gradient-primary',
 		'gradient-secondary' => 'gradient-secondary',
 		'gradient-tertiary' => 'gradient-tertiary',
 		'gradient-quaternary' => 'gradient-quaternary',
 		'gradient-light' => 'gradient-light',
 		'gradient-dark' => 'gradient-dark',
+		'success' => 'success',
+		'danger' => 'danger',
+		'warning' => 'warning',
+		'info' => 'info',
+		'white' => 'white',
 	);
 	
 	$ACF_containment = array(
@@ -172,7 +180,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		] );
 
 		$g->addSelect( 'background_colour', [
-			'label'         => 'Text colour',
+			'label'         => 'Background colour',
 			'allow_null'    => 1,
 			'choices'       => $ACF_backgrounds,
 			'default_value' => false,
