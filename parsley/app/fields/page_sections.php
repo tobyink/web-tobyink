@@ -75,16 +75,16 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 	$g->endGroup();
 }
 
-function _parsley_acf_heading ( $builder, $default_level='h2' ) {
+function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='Heading', $default_level='h2' ) {
 
-	$builder->addText( 'heading', [
-		'label'         => 'Heading',
+	$builder->addText( $group_name, [
+		'label'         => $group_label,
 	] );
 	
-	$g = $builder->addGroup( 'heading_level', [
-		'label'  => 'Heading Style',
+	$g = $builder->addGroup( $group_name . '_level', [
+		'label'  => $group_label . ' Style',
 		'layout' => 'table',
-	] )->conditional( 'heading', '!=empty', '' );
+	] )->conditional( $group_name, '!=empty', '' );
 
 	$g->addSelect( 'real', [
 		'label'         => 'Real tag',
@@ -413,7 +413,7 @@ $SEC[] = parsley_acf_section_definition(
 			function ( $builder ) {
 				$builder->addTab( 'Header' );
 				_parsley_acf_style( $builder, 'header_style' );
-				_parsley_acf_heading( $builder, 'h3' );
+				_parsley_acf_heading( $builder, 'header_title', 'Header Title', 'h3' );
 				$builder->addWysiwyg( 'header_content', [
 					'label'         => 'Content',
 					'tabs'          => 'all',
