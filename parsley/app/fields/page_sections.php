@@ -101,7 +101,7 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 	$g->endGroup();
 }
 
-function _parsley_acf_heading ( $builder ) {
+function _parsley_acf_heading ( $builder, $default_level='h2' ) {
 	global $ACF_heading_tags, $ACF_heading_classes;	
 
 	$builder->addText( 'heading', [
@@ -109,14 +109,14 @@ function _parsley_acf_heading ( $builder ) {
 	] );
 	
 	$g = $builder->addGroup( 'heading_level', [
-		'label'  => 'Heading Level',
+		'label'  => 'Heading Style',
 		'layout' => 'table',
 	] )->conditional( 'heading', '!=empty', '' );
 
 	$g->addSelect( 'real', [
 		'label'         => 'Real tag',
 		'choices'       => $ACF_heading_tags,
-		'default_value' => 'h2',
+		'default_value' => $default_level,
 		'allow_null'    => 0,
 		'return_format' => 'value',
 	] );
@@ -127,6 +127,21 @@ function _parsley_acf_heading ( $builder ) {
 		'default_value' => false,
 		'allow_null'    => 1,
 		'return_format' => 'value',
+	] )->conditional( 'real', '!=', 'none' );
+
+	$g->addNumber( 'padding', [
+		'label'         => 'Padding',
+		'instructions'  => 'A value from 0 (none) to 5 (most)',
+		'required'      => 0,
+		'allow_null'    => 1,
+		'default_value' => 3,
+		'min'           => 0,
+		'max'           => 5,
+		'step'          => 1,
+	] )->conditional( 'real', '!=', 'none' );
+	
+	$g->addText( 'additional_classes', [
+		'label'         => 'Additional classes',
 	] )->conditional( 'real', '!=', 'none' );
 
 	$g->endGroup();
@@ -401,14 +416,14 @@ $SEC[] = parsley_acf_section_definition(
 		
 		$f->addLayout( parsley_acf_column_definition(
 			new FieldsBuilder( 'col_card', [
-				'label'   => 'Image',
+				'label'   => 'Card',
 				'display' => 'block',
 			] ),
 			[ ],
 			function ( $builder ) {
 				$builder->addTab( 'Header' );
 				_parsley_acf_style( $builder, 'header_style' );
-				_parsley_acf_heading( $builder );
+				_parsley_acf_heading( $builder, 'h3' );
 				$builder->addWysiwyg( 'header_content', [
 					'label'         => 'Content',
 					'tabs'          => 'all',
