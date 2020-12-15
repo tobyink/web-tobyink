@@ -517,7 +517,7 @@ $SEC[] = parsley_acf_section_definition(
 					'layout'           => 'table',
 					'button_label'     => 'Add Item',					
 				] );
-				$r->addText('html');
+				$r->addText('html', [ 'wrapper' => [ 'width' => '50', 'class' => '', 'id' => '' ] ]);
 				$r->addSelect( 'nugget', [
 					'allow_null'    => 1,
 					'choices'       => array(
@@ -530,7 +530,7 @@ $SEC[] = parsley_acf_section_definition(
 					'return_format' => 'value',					
 				]);
 				$r->addText('nugget_detail')->conditional('nugget', '==', 'icon')->or('nugget', '==', 'text');
-				$r->addText('class');
+				$r->addText('class', [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ]);
 				$r->endRepeater();
 			}
 		) );
