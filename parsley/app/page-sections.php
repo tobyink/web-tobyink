@@ -2,9 +2,9 @@
 
 namespace App;
 
-function _parsley_render_styles ( $styles, $padding_type='p' ) {
+function _parsley_render_styles ( $style, $padding_type='p' ) {
 	$classes = '';
-	
+
 	if ( is_array($style) ) {
 		if ( ! empty($style['text_colour']) ) {
 			$classes .= ' text-' . $style['text_colour'];
@@ -19,13 +19,13 @@ function _parsley_render_styles ( $styles, $padding_type='p' ) {
 			$classes .= ' ' . $style['additional_classes'];
 		}
 	}
-	
+
 	return $classes;
 }
 
 function _parsley_render_heading ( $heading_level, $heading_tag ) {
 	$classes = '';
-	
+
 	if ( is_array($heading_level) ) {
 		if ( $heading_level['visual'] ) {
 			if ( $heading_level['visual'] != $heading_tag ) {
@@ -39,7 +39,7 @@ function _parsley_render_heading ( $heading_level, $heading_tag ) {
 			$classes .= ' ' . $style['additional_classes'];
 		}
 	}
-	
+
 	return $classes;
 }
 
@@ -100,14 +100,14 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 	}
 
 	$col_content = '<div class="card">';
-	
+
 	foreach ( [ 'header', 'body', 'footer' ] as $chunk ) {
-		
+
 		$content = get_sub_field( $chunk . '_content', false, false );
 		if ( $col_wpautop ) {
 			$content = wpautop( $content );
 		}
-		
+
 		if ( $chunk == 'header' ) {
 			$title = get_sub_field( 'header_title' );
 			$title_tag = 'h3';
@@ -127,14 +127,13 @@ function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag
 					. $content;
 			}
 		}
-		
+
 		if ( $content ) {
 			$classes = "card-$chunk";
 			$classes .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
 			$col_content .= sprintf('<div class="%s">%s</div>', $classes, $content);
 		}
 	}
-	
 
 	$col_content .= '</div>';
 
