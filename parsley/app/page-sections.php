@@ -89,8 +89,8 @@ function parsley_render_sections () {
 			if ( ! empty($style['background_colour']) ) {
 				$classes .= ' bg-' . $style['background_colour'];
 			}
-			if ( ! empty($style['vertical_padding']) ) {
-				$classes .= ' py-' . $style['vertical_padding'];
+			if ( ! empty($style['padding']) ) {
+				$classes .= ' py-' . $style['padding'];
 			}
 			if ( ! empty($style['additional_classes']) ) {
 				$classes .= ' ' . $style['additional_classes'];
