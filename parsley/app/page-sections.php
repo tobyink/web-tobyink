@@ -3,18 +3,17 @@
 namespace App;
 
 function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	
-	$col = [
-		'options' => get_sub_field('options'),
-		'content' => get_sub_field('content', false, false),
-	];
-	$col_wpautop = ! $col['options']['exact_html'];
-	$col_classes =   $col['options']['classes'];
-	$col_content =   $col['content'];
+
+	$opts = get_sub_field('options');
+	$col_wpautop = ! $opts['exact_html'];
+	$col_classes =   $opts['classes'];
+
+	$col_content = get_sub_field('content', false, false);
 	if ( $col_wpautop ) {
 		$col_classes .= ' column-wpautop';
 		$col_content  = wpautop( $col_content );
 	}
+
 	if ( $heading_in_column ) {
 		$classes .= ' section-with-heading-in-column';
 		$col_classes .= ' column-containing-the-heading';
@@ -24,7 +23,30 @@ function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag
 			$heading_tag = 'none'; // prevent duplicate heading
 		}
 	}
-	return sprintf( '<div class="%s">%s</div>', $col_classes, do_shortcode($col_content) );
+
+	return sprintf( '<div class="col-type-html %s">%s</div>', $col_classes, do_shortcode($col_content) );
+}
+
+function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	$opts = get_sub_field('options');
+	$col_classes = $opts['classes'];
+
+	$iatts = [ 'loading' => 'lazy', 'class' => '' ];
+	if ( get_sub_field('img_class') ) {
+		$iatts['class'] = get_sub_field('img_class');
+	}
+	if ( get_sub_field('img_id') ) {
+		$iatts['id'] = get_sub_field('img_id');
+	}
+	if ( get_sub_field('rounded') ) {
+		$iatts['class'] .= ' rounded';
+	}
+	if ( get_sub_field('shadow') ) {
+		$iatts['class'] .= ' shadow';
+	}
+	$col_content = wp_get_attachment_image( get_sub_field('image'), 'large', false, $iatts );
+
+	return sprintf( '<div class="col-type-image %s">%s</div>', $col_classes, $col_content);
 }
 
 function parsley_render_sections () {
@@ -122,16 +144,20 @@ function parsley_render_sections () {
 			$heading_in_column = get_sub_field('heading_in_column');
 			while ( have_rows('columns') ) {
 				the_row();
-				
-				$col_type = get_row_layout();
-				if ( empty($col_type) || $col_type=='columns' ) {
+
+				if ( $layout === 'columns' ) {
 					$col_type = 'col_html';
 				}
-				
-				$content .= call_user_func_array(
-					'parsley_render_' . $col_type,
+				else {
+					$col_type = get_row_layout();
+				}
+
+				$got = call_user_func_array(
+					'App\parsley_render_' . $col_type,
 					[ &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ] 
 				);
+
+				$content .= ( $got === false ) ? '<div class="col">ERROR</div>' : $got;
 			}
 			$content .= '</div>';
 			$content .= do_shortcode( $after );
@@ -174,7 +200,7 @@ function parsley_render_sections () {
 			if ( get_sub_field('img_class') ) {
 				$iatts['class'] = get_sub_field('img_class');
 			}
-			if ( get_sub_field('img_class') ) {
+			if ( get_sub_field('img_id') ) {
 				$iatts['id'] = get_sub_field('img_id');
 			}
 			$content = wp_get_attachment_image( get_sub_field('image'), 'full', false, $iatts );
