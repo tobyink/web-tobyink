@@ -463,7 +463,7 @@ $SEC[] = parsley_acf_section_definition(
 					'label'         => 'Image Classes',
 					'instructions'  => 'HTML `class` attribute for styling and scripting (img tag)',
 					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
-					'default_value' => '',
+					'default_value' => 'w-100 h-auto',
 				] );
 			}
 		) );
