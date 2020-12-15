@@ -301,8 +301,8 @@ $SEC[] = parsley_acf_section_definition(
 );
 
 $SEC[] = parsley_acf_section_definition(
-	new FieldsBuilder( 'columns', [
-		'label'   => 'Simple Columns',
+	new FieldsBuilder( 'columns000', [
+		'label'   => 'OLD Columns',
 		'display' => 'block',
 	] ),
 	[
@@ -382,8 +382,8 @@ $SEC[] = parsley_acf_section_definition(
 );
 
 $SEC[] = parsley_acf_section_definition(
-	new FieldsBuilder( 'columns2', [
-		'label'   => 'Advanced Columns',
+	new FieldsBuilder( 'columns', [
+		'label'   => 'Columns',
 		'display' => 'block',
 	] ),
 	[
