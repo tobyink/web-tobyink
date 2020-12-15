@@ -164,7 +164,7 @@ function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_ta
 	$default_item_class = get_sub_field('lg_item_class');
 	
 	$col_content = "<ul class=\"$lg_classes\">";
-	while ( have_rows('items') ) {
+	while ( have_rows('item') ) {
 		the_row();
 		$col_content .= sprintf(
 			'<li class="list-group-item %s %s">',
