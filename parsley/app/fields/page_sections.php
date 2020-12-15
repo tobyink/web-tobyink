@@ -4,63 +4,7 @@ namespace App;
 
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
-$ACF_foregrounds = array(
-	'primary' => 'primary',
-	'secondary' => 'secondary',
-	'tertiary' => 'tertiary',
-	'quaternary' => 'quaternary',
-	'light' => 'light',
-	'dark' => 'dark',
-	'success' => 'success',
-	'danger' => 'danger',
-	'warning' => 'warning',
-	'info' => 'info',
-	'white' => 'white',
-);
-
-$ACF_backgrounds = array(
-	'primary' => 'primary',
-	'secondary' => 'secondary',
-	'tertiary' => 'tertiary',
-	'quaternary' => 'quaternary',
-	'light' => 'light',
-	'dark' => 'dark',
-	'gradient-primary' => 'gradient-primary',
-	'gradient-secondary' => 'gradient-secondary',
-	'gradient-tertiary' => 'gradient-tertiary',
-	'gradient-quaternary' => 'gradient-quaternary',
-	'gradient-light' => 'gradient-light',
-	'gradient-dark' => 'gradient-dark',
-	'success' => 'success',
-	'danger' => 'danger',
-	'warning' => 'warning',
-	'info' => 'info',
-	'white' => 'white',
-);
-
-$ACF_heading_tags = array(
-	'h1' => 'h1',
-	'h2' => 'h2',
-	'h3' => 'h3',
-	'h4' => 'h4',
-	'h5' => 'h5',
-	'h6' => 'h6',
-	'div' => 'div',
-	'none' => 'none',
-);
-
-$ACF_heading_classes = array(
-	'h1' => 'h1',
-	'h2' => 'h2',
-	'h3' => 'h3',
-	'h4' => 'h4',
-	'h5' => 'h5',
-	'h6' => 'h6',
-	'd-none' => 'd-none',
-);
-
 function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style' ) {
-	global $ACF_foregrounds, $ACF_backgrounds;	
 	
 	$g = $builder->addGroup( $group_name, [
 		'label'         => $group_label,
@@ -70,7 +14,19 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 	$g->addSelect( 'text_colour', [
 		'label'         => 'Text colour',
 		'allow_null'    => 1,
-		'choices'       => $ACF_foregrounds,
+		'choices'       => array(
+			'primary' => 'primary',
+			'secondary' => 'secondary',
+			'tertiary' => 'tertiary',
+			'quaternary' => 'quaternary',
+			'light' => 'light',
+			'dark' => 'dark',
+			'success' => 'success',
+			'danger' => 'danger',
+			'warning' => 'warning',
+			'info' => 'info',
+			'white' => 'white',
+		),
 		'default_value' => false,
 		'return_format' => 'value',
 	] );
@@ -78,7 +34,25 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 	$g->addSelect( 'background_colour', [
 		'label'         => 'Background colour',
 		'allow_null'    => 1,
-		'choices'       => $ACF_backgrounds,
+		'choices'       => array(
+			'primary' => 'primary',
+			'secondary' => 'secondary',
+			'tertiary' => 'tertiary',
+			'quaternary' => 'quaternary',
+			'light' => 'light',
+			'dark' => 'dark',
+			'gradient-primary' => 'gradient-primary',
+			'gradient-secondary' => 'gradient-secondary',
+			'gradient-tertiary' => 'gradient-tertiary',
+			'gradient-quaternary' => 'gradient-quaternary',
+			'gradient-light' => 'gradient-light',
+			'gradient-dark' => 'gradient-dark',
+			'success' => 'success',
+			'danger' => 'danger',
+			'warning' => 'warning',
+			'info' => 'info',
+			'white' => 'white',
+		),
 		'default_value' => false,
 		'return_format' => 'value',
 	] );
@@ -102,7 +76,6 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 }
 
 function _parsley_acf_heading ( $builder, $default_level='h2' ) {
-	global $ACF_heading_tags, $ACF_heading_classes;	
 
 	$builder->addText( 'heading', [
 		'label'         => 'Heading',
@@ -115,7 +88,16 @@ function _parsley_acf_heading ( $builder, $default_level='h2' ) {
 
 	$g->addSelect( 'real', [
 		'label'         => 'Real tag',
-		'choices'       => $ACF_heading_tags,
+		'choices'       => array(
+			'h1' => 'h1',
+			'h2' => 'h2',
+			'h3' => 'h3',
+			'h4' => 'h4',
+			'h5' => 'h5',
+			'h6' => 'h6',
+			'div' => 'div',
+			'none' => 'none',
+		),
 		'default_value' => $default_level,
 		'allow_null'    => 0,
 		'return_format' => 'value',
@@ -123,7 +105,15 @@ function _parsley_acf_heading ( $builder, $default_level='h2' ) {
 
 	$g->addSelect( 'visual', [
 		'label'         => 'Displayed as',
-		'choices'       => $ACF_heading_classes,
+		'choices'       => array(
+			'h1' => 'h1',
+			'h2' => 'h2',
+			'h3' => 'h3',
+			'h4' => 'h4',
+			'h5' => 'h5',
+			'h6' => 'h6',
+			'd-none' => 'd-none',
+		),
 		'default_value' => false,
 		'allow_null'    => 1,
 		'return_format' => 'value',
