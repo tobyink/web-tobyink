@@ -596,7 +596,7 @@ $SEC[] = parsley_acf_section_definition(
 						'text'     => 'text',
 					),
 					'default_value' => false,
-					'return_format' => 'value',					
+					'return_format' => 'value',
 				]);
 				$r->addText('nugget_detail')->conditional('nugget', '==', 'icon')->or('nugget', '==', 'text');
 				$r->addText('class', [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ]);
@@ -611,11 +611,11 @@ $SEC[] = parsley_acf_section_definition(
 				]);
 			}
 		) );
-		
+
 		$f->addLayout( new FieldsBuilder( 'col_break', [
 			'label'   => 'Row Break',
 			'display' => 'block',
-		] );
+		] ) );
 
 		$f->endFlexibleContent();
 

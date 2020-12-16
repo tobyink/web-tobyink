@@ -72,7 +72,7 @@ function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag
 }
 
 function parsley_render_col_break ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	return '</div><div class="row">';
+	return '</div><div class="row mt-3">';
 }
 
 function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
