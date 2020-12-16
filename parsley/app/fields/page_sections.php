@@ -792,3 +792,35 @@ foreach ( $SEC as $s ) {
 $l->endFlexibleContent();
 
 acf_add_local_field_group( $TOP->build() );
+
+function parsley_acf_get_label ( $title, $field, $layout, $i ) {
+  if ( $layout['name'] == 'primary_content' ) {
+    return $title;
+  }
+  if ( $layout['name'] == 'col_break' ) {
+    return "<i>$title</i>";
+  }
+  if ( $heading = get_sub_field('heading') ) {
+    $title = "<b>$heading</b> [$title]";
+  }
+  elseif ( $heading = get_sub_field('header_title') ) {
+    $title = "<b>$heading</b> [$title]";
+  }
+  elseif ( $image = get_sub_field('image') ) {
+    $data = wp_get_attachment_metadata( $image );
+    $title =  '<b>' . $data['file'] . "</b> [$title]";
+  }
+  elseif ( $content = get_sub_field('content') ) {
+    $summary = htmlspecialchars( substr($content, 0, 100) );
+    $title = "$title: <small style='color:#999'>$summary</small>";
+  }
+  return $title;
+}
+
+add_filter( 'acf/fields/flexible_content/layout_title', function ( $title, $field, $layout, $i ) {
+  $got = parsley_acf_get_label( $title, $field, $layout, $i );
+  if ( $got ) {
+    return $got;
+  }
+  return $title;
+}, 10, 4 );
