@@ -144,7 +144,7 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 		'instructions'  => 'A value from 0 (none) to 5 (most)',
 		'required'      => 0,
 		'allow_null'    => 1,
-		'default_value' => 3,
+		'default_value' => false,
 		'min'           => 0,
 		'max'           => 5,
 		'step'          => 1,
