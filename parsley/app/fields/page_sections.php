@@ -611,6 +611,11 @@ $SEC[] = parsley_acf_section_definition(
 				]);
 			}
 		) );
+		
+		$f->addLayout( new FieldsBuilder( 'col_break', [
+			'label'   => 'Row Break',
+			'display' => 'block',
+		] );
 
 		$f->endFlexibleContent();
 

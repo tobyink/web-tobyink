@@ -71,6 +71,10 @@ function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag
 	return sprintf( '<div class="col-type-html %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
+function parsley_render_col_break ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	return '</div><div class="row">';
+}
+
 function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
 	$opts = get_sub_field('options');
 	$col_classes = $opts['classes'];
