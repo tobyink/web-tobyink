@@ -12,9 +12,10 @@ if ( is_admin() ) {
         global $parsley_help_shortcodes, $parsley_help_classes;
 
         echo '<h1>Help for Parsley Theme</h1>';
+        echo '<p>This theme provides a number of shortcodes and CSS classes that can be used on pages.</p>';
         if ( is_array($parsley_help_shortcodes) ) {
           ksort( $parsley_help_shortcodes );
-          echo '<h2>Shortcode Help</h2>';
+          echo '<h2><big>Shortcode</big></h2>';
           foreach ( $parsley_help_shortcodes as $code => $s ) {
             echo "<h3>[$code]</h3>";
             echo $s;
@@ -22,7 +23,7 @@ if ( is_admin() ) {
         }
         if ( is_array($parsley_help_classes) ) {
           ksort( $parsley_help_classes );
-          echo '<h2>Built-in Classes</h2>';
+          echo '<h2><big>Built-in Classes</big></h2>';
           echo '<p>The following classes are available to use in HTML, in Design Sections, and in shortcodes.</p>';
           echo '<p>Example: <code>&lt;p class="text-large bg-primary text-white rounded-lg shadow">This is a special paragraph.&lt;/p></code></p>';
           foreach ( $parsley_help_classes as $section => $data ) {
@@ -116,6 +117,15 @@ if ( is_admin() ) {
       $parsley_help_classes['Sizing']["m${d}-100"]     = "Sets an element's maximum $dl to 100% of its parent's $dl, but allows it to be smaller.";
       $parsley_help_classes['Sizing']["v${d}-100"]     = "Sets an element's $dl to 100% of the viewport $dl.";
       $parsley_help_classes['Sizing']["min-v${d}-100"] = "Sets an element's $dl to at least 100% of the viewport $dl.";
+    }
+
+    $parsley_help_classes['FontAwesome']['fa'] = "This theme includes support for <a href='https://fontawesome.com/v4.7.0/icons/'>FontAwesome 4.7.0</a> so you can use, for example, <code>&lt;i class=\"fa fa-hourglass text-warning\">&lt;/i></code> to insert an hourglass icon in the warning colour.";
+
+    $parsley_help_classes['Link Buttons']['btn']    = "Adding this class to a link makes it look like a button. If using any of the other button link classes, you must also include this one.";
+    $parsley_help_classes['Link Buttons']['btn-sm'] = "A smaller button. For example, <code>&lt;a href=\"#\" class=\"btn btn-sm\">Click here&lt;/a></code>.";
+    $parsley_help_classes['Link Buttons']['btn-lg'] = "A larger button. For example, <code>&lt;a href=\"#\" class=\"btn btn-lg\">Click here&lt;/a></code>.";
+    foreach ( App\theme_colours() as $colour ) {
+      $parsley_help_classes['Link Buttons']["btn-$colour"] = "A button using the $colour colour background. You should usually also use a text colour class.";
     }
   } );
 }
