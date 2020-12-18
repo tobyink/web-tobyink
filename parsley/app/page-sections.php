@@ -80,12 +80,25 @@ function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_ta
 	$col_classes = $opts['classes'];
 
 	$iatts = [ 'loading' => 'lazy', 'class' => '' ];
-	if ( get_sub_field('img_class') ) {
-		$iatts['class'] = get_sub_field('img_class');
+	if ( $k = get_sub_field('img_class') ) {
+		$iatts['class'] = $k;
 	}
-	if ( get_sub_field('img_id') ) {
-		$iatts['id'] = get_sub_field('img_id');
+	if ( $id = get_sub_field('img_id') ) {
+		$iatts['id'] = $id;
 	}
+	if ( $alt = get_sub_field('alt_text') ) {
+		$iatts['alt'] = $alt;
+	}
+	if ( $t = get_sub_field('title') ) {
+		$iatts['title'] = $t;
+	}
+	if ( $caption = get_sub_field('caption') ) {
+		$caption = sprintf( '<figcaption class="figure-caption">%s</figcaption>', htmlspecialchars($caption) );
+		$col_classes .= ' figure';
+		$iatts['class'] .= ' figure-img';
+	}
+
+
 	if ( get_sub_field('rounded') ) {
 		$iatts['class'] .= ' rounded';
 	}
@@ -94,7 +107,16 @@ function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_ta
 	}
 	$col_content = wp_get_attachment_image( get_sub_field('image'), 'large', false, $iatts );
 
-	return sprintf( '<div class="col-type-image %s">%s</div>', $col_classes, $col_content);
+	if ( $caption ) {
+		if ( get_sub_field('caption_placement') == 'above' ) {
+			$col_content = $caption . $col_content;
+		}
+		else {
+			$col_content .= $caption;
+		}
+	}
+
+	return sprintf( '<figure class="col-type-image %s">%s</figure>', $col_classes, $col_content);
 }
 
 function _parsley_render_col_listg ( $starting_class='list-group' ) {

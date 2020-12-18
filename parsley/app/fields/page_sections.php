@@ -397,6 +397,15 @@ $SEC[] = parsley_acf_section_definition(
 					'preview_size'  => 'medium',
 					'required'      => 1,
 				] );
+				$builder->addText( 'alt_text', [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ] );
+				$builder->addText( 'title',    [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ] );
+				$builder->addText( 'caption',  [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ] );
+				$builder->addSelect( 'caption_placement', [
+					'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ],
+					'choices' => [ 'below' => 'Below image', 'above' => 'Above image' ],
+					'default_choice' => 'below',
+					'return_format' => 'value',
+				 ] )->conditional( 'caption', '!=empty', '' );
 				$builder->addTrueFalse( 'rounded', [
 					'label'         => 'Rounded corners',
 					'ui'            => 1,
@@ -420,9 +429,9 @@ $SEC[] = parsley_acf_section_definition(
 					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
 					'default_value' => 'w-100 h-auto',
 				] );
-			}	
+			}
 		) );
-		
+
 		$f->addLayout( parsley_acf_column_definition(
 			new FieldsBuilder( 'col_card', [
 				'label'   => 'Card',
