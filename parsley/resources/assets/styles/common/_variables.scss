@@ -42,3 +42,14 @@ $headings-font-family:   $wp-theme-font-headings;
 /** Bootstrap navbar fix (https://git.io/fADqW) */
 $navbar-dark-toggler-icon-bg: none;
 $navbar-light-toggler-icon-bg: none;
+
+/* Make things available as CSS vars */
+:root {
+  --font-family-sans-serif: #{inspect($font-family-sans-serif)};
+  --font-family-serif: #{inspect($font-family-serif)};
+  --font-family-monospace: #{inspect($font-family-monospace)};
+  --font-family-display: #{inspect($font-family-display)};
+  --font-base: #{inspect($font-family-base)};
+  --font-headings: #{inspect($headings-font-family)};
+  --spacer: #{$spacer};
+}

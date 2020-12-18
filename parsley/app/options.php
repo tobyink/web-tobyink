@@ -2,6 +2,10 @@
 
 namespace App;
 
+function theme_colours () {
+  return explode( ' ', 'primary secondary tertiary quaternary dark light success danger warning info' );
+}
+
 function theme_get_option ( $id ) {
   static $json = null;
   $o = theme_get_options();
