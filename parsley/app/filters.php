@@ -99,7 +99,7 @@ add_filter( 'the_content', function ( $content ) {
     return $content;
   }  
   return wpautop($content);
-} );
+}, 99 );
 
 add_filter('sage/display_sidebar', function ($display) {
     static $display;
