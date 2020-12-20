@@ -170,7 +170,11 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 	if ( ! array_key_exists( 'heading', $opts ) ) {
 		$opts['heading'] = true;
 	}
-	
+
+	if ( ! array_key_exists( 'heading_level', $opts ) ) {
+		$opts['heading_level'] = 'h2';
+	}
+
 	$ACF_containment = array(
 		'container'       => 'Contained',
 		'container-sm'    => 'Contained from S up',
@@ -193,7 +197,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 
 		$builder->addTab( 'Heading' );
 
-		_parsley_acf_heading( $builder );
+		_parsley_acf_heading( $builder, 'heading', 'Heading', $opts['heading_level'] );
 
 		if ( array_key_exists( 'heading_callback', $opts ) ) {
 			call_user_func( $opts['heading_callback'], $builder );
@@ -240,7 +244,11 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 	if ( $opts['styling'] ) {		
 		_parsley_acf_style( $builder, 'style', 'Style', 3 );
 	}
-	
+
+	$builder->addText( 'icon', [
+		'instructions' => 'FontAwesome icon, used if this section is within a tab set',
+	] );
+
 	if ( array_key_exists( 'options_callback', $opts ) ) {
 		call_user_func( $opts['options_callback'], $builder );
 	}
@@ -668,7 +676,7 @@ $SEC[] = parsley_acf_section_definition(
 	[
 		'vary_width' => false,
 		'styling'    => false,
-		'heading'    => false,
+		'heading_level' => 'none',
 	],
 	function ( $builder ) {
 
@@ -714,15 +722,18 @@ $SEC[] = parsley_acf_section_definition(
 				),
 				'default_value' => 'tab',
 				'return_format' => 'value',
+				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 			] );
 			$builder->addText( 'pill_class', [
 				'label'         => 'Pill class',
-				'default'       => 'col-sm-3',
-			] );
+				'default_value' => 'col-sm-3',
+				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+			] )->conditional( 'tab_type', '==', 'pill-left' )->or( 'tab_type', '==', 'pill-right' );
 			$builder->addText( 'content_class', [
 				'label'         => 'Content class',
-				'default'       => 'col-sm-9',
-			] );
+				'default_value' => 'col-sm-9',
+				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+			] )->conditional( 'tab_type', '==', 'pill-left' )->or( 'tab_type', '==', 'pill-right' );
 		}
 	],
 	function ( $builder ) {

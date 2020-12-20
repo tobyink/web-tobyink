@@ -277,7 +277,6 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	$classes = '';
 	$id      = get_sub_field( 'id' );
 	$content = get_sub_field( 'content', false, false );
-	$count++;
 
 	if ( $count % 2 ) {
 		$classes = 'section-odd';
@@ -320,22 +319,42 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	}
 
 	if ( $nested ) {
-		if ( $nested_type === 'tab' ) ) {
+		$icon = '';
+		if ( $iconname = get_sub_field('icon') ) {
+			$icon = sprintf( '<i class="fa fa-%s"></i> ', htmlspecialchars($iconname) );
+		}
+
+		if ( $nested_type === 'pill-left' || $nested_type === 'pill-right' ) {
 			$menu .= sprintf(
-				'<li class="nav-item"><a class="nav-link%s" id="%s-tab" data-toggle="tab" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s</a></li>',
+				'<a class="nav-link%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
 				( ( $count == 1 ) ? ' active' : '' ),
 				htmlspecialchars($id),
+				'pill',
 				htmlspecialchars($id),
 				htmlspecialchars($id),
 				( ( $count == 1 ) ? 'true' : 'false' ),
+				$icon,
 				htmlspecialchars($heading)
 			);
-			
-			$classes .= ' tab-pane fade';
-			$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
-			if ( $count == 1 ) {
-				$classes .= ' show active';
-			}
+		}
+		else {
+			$menu .= sprintf(
+				'<li class="nav-item"><a class="nav-link%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
+				( ( $count == 1 ) ? ' active' : '' ),
+				htmlspecialchars($id),
+				$nested_type,
+				htmlspecialchars($id),
+				htmlspecialchars($id),
+				( ( $count == 1 ) ? 'true' : 'false' ),
+				$icon,
+				htmlspecialchars($heading)
+			);
+		}
+
+		$classes .= ' tab-pane fade';
+		$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
+		if ( $count == 1 ) {
+			$classes .= ' show active';
 		}
 	}
 
@@ -427,33 +446,75 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	}
 	elseif ( $layout == 'tabs' ) {
 		$classes .= ' section-type-tabs';
-		
+
 		$tabtype = get_sub_field( 'tab_type' );
 
-		$before = do_shortcode( get_sub_field( 'before_tabs', false, false ) );
-		$after  = do_shortcode( get_sub_field( 'after_tabs', false, false ) );
+		$before = get_sub_field( 'before_tabs', false, false );
+		$after  = get_sub_field( 'after_tabs', false, false );
+                $before = do_shortcode( $before );
+                $after  = do_shortcode( $after );
+
 		if ( $wpautop ) {
-			$before = wpautop( $content1 );
-			$after  = wpautop( $content2 );
+			$before = wpautop( $before );
+			$after  = wpautop( $after );
 			$classes .= ' section-wpautop';
 		}
-		
-		$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', htmlspecialchars($id) );
+
+		if ( $tabtype === 'pill' ) {
+			$tabmenu  = sprintf( '<ul class="nav nav-pills mb-1" id="%s-tablist">', htmlspecialchars($id) );
+			$tabmenuend = '</ul>';
+		}
+		elseif ( $tabtype === 'pill-left' || $tabtype === 'pill-right' ) {
+			$tabmenu = sprintf( '<nav class="nav nav-pills flex-column" id="%s-tablist" role="tablist" aria-orientation="vertical">', htmlspecialchars($id) );
+			$tabmenuend = '</nav>';
+		}
+		else {
+			$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', htmlspecialchars($id) );
+			$tabmenuend = '</ul>';
+		}
+
 		$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
 		$tabcount = 0;
-		
+
+		$pill_class     = get_sub_field( 'pill_class' );
+		$content_class  = get_sub_field( 'content_class' );
+
 		while ( have_rows('design_sections') ) {
 			the_row();
 			if ( get_row_layout() == 'end_tabs' ) {
 				break;
 			}
-			$tabpanes .= parsley_render_section( ++$tabcount, $id, 'tab', $tabmenu );
+			$tabpanes .= parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu );
 		}
 		
-		$tabmenu  .= '</ul>';
+		$tabmenu  .= $tabmenuend;
 		$tabpanes .= '</div>';
 		
-		$content = $before . $tabmenu . $tabpanes . $after;
+		if ( $tabtype === 'pill-left' ) {
+			$content = sprintf(
+				'%s<div class="row"><div class="%s">%s</div><div class="%s">%s</div></div>%s',
+				$before,
+				$pill_class,
+				$tabmenu,
+				$content_class,
+				$tabpanes,
+				$after
+			);
+		}
+		elseif ( $tabtype === 'pill-right' ) {
+			$content = sprintf(
+				'%s<div class="row"><div class="%s">%s</div><div class="%s">%s</div></div>%s',
+				$before,
+				$content_class,
+				$tabpanes,
+				$pill_class,
+				$tabmenu,
+				$after
+			);
+		}
+		else {
+			$content = $before . $tabmenu . $tabpanes . $after;
+		}
 	}
 
 	$html .= sprintf( '<section id="%s" class="page-section %s"%s>', $id, $classes, $attrs );
