@@ -869,7 +869,7 @@ function parsley_acf_get_label ( $title, $field, $layout, $i ) {
   if ( $layout['name'] == 'primary_content' ) {
     return $title;
   }
-  if ( $layout['name'] == 'col_break' ) {
+  if ( $layout['name'] == 'col_break' || $layout['name'] == 'end_tabs' ) {
     return "<i>$title</i>";
   }
   if ( $heading = get_sub_field('heading') ) {
