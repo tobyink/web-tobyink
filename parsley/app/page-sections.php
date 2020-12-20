@@ -287,13 +287,20 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	else {
 		$classes = 'section-even';
 	}
-	
+
+	$paddingtype = 'py';
+
 	if ( $nested ) {
 		$classes .= ' section-nested';
 		$contain = false;
+
+		$S = get_sub_field( 'style' );
+		if ( $S['background_colour'] || $S['border_colour'] ) {
+			$paddingtype = 'p';
+		}
 	}
 
-	$classes .= _parsley_render_styles( get_sub_field( 'style' ), 'py' );
+	$classes .= _parsley_render_styles( get_sub_field( 'style' ), $paddingtype );
 
 	$heading = get_sub_field( 'heading' );
 	$heading_tag = 'h2';
