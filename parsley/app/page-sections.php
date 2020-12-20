@@ -298,6 +298,16 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		if ( $S['background_colour'] || $S['border_colour'] ) {
 			$paddingtype = 'p';
 		}
+
+		if ( $nested_type == 'accordion' ) {
+			$paddingtype = 'p';
+			$contain = 'card-body p-0';
+			$classes .= ' collapse';
+			if ( $count == 1 ) {
+				$classes .= ' show';
+			}
+			$attrs .= sprintf( ' aria-labelledby="%s-tabheader"', $id );
+		}
 	}
 
 	$classes .= _parsley_render_styles( get_sub_field( 'style' ), $paddingtype );
@@ -340,6 +350,15 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				htmlspecialchars($id),
 				htmlspecialchars($id),
 				( ( $count == 1 ) ? 'true' : 'false' ),
+				$icon,
+				htmlspecialchars($heading)
+			);
+		}
+		elseif ( $nested_type === 'accordion' ) {
+			$menu .= sprintf(
+				'<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-right">%s</span>%s</button>',
+				htmlspecialchars($id),
+				htmlspecialchars($id),
 				$icon,
 				htmlspecialchars($heading)
 			);
@@ -475,13 +494,24 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			$tabmenu = sprintf( '<nav class="nav nav-pills flex-column" id="%s-tablist" role="tablist" aria-orientation="vertical">', htmlspecialchars($id) );
 			$tabmenuend = '</nav>';
 		}
+		elseif ( $tabtype === 'accordion' ) {
+			$tabmenu = '';
+			$tabmenuend = '';
+		}
 		else {
 			$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', htmlspecialchars($id) );
 			$tabmenuend = '</ul>';
 		}
 
-		$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
 		$tabcount = 0;
+		if ( $tabtype == 'accordion' ) {
+			$tabpanes = sprintf( '<div class="accordion" id="%s-tabcontent">', htmlspecialchars($id) );
+			$tabpanesend = '</div>';
+		}
+		else {
+			$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
+			$tabpanesend = '</div>';
+		}
 
 		$pill_class     = get_sub_field( 'pill_class' );
 		$content_class  = get_sub_field( 'content_class' );
@@ -491,11 +521,23 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			if ( get_row_layout() == 'end_tabs' ) {
 				break;
 			}
-			$tabpanes .= parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu );
+			if ( $tabtype === 'accordion' ) {
+				$button_html = '';
+				$pane_html   = parsley_render_section( ++$tabcount, $id, $tabtype, $button_html );
+				$tabpanes .= '<div class="card">';
+				$tabpanes .= sprintf( '<div class="card-header" id="%s-tabheader">', htmlspecialchars($id) );
+				$tabpanes .= $button_html;
+				$tabpanes .= '</div>';
+				$tabpanes .= $pane_html;
+				$tabpanes .= '</div>';
+			}
+			else {
+				$tabpanes .= parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu );
+			}
 		}
-		
+
 		$tabmenu  .= $tabmenuend;
-		$tabpanes .= '</div>';
+		$tabpanes .= $tabpanesend;
 		
 		if ( $tabtype === 'pill-left' ) {
 			$content = sprintf(

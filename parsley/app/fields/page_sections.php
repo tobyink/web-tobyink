@@ -715,22 +715,23 @@ $SEC[] = parsley_acf_section_definition(
 				'label'         => 'Tab type',
 				'allow_null'    => 0,
 				'choices'       => array(
-					'tab'  => 'Tabs',
-					'pill' => 'Pill (top)',
-					'pill-left' => 'Pill (left)',
+					'tab'        => 'Tabs',
+					'pill'       => 'Pill (top)',
+					'pill-left'  => 'Pill (left)',
 					'pill-right' => 'Pill (right)',
+					'accordion'  => 'Accordion',
 				),
 				'default_value' => 'tab',
 				'return_format' => 'value',
 				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 			] );
 			$builder->addText( 'pill_class', [
-				'label'         => 'Pill class',
+				'label'         => 'Tab wrapper class',
 				'default_value' => 'col-sm-3',
 				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 			] )->conditional( 'tab_type', '==', 'pill-left' )->or( 'tab_type', '==', 'pill-right' );
 			$builder->addText( 'content_class', [
-				'label'         => 'Content class',
+				'label'         => 'Content wrapper class',
 				'default_value' => 'col-sm-9',
 				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 			] )->conditional( 'tab_type', '==', 'pill-left' )->or( 'tab_type', '==', 'pill-right' );
