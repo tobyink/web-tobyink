@@ -262,6 +262,7 @@ function parsley_render_col_listgcard ( &$classes, &$heading_in_column, &$headin
 
 function parsley_render_sections () {
 	$count = 0;
+	$html = '';
 	while ( have_rows('design_sections') ) {
 		the_row();
 
@@ -398,17 +399,19 @@ function parsley_render_sections () {
 			$content = wp_get_attachment_image( get_sub_field('image'), 'full', false, $iatts );
 		}
 
-		printf( '<section id="%s" class="page-section %s">', $id, $classes );
+		$html .= sprintf( '<section id="%s" class="page-section %s">', $id, $classes );
 		if ( $contain ) {
-			echo '<div class="' . $contain . '">';
+			$html .= '<div class="' . $contain . '">';
 		}
 		if ( $heading_tag != 'none' ) {
-			printf( '<%s class="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag );
+			$html .= sprintf( '<%s class="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag );
 		}
-		echo $content;
+		$html .= $content;
 		if ( $contain ) {
-			echo '</div>';
+			$html .= '</div>';
 		}
-		echo "</section>\n";
+		$html .= "</section>\n";
 	}
+
+	return $html;
 }

@@ -1,6 +1,6 @@
 @php
   if ( have_rows('design_sections') ) {
-    App\parsley_render_sections();
+    echo App\parsley_render_sections();
   }
   else {
     the_content();
