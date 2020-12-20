@@ -260,10 +260,10 @@ function parsley_render_col_listgcard ( &$classes, &$heading_in_column, &$headin
 	return sprintf( '<div class="col-type-list-group-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
-function parsley_render_section ( $count, $nested=false ) {
+function parsley_render_section ( $count, $nested=false, $nested_type=false, &$menu='' ) {
 
 	if ( get_sub_field('hidden') ) {
-		continue;
+		return '';
 	}
 
 	$wpautop = ! get_sub_field( 'exact_html' );
@@ -273,6 +273,7 @@ function parsley_render_section ( $count, $nested=false ) {
 		$contain = false;
 	}
 
+	$attrs   = '';
 	$classes = '';
 	$id      = get_sub_field( 'id' );
 	$content = get_sub_field( 'content', false, false );
@@ -315,6 +316,26 @@ function parsley_render_section ( $count, $nested=false ) {
 		}
 		else {
 			$id = 'section-' . $count;
+		}
+	}
+
+	if ( $nested ) {
+		if ( $nested_type === 'tab' ) ) {
+			$menu .= sprintf(
+				'<li class="nav-item"><a class="nav-link%s" id="%s-tab" data-toggle="tab" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s</a></li>',
+				( ( $count == 1 ) ? ' active' : '' ),
+				htmlspecialchars($id),
+				htmlspecialchars($id),
+				htmlspecialchars($id),
+				( ( $count == 1 ) ? 'true' : 'false' ),
+				htmlspecialchars($heading)
+			);
+			
+			$classes .= ' tab-pane fade';
+			$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
+			if ( $count == 1 ) {
+				$classes .= ' show active';
+			}
 		}
 	}
 
@@ -404,8 +425,38 @@ function parsley_render_section ( $count, $nested=false ) {
 		}
 		$content = wp_get_attachment_image( get_sub_field('image'), 'full', false, $iatts );
 	}
+	elseif ( $layout == 'tabs' ) {
+		$classes .= ' section-type-tabs';
+		
+		$tabtype = get_sub_field( 'tab_type' );
 
-	$html .= sprintf( '<section id="%s" class="page-section %s">', $id, $classes );
+		$before = do_shortcode( get_sub_field( 'before_tabs', false, false ) );
+		$after  = do_shortcode( get_sub_field( 'after_tabs', false, false ) );
+		if ( $wpautop ) {
+			$before = wpautop( $content1 );
+			$after  = wpautop( $content2 );
+			$classes .= ' section-wpautop';
+		}
+		
+		$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', htmlspecialchars($id) );
+		$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
+		$tabcount = 0;
+		
+		while ( have_rows('design_sections') ) {
+			the_row();
+			if ( get_row_layout() == 'end_tabs' ) {
+				break;
+			}
+			$tabpanes .= parsley_render_section( ++$tabcount, $id, 'tab', $tabmenu );
+		}
+		
+		$tabmenu  .= '</ul>';
+		$tabpanes .= '</div>';
+		
+		$content = $before . $tabmenu . $tabpanes . $after;
+	}
+
+	$html .= sprintf( '<section id="%s" class="page-section %s"%s>', $id, $classes, $attrs );
 	if ( $contain ) {
 		$html .= '<div class="' . $contain . '">';
 	}
@@ -426,7 +477,7 @@ function parsley_render_sections () {
 	$html = '';
 	while ( have_rows('design_sections') ) {
 		the_row();
-		$html .= parsley_render_sections( ++$count );
+		$html .= parsley_render_section( ++$count );
 	}
 	return $html;
 }

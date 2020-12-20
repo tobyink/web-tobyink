@@ -697,6 +697,60 @@ $SEC[] = parsley_acf_section_definition(
 );
 
 $SEC[] = parsley_acf_section_definition(
+	new FieldsBuilder( 'tabs', [
+		'label'   => 'Begin Tabs',
+		'display' => 'block',
+	] ),
+	[
+		'options_callback' => function ( $builder ) {
+			$builder->addSelect( 'tab_type', [
+				'label'         => 'Tab type',
+				'allow_null'    => 0,
+				'choices'       => array(
+					'tab'  => 'Tabs',
+					'pill' => 'Pill (top)',
+					'pill-left' => 'Pill (left)',
+					'pill-right' => 'Pill (right)',
+				),
+				'default_value' => 'tab',
+				'return_format' => 'value',
+			] );
+			$builder->addText( 'pill_class', [
+				'label'         => 'Pill class',
+				'default'       => 'col-sm-3',
+			] );
+			$builder->addText( 'content_class', [
+				'label'         => 'Content class',
+				'default'       => 'col-sm-9',
+			] );
+		}
+	],
+	function ( $builder ) {
+
+		$builder->addTab( 'Content' );
+
+		$builder->addWysiwyg( 'before_tabs', [
+			'label'         => 'Before Tabs',
+			'tabs'          => 'all',
+			'toolbar'       => 'full',
+			'media_upload'  => 1,
+		] );
+
+		$builder->addWysiwyg( 'after_tabs', [
+			'label'         => 'After Tabs',
+			'tabs'          => 'all',
+			'toolbar'       => 'full',
+			'media_upload'  => 1,
+		] );
+	}
+);
+
+$SEC[] = new FieldsBuilder( 'end_tabs', [
+	'label'   => 'End Tabs',
+	'display' => 'block',
+] );
+
+$SEC[] = parsley_acf_section_definition(
 	new FieldsBuilder( 'columns', [
 		'label'   => 'Columns [legacy]',
 		'display' => 'block',
