@@ -390,10 +390,12 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			);
 		}
 
-		$classes .= ' tab-pane fade';
-		$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
-		if ( $count == 1 ) {
-			$classes .= ' show active';
+		if ( $nested_type != 'slick' ) {
+			$classes .= ' tab-pane fade';
+			$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
+			if ( $count == 1 ) {
+				$classes .= ' show active';
+			}
 		}
 	}
 
@@ -518,8 +520,13 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 
 		$tabcount = 0;
 		if ( $tabtype == 'accordion' ) {
-			$tabpanes = sprintf( '<div class="accordion" id="%s-tabcontent">', htmlspecialchars($id) );
+			$tabpanes = sprintf( '<div class="accordion %s" id="%s-tabcontent">', htmlspecialchars( get_sub_field('accordion_class') ), htmlspecialchars($id) );
 			$tabpanesend = '</div>';
+		}
+		elseif ( $tabtype == 'slick' ) {
+			$opts = get_sub_field('slick_options');
+			$tabpanes = sprintf( '<div class="slick-carousel slick-tabs" id="%s-tabcontent">', htmlspecialchars($id) );
+			$tabpanesend = sprintf( '</div><script>document.getElementById("%s-tabcontent").setAttribute("data-slick", JSON.stringify(%s));</script>', htmlspecialchars($id), $opts );
 		}
 		else {
 			$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
@@ -543,6 +550,10 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				$tabpanes .= '</div>';
 				$tabpanes .= $pane_html;
 				$tabpanes .= '</div>';
+			}
+			elseif ( $tabtype === 'slick' ) {
+				// Slick needs the section to be wrapped because of width issues
+				$tabpanes .= '<div>' . parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu ) . '</div>';
 			}
 			else {
 				$tabpanes .= parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu );
@@ -573,6 +584,9 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				$tabmenu,
 				$after
 			);
+		}
+		elseif ( $tabtype === 'slick' ) {
+			$content = $before . $tabpanes . $after;
 		}
 		else {
 			$content = $before . $tabmenu . $tabpanes . $after;

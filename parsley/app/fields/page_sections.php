@@ -731,6 +731,7 @@ $SEC[] = parsley_acf_section_definition(
 					'pill-left'  => 'Pill (left)',
 					'pill-right' => 'Pill (right)',
 					'accordion'  => 'Accordion',
+					'slick'      => 'Slick',
 				),
 				'default_value' => 'tab',
 				'return_format' => 'value',
@@ -746,6 +747,15 @@ $SEC[] = parsley_acf_section_definition(
 				'default_value' => 'col-sm-9',
 				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 			] )->conditional( 'tab_type', '==', 'pill-left' )->or( 'tab_type', '==', 'pill-right' );
+			$builder->addText( 'accordion_class', [
+				'label'         => 'Accordion wrapper class',
+				'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+			] )->conditional( 'tab_type', '==', 'accordion' );
+			$builder->addText( 'slick_options', [
+				'label'         => 'Slick options (JS object)',
+				'default_value' => '{ arrows: true, autoplay: false, autoplaySpeed: 5000  }',
+				'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+			] )->conditional( 'tab_type', '==', 'slick' );
 		}
 	],
 	function ( $builder ) {
