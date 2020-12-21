@@ -282,6 +282,15 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	$id      = get_sub_field( 'id' );
 	$content = get_sub_field( 'content', false, false );
 
+	if ( empty($id) ) {
+		if ( $nested ) {
+			$id = $nested . '-section-' . $count;
+		}
+		else {
+			$id = 'section-' . $count;
+		}
+	}
+
 	if ( $count % 2 ) {
 		$classes = 'section-odd';
 		if ( $count === 1 ) {
@@ -311,6 +320,7 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				$classes .= ' show';
 			}
 			$attrs .= sprintf( ' aria-labelledby="%s-tabheader"', $id );
+			$attrs .= sprintf( ' data-parent="#%s-tabcontent"', $nested );
 		}
 	}
 
@@ -328,15 +338,6 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			$heading_tag = $heading_level['real'];
 		}
 		$heading_classes .= _parsley_render_heading( $heading_level, $heading_tag );
-	}
-
-	if ( empty($id) ) {
-		if ( $nested ) {
-			$id = $nested . '-section-' . $count;
-		}
-		else {
-			$id = 'section-' . $count;
-		}
 	}
 
 	if ( $nested ) {
