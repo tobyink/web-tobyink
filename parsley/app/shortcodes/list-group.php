@@ -196,7 +196,7 @@ function parsley_shortcode_bs_card ( $arg, $content='' ) {
 
     $icon = '';
     if ( array_key_exists( 'icon', $atts ) ) {
-      $icon = sprintf( '<i class="float-right fa fa-%s"></i>', $atts['icon'] );
+      $icon = sprintf( '<i class="float-right hvr-icon fa fa-%s"></i>', $atts['icon'] );
     }
 
     $html .= sprintf( '<%s class="%s">', $atts['header-tag'], $header_class );

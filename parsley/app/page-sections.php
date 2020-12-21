@@ -107,6 +107,10 @@ function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_ta
 	}
 	$col_content = wp_get_attachment_image( get_sub_field('image'), 'large', false, $iatts );
 
+	if ( $more_attrs = get_sub_field('img_attrs') ) {
+		$col_content = str_replace( '<img', "<img $more_attrs ", $col_content );
+	}
+
 	if ( $caption ) {
 		if ( get_sub_field('caption_placement') == 'above' ) {
 			$col_content = $caption . $col_content;
@@ -159,13 +163,13 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 		$nugget = get_sub_field('nugget');
 		if ( $nugget ) {
 			if ( $nugget === 'text' ) {
-				$col_content .= sprintf( '<span class="float-right">%s</span>', get_sub_field('nugget_detail') );
+				$col_content .= sprintf( '<span class="float-right hvr-icon">%s</span>', get_sub_field('nugget_detail') );
 			}
 			elseif ( $nugget === 'icon' ) {
-				$col_content .= sprintf( '<i class="fa %s float-right"></i>', get_sub_field('nugget_detail') );
+				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', get_sub_field('nugget_detail') );
 			}
 			else {
-				$col_content .= sprintf( '<i class="fa %s float-right"></i>', $nugget );
+				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', $nugget );
 			}
 		}
 		$col_content .= get_sub_field('html');
@@ -338,13 +342,19 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	if ( $nested ) {
 		$icon = '';
 		if ( $iconname = get_sub_field('icon') ) {
-			$icon = sprintf( '<i class="fa fa-%s"></i> ', htmlspecialchars($iconname) );
+			$icon = sprintf( '<i class="fa fa-%s hvr-icon"></i> ', htmlspecialchars($iconname) );
+		}
+
+		$link_class = '';
+		if ( $lc = get_sub_field('link_class') ) {
+			$link_class = " $lc";
 		}
 
 		if ( $nested_type === 'pill-left' || $nested_type === 'pill-right' ) {
 			$menu .= sprintf(
-				'<a class="nav-link%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
+				'<a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
 				( ( $count == 1 ) ? ' active' : '' ),
+				$link_class,
 				htmlspecialchars($id),
 				'pill',
 				htmlspecialchars($id),
@@ -356,7 +366,8 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		}
 		elseif ( $nested_type === 'accordion' ) {
 			$menu .= sprintf(
-				'<button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-right">%s</span>%s</button>',
+				'<button class="btn btn-link btn-block text-left%s" type="button" data-toggle="collapse" data-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-right">%s</span>%s</button>',
+				$link_class,
 				htmlspecialchars($id),
 				htmlspecialchars($id),
 				$icon,
@@ -365,8 +376,9 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		}
 		else {
 			$menu .= sprintf(
-				'<li class="nav-item"><a class="nav-link%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
+				'<li class="nav-item"><a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
 				( ( $count == 1 ) ? ' active' : '' ),
+				$link_class,
 				htmlspecialchars($id),
 				$nested_type,
 				htmlspecialchars($id),

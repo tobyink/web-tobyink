@@ -45,7 +45,7 @@ add_shortcode( 'badge', function ( $arg, $content='0' ) {
 
   if ( array_key_exists( 'icon', $atts ) && strlen( $atts['icon'] ) ) {
     $class .= ' badge-with-icon';
-    $content = sprintf( '<i class="fa fa-%s"></i> %s', $atts['icon'], $content );
+    $content = sprintf( '<i class="hvr-icon fa fa-%s"></i> %s', $atts['icon'], $content );
   }
 
   return sprintf( '<%s class="%s">%s</%s>', $tag, trim($class), $content, $tag );

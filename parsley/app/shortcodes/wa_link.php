@@ -39,7 +39,7 @@ add_shortcode( 'wa_link', function ( $atts, $content='' ) {
 
   $htmlicon = '';
   if ( ! empty($atts['icon']) ) {
-    $htmlicon = sprintf( '<i class="fa fa-%s"></i> ', htmlspecialchars($atts['icon']) );
+    $htmlicon = sprintf( '<i class="hvr-icon fa fa-%s"></i> ', htmlspecialchars($atts['icon']) );
   }
 
   return sprintf(

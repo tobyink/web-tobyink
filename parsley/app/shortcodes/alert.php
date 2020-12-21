@@ -4,6 +4,7 @@ global $parsley_help_shortcodes;
 
 $parsley_help_shortcodes['alert'] = <<<'HELP'
 <p>Shows an alert.</p>
+<p>If you include a link in your alert text, include <code>class="alert-link"</code>.</p>
 <h4>Examples</h4>
 <pre><code style="display:block;padding:1rem">[alert warning]Your text here.[/alert]</code></pre>
 <pre><code style="display:block;padding:1rem">[alert success icon=check tag=div]Everything OK![/alert]</code></pre>
@@ -42,8 +43,8 @@ add_shortcode( 'alert', function ( $arg, $content='Attention!' ) {
 
   if ( array_key_exists( 'icon', $atts ) && strlen( $atts['icon'] ) ) {
     $class .= ' alert-with-icon';
-    $content = sprintf( '<i class="float-right fa fa-%s"></i> %s', $atts['icon'], $content );
+    $content = sprintf( '<i class="float-right hvr-icon fa fa-%s"></i> %s', $atts['icon'], $content );
   }
 
-  return sprintf( '<%s class="%s">%s</%s>', $tag, trim($class), $content, $tag );
+  return sprintf( '<%s class="%s" role="alert">%s</%s>', $tag, trim($class), $content, $tag );
 } );

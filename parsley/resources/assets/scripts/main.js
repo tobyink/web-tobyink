@@ -1,6 +1,7 @@
 // import external dependencies
 import 'jquery';
 import 'slick-carousel/slick/slick.min.js';
+import 'tilt.js/src/tilt.jquery.js';
 
 // Import everything from autoload
 import './autoload/**/*'

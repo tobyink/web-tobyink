@@ -100,7 +100,7 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 	$builder->addText( $group_name, [
 		'label'         => $group_label,
 	] );
-	
+
 	$g = $builder->addGroup( $group_name . '_level', [
 		'label'  => $group_label . ' Style',
 		'layout' => 'table',
@@ -245,8 +245,14 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		_parsley_acf_style( $builder, 'style', 'Style', 3 );
 	}
 
+	$builder->addText( 'link_class', [
+		'instructions'  => 'Class for links to this section (used in tab sets)',
+		'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+	] );
+
 	$builder->addText( 'icon', [
-		'instructions' => 'FontAwesome icon, used if this section is within a tab set',
+		'instructions'  => 'FontAwesome icon for links to this section (used in tab set)',
+		'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
 	] );
 
 	if ( array_key_exists( 'options_callback', $opts ) ) {
@@ -257,13 +263,13 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 }
 
 function parsley_acf_column_definition ( $builder, $opts=array(), $callback=false ) {
-	
+
 	if ( $callback ) {
 		call_user_func( $callback, $builder );
 	}
 
 	$builder->addTab( 'Column Options' );
-	
+
 	$g = $builder->addGroup( 'options', [
 		'label'         => 'Basic Options',
 		'layout'        => 'row',
@@ -429,13 +435,18 @@ $SEC[] = parsley_acf_section_definition(
 				$builder->addText( 'img_id', [
 					'label'         => 'Image ID',
 					'instructions'  => 'HTML `id` attribute for styling and scripting (img tag)',
-					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+					'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 				] );
 				$builder->addText( 'img_class', [
 					'label'         => 'Image Classes',
 					'instructions'  => 'HTML `class` attribute for styling and scripting (img tag)',
-					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+					'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 					'default_value' => 'img-fluid',
+				] );
+				$builder->addText( 'img_attrs', [
+					'label'         => 'Image Additional Attributes',
+					'instructions'  => 'Additional HTML attributes (img tag)',
+					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
 				] );
 			}
 		) );
@@ -517,7 +528,7 @@ $SEC[] = parsley_acf_section_definition(
 					'min'              => 1,
 					'max'              => 0,
 					'layout'           => 'table',
-					'button_label'     => 'Add Item',					
+					'button_label'     => 'Add Item',
 				] );
 				$r->addText('html', [ 'wrapper' => [ 'width' => '50', 'class' => '', 'id' => '' ] ]);
 				$r->addSelect( 'nugget', [
@@ -529,7 +540,7 @@ $SEC[] = parsley_acf_section_definition(
 						'text'     => 'text',
 					),
 					'default_value' => false,
-					'return_format' => 'value',					
+					'return_format' => 'value',
 				]);
 				$r->addText('nugget_detail')->conditional('nugget', '==', 'icon')->or('nugget', '==', 'text');
 				$r->addText('class', [ 'wrapper' => [ 'width' => '25', 'class' => '', 'id' => '' ] ]);
@@ -540,7 +551,7 @@ $SEC[] = parsley_acf_section_definition(
 				_parsley_acf_style( $builder, 'lg_style' );
 			}
 		) );
-		
+
 		$f->addLayout( parsley_acf_column_definition(
 			new FieldsBuilder( 'col_listgcard', [
 				'label'   => 'List Group + Card',
@@ -769,7 +780,7 @@ $SEC[] = parsley_acf_section_definition(
 	] ),
 	[
 		'heading_callback' => function ( $builder ) {
-			
+
 			$builder->addTrueFalse( 'heading_in_column', [
 				'label'         => 'Heading in First Column',
 				'instructions'  => 'Inserts the heading into the first column instead of before the columns.',
