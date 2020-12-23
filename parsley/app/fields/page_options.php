@@ -11,16 +11,16 @@ $page
     ->or('post_type', '==', 'page');
 
 $page
-    ->addTrueFalse('hide_title', [
-        'label' => 'Hide Title',
+    ->addTrueFalse('hide_header', [
+        'label' => 'Hide Header',
         'ui' => 1,
         'ui_on_text' => 'Hidden',
         'ui_off_text' => 'Normal',
     ]);
 
 $page
-    ->addTrueFalse('hide_footer', [
-        'label' => 'Hide Footer',
+    ->addTrueFalse('hide_title', [
+        'label' => 'Hide Title',
         'ui' => 1,
         'ui_on_text' => 'Hidden',
         'ui_off_text' => 'Normal',
@@ -35,11 +35,27 @@ $page
     ]);
 
 $page
+    ->addTrueFalse('hide_sidebar', [
+        'label' => 'Hide Sidebar',
+        'ui' => 1,
+        'ui_on_text' => 'Hidden',
+        'ui_off_text' => 'Normal',
+    ]);
+
+$page
     ->addTrueFalse('disable_wpautop', [
         'label' => 'Exact HTML',
         'ui' => 1,
         'ui_on_text' => 'Enabled',
         'ui_off_text' => 'Disabled',
+    ]);
+
+$page
+    ->addTrueFalse('hide_footer', [
+        'label' => 'Hide Footer',
+        'ui' => 1,
+        'ui_on_text' => 'Hidden',
+        'ui_off_text' => 'Normal',
     ]);
 
 acf_add_local_field_group( $page->build() );

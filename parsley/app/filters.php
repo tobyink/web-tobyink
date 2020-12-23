@@ -107,11 +107,13 @@ add_filter('sage/display_sidebar', function ($display) {
     if ( function_exists('WC') ) {
       isset($display) || $display =
         is_active_sidebar('sidebar-primary')
-        && !( is_cart() || is_checkout() || is_wc_endpoint_url() || is_account_page() );
+        && !( is_cart() || is_checkout() || is_wc_endpoint_url() || is_account_page() )
+        && !( get_field( 'hide_sidebar', \App\acf_page_id() ) );
     }
     else {
       isset($display) || $display =
-        is_active_sidebar('sidebar-primary');
+        is_active_sidebar('sidebar-primary')
+        && !( get_field( 'hide_sidebar', \App\acf_page_id() ) );
     }
 
     return $display;
