@@ -28,7 +28,7 @@ export default {
     /* return-to-top */
     jQuery(function () {
       jQuery( window ).scroll( function() {
-        if (jQuery( this ).scrollTop() >= 50) {
+        if (jQuery( this ).scrollTop() >= 300) {
           jQuery( '#return-to-top' ).fadeIn( 300 );
         }
         else {
