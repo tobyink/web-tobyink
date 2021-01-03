@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9f045c4557e88f2f7323089082d6ad2d",
+    "content-hash": "e3db623d0cdd2e974c34fd2e9ba3c2ae",
     "packages": [
         {
             "name": "composer/installers",
@@ -315,10 +315,10 @@
         },
         {
             "name": "wp-premium/advanced-custom-fields-pro",
-            "version": "5.9.1",
+            "version": "5.9.3",
             "source": {
                 "type": "git",
-                "url": "git@github.com:wp-premium/advanced-custom-fields-pro.git",
+                "url": "git@github.com:tobyink/advanced-custom-fields-pro.git",
                 "reference": "master"
             },
             "type": "wordpress-plugin"
