@@ -1,15 +1,12 @@
 <?php
 
+add_action( 'acf/init', function () {
+	acf_update_setting( 'google_api_key', 'AIzaSyByf6BkXuinyB9hp35TyJ7B6yssf3fZ2Os' );
+} );
+
 if ( ! is_admin() ) {
 
-# Only load on specific pages
-#	acf_form_head();
-
 	add_filter( 'acf/validate_form', function ($args) {
-		if(!$args['html_before_fields'])
-			$args['html_before_fields'] = '<div class="row">';
-		if(!$args['html_after_fields'])
-			$args['html_after_fields'] = '</div>';
 		if($args['html_updated_message'] == '<div id="message" class="updated"><p>%s</p></div>')
 			$args['html_updated_message'] = '<div id="message" class="updated alert alert-success">%s</div>';
 		if($args['html_submit_button'] == '<input type="submit" class="acf-button button button-primary button-large" value="%s" />')
@@ -20,8 +17,10 @@ if ( ! is_admin() ) {
 	add_filter( 'acf/prepare_field', function ($field) {
 		if(is_admin() && !wp_doing_ajax())
 			return $field;
-		$field['wrapper']['class'] .= ' form-group col-12';
-		$field['class'] .= ' form-control';
+		$field['wrapper']['class'] .= ' form-group';
+		if ( in_array( $field['type'], [ 'text', 'textarea', 'select', 'email', 'number' ] ) ) {
+			$field['class'] .= ' form-control';
+		}
 		return $field;
 	} );
 
