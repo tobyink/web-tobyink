@@ -19,16 +19,22 @@ $page
     ]);
 
 $page
-    ->addTrueFalse('hide_title', [
-        'label' => 'Hide Title',
+    ->addImage('fullwidth_banner', [
+        'label' => 'Banner Image',
+        'return_format' => 'array',
+    ]);
+
+$page
+    ->addTrueFalse('hide_breadcrumbs', [
+        'label' => 'Hide Breadcrumbs',
         'ui' => 1,
         'ui_on_text' => 'Hidden',
         'ui_off_text' => 'Normal',
     ]);
 
 $page
-    ->addTrueFalse('hide_breadcrumbs', [
-        'label' => 'Hide Breadcrumbs',
+    ->addTrueFalse('hide_title', [
+        'label' => 'Hide Title',
         'ui' => 1,
         'ui_on_text' => 'Hidden',
         'ui_off_text' => 'Normal',
@@ -67,6 +73,21 @@ $page
     ->or('post_type', '==', 'page');
 
 $page
+    ->addTab('notes', [
+        'label' => 'Notes',
+    ]);
+
+$page
+    ->addTextarea('administrator_notes', [
+        'label' => 'Admin Notes',
+    ]);
+
+$page
+    ->addTab('style_and_script', [
+        'label' => 'Style & Script',
+    ]);
+
+$page
     ->addTextarea('custom_javascript', [
         'label' => 'Custom Javascript',
     ]);
@@ -77,14 +98,32 @@ $page
     ]);
 
 $page
-    ->addImage('fullwidth_banner', [
-        'label' => 'Banner Image',
-        'return_format' => 'array',
+    ->addTab('meta', [
+        'label' => 'Metadata',
     ]);
 
 $page
-    ->addTextarea('administrator_notes', [
-        'label' => 'Admin Notes',
+    ->addText('meta_description', [
+        'label' => 'Description',
     ]);
+
+$page
+    ->addText('meta_keywords', [
+        'label' => 'Keywords',
+    ]);
+
+$page
+    ->addTrueFalse('meta_image', [
+        'label' => 'Image',
+	'default_value' => 1,
+    ]);
+
+$page
+    ->addImage('meta_image_override', [
+        'label' => 'Override Featued Image',
+    ])->conditional('meta_image', '==', 1);
+
+$page
+    ->addTextarea('extra_meta_tags');
 
 acf_add_local_field_group( $page->build() );
