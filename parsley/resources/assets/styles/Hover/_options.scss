@@ -9,10 +9,10 @@ $mediumDuration: .3s !default;
 $slowDuration: .5s !default;
 
 // Colors
-$primaryColor: #e1e1e1 !default;
-$secondaryColor: #666 !default;
+$primaryColor: $primary !default;
+$secondaryColor: $secondary !default;
 $highlightColor: #ccc !default;
-$activeColor: #2098D1 !default;
+$activeColor: $primary !default;
 $shadowColor: rgba(0, 0, 0, .6) !default;
 
 // Speech bubbles options
@@ -28,10 +28,10 @@ $curlWidth: 25px !default;
 $curlHeight: 25px !default;
 
 // Curl colors
-$revealAreaColor: white !default;    // reveal area behind the curl
-$curlLineColor: #aaa !default;       // crease line
-$curlTransitionColor: #ccc !default;	// color transitioning from crease line to final color
-$curlLastColor: white !default;		// final color of the back of the curl
+$revealAreaColor: $light !default;    // reveal area behind the curl
+$curlLineColor: $dark !default;       // crease line
+$curlTransitionColor: #primary !default;	// color transitioning from crease line to final color
+$curlLastColor: $light !default;		// final color of the back of the curl
 
 // Browser Prefixes - Which CSS prefixes should be used?
 $webkit: true !default;

@@ -345,7 +345,7 @@
 }
 
 
-/* BORDER TRANSITIONS 
+/* BORDER TRANSITIONS */
 @import "effects/border-transitions/border-fade";
 @if $includeClasses {
 	.#{$nameSpace}-border-fade {
@@ -464,7 +464,7 @@
 		@include overline-reveal();
 	}
 }
-*/
+
 
 /* SHADOW/GLOW TRANSITIONS 
 @import "effects/shadow-and-glow-transitions/glow";
