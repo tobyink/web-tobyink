@@ -45,7 +45,7 @@
                     "type": "package",
                     "package": {
                         "name": "wp-premium/advanced-custom-fields-pro",
-                        "version": "5.9.3",
+                        "version": "5.9.4",
                         "type": "wordpress-plugin",
                         "source": {
                             "url": "git@github.com:tobyink/advanced-custom-fields-pro.git",
