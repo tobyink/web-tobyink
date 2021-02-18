@@ -46,13 +46,13 @@ function _parsley_render_heading ( $heading_level, $heading_tag ) {
 	return $classes;
 }
 
-function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+function parsley_render_col_html ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
 
-	$opts = get_sub_field('options');
+	$opts = $fields['options'];
 	$col_wpautop = ! $opts['exact_html'];
 	$col_classes =   $opts['classes'];
 
-	$col_content = get_sub_field('content', false, false);
+	$col_content = $fields['content'];
 	if ( $col_wpautop ) {
 		$col_classes .= ' column-wpautop';
 		$col_content  = wpautop( $col_content );
@@ -71,48 +71,47 @@ function parsley_render_col_html ( &$classes, &$heading_in_column, &$heading_tag
 	return sprintf( '<div class="col-type-html %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
-function parsley_render_col_break ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+function parsley_render_col_break ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
 	return '</div><div class="row mt-3">';
 }
 
-function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	$opts = get_sub_field('options');
+function parsley_render_col_image ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	$opts = $fields['options'];
 	$col_classes = $opts['classes'];
 
 	$iatts = [ 'loading' => 'lazy', 'class' => '' ];
-	if ( $k = get_sub_field('img_class') ) {
-		$iatts['class'] = $k;
+	if ( ! empty($fields['img_class']) ) {
+		$iatts['class'] = $fields['img_class'];
 	}
-	if ( $id = get_sub_field('img_id') ) {
-		$iatts['id'] = $id;
+	if ( ! empty($fields['img_id']) ) {
+		$iatts['id'] = $fields['img_id'];
 	}
-	if ( $alt = get_sub_field('alt_text') ) {
-		$iatts['alt'] = $alt;
+	if ( ! empty($fields['alt_text']) ) {
+		$iatts['alt'] = $fields['alt_text'];
 	}
-	if ( $t = get_sub_field('title') ) {
-		$iatts['title'] = $t;
+	if ( ! empty($fields['title']) ) {
+		$iatts['alt'] = $fields['title'];
 	}
-	if ( $caption = get_sub_field('caption') ) {
-		$caption = sprintf( '<figcaption class="figure-caption">%s</figcaption>', htmlspecialchars($caption) );
+	if ( ! empty($fields['caption']) ) {
+		$caption = sprintf( '<figcaption class="figure-caption">%s</figcaption>', esc_html($fields['caption']) );
 		$col_classes .= ' figure';
 		$iatts['class'] .= ' figure-img';
 	}
 
-
-	if ( get_sub_field('rounded') ) {
+	if ( $fields['rounded'] ) {
 		$iatts['class'] .= ' rounded';
 	}
-	if ( get_sub_field('shadow') ) {
+	if ( $fields['shadow'] ) {
 		$iatts['class'] .= ' shadow';
 	}
-	$col_content = wp_get_attachment_image( get_sub_field('image'), 'large', false, $iatts );
+	$col_content = wp_get_attachment_image( $fields['image'], 'large', false, $iatts );
 
-	if ( $more_attrs = get_sub_field('img_attrs') ) {
-		$col_content = str_replace( '<img', "<img $more_attrs ", $col_content );
+	if ( ! empty($fields['img_attrs']) ) {
+		$col_content = str_replace( '<img', "<img ${fields['img_attrs']} ", $col_content );
 	}
 
 	if ( $caption ) {
-		if ( get_sub_field('caption_placement') == 'above' ) {
+		if ( $fields['caption_placement'] == 'above' ) {
 			$col_content = $caption . $col_content;
 		}
 		else {
@@ -123,12 +122,12 @@ function parsley_render_col_image ( &$classes, &$heading_in_column, &$heading_ta
 	return sprintf( '<figure class="col-type-image %s">%s</figure>', $col_classes, $col_content);
 }
 
-function _parsley_render_col_listg ( $starting_class='list-group' ) {
+function _parsley_render_col_listg ( $fields, $starting_class='list-group' ) {
 
-	$opts = get_sub_field('options');
+	$opts = $fields['options'];
 	$col_classes =  $opts['classes'];
 
-	$S = get_sub_field( 'lg_style' );
+	$S = $fields['lg_style'];
 	$lg_style = [
 		'border_colour'      => $S['border_colour'],
 		'additional_classes' => $S['additional_classes'],
@@ -144,13 +143,12 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 
 	$lg_item_style = _parsley_render_styles( $lg_item_style );
 
-	$default_item_class = get_sub_field('lg_item_class');
+	$default_item_class = $fields['lg_item_class'];
 
 	$col_content = "<ul class=\"$lg_classes\">";
-	while ( have_rows('item') ) {
-		the_row();
+	foreach ( $fields['item'] as $itemdata ) {
 
-		$item_classes = get_sub_field('class');
+		$item_classes = $itemdata['class'];
 		if ( ! $item_classes ) {
 			$item_classes = $default_item_class;
 		}
@@ -158,21 +156,21 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 
 		$col_content .= sprintf(
 			'<li class="list-group-item %s">',
-			htmlspecialchars( $item_classes )
+			esc_html( $item_classes )
 		);
-		$nugget = get_sub_field('nugget');
+		$nugget = $itemdata['nugget'];
 		if ( $nugget ) {
 			if ( $nugget === 'text' ) {
-				$col_content .= sprintf( '<span class="float-right hvr-icon">%s</span>', get_sub_field('nugget_detail') );
+				$col_content .= sprintf( '<span class="float-right hvr-icon">%s</span>', $itemdata['nugget_detail'] );
 			}
 			elseif ( $nugget === 'icon' ) {
-				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', get_sub_field('nugget_detail') );
+				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', $itemdata['nugget_detail'] );
 			}
 			else {
 				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', $nugget );
 			}
 		}
-		$col_content .= get_sub_field('html');
+		$col_content .= $itemdata['html'];
 		$col_content .= '</li>';
 	}
 	$col_content .= "</ul>";
@@ -180,9 +178,9 @@ function _parsley_render_col_listg ( $starting_class='list-group' ) {
 	return [ $col_classes, $col_content ];
 }
 
-function _parsley_render_col_card ( $chunklist ) {
+function _parsley_render_col_card ( $fields, $chunklist ) {
 
-	$opts = get_sub_field('options');
+	$opts = $fields['options'];
 	$col_wpautop = ! $opts['exact_html'];
 	$col_classes =   $opts['classes'];
 	if ( $col_wpautop ) {
@@ -190,14 +188,14 @@ function _parsley_render_col_card ( $chunklist ) {
 	}
 
 	$card_classes = 'card';
-	if ( get_sub_field('card_border_colour') ) {
-		$card_classes .= ' border border-' . get_sub_field('card_border_colour');
+	if ( $fields['card_border_colour'] ) {
+		$card_classes .= ' border border-' . $fields['card_border_colour'];
 	}
-	$card_classes .= ' ' . get_sub_field('card_class');
+	$card_classes .= ' ' . $fields['card_class'];
 
 	$col_content = '<div class="' .trim($card_classes) . '"';
-	if ( get_sub_field('card_id') ) {
-		$col_content .= sprintf( ' id="%s"', htmlspecialchars( get_sub_field('card_id') ) );
+	if ( ! empty($fields['card_id']) ) {
+		$col_content .= sprintf( ' id="%s"', esc_html( $fields['card_id'] ) );
 	}
 	$col_content .= '>';
 
@@ -207,21 +205,21 @@ function _parsley_render_col_card ( $chunklist ) {
 			$content = '';
 		}
 		else {
-			$content = get_sub_field( $chunk . '_content', false, false );
+			$content = $fields[ $chunk . '_content' ];
 			if ( $col_wpautop ) {
 				$content = wpautop( $content );
 			}
 		}
 
 		if ( $chunk == 'header' ) {
-			$title = get_sub_field( 'header_title' );
+			$title = $fields['header_title'];
 			$title_tag = 'h3';
 			$title_classes = 'card-title';
 			if ( empty($title) ) {
 				$title_tag = 'none';
 			}
 			else {
-				$title_level = get_sub_field( 'header_title_level' );
+				$title_level = $fields['header_title_level'];
 				if ( $title_level['real'] ) {
 					$title_tag = $title_level['real'];
 				}
@@ -234,12 +232,12 @@ function _parsley_render_col_card ( $chunklist ) {
 		}
 
 		if ( $chunk == 'list-group' ) {
-			$got = _parsley_render_col_listg( 'list-group list-group-flush' );
+			$got = _parsley_render_col_listg( $fields, 'list-group list-group-flush' );
 			$col_content .= $got[1];
 		}
 		elseif ( $content ) {
 			$chunkclasses = "card-$chunk";
-			$chunkclasses .= _parsley_render_styles( get_sub_field( $chunk . '_style' ) );
+			$chunkclasses .= _parsley_render_styles( $fields[ $chunk . '_style' ] );
 			$col_content .= sprintf('<div class="%s">%s</div>', $chunkclasses, $content);
 		}
 	}
@@ -249,38 +247,46 @@ function _parsley_render_col_card ( $chunklist ) {
 	return [ $col_classes, $col_content ];
 }
 
-function parsley_render_col_card ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	list ( $col_classes, $col_content ) = _parsley_render_col_card( [ 'header', 'body', 'footer' ] );
+function parsley_render_col_card ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list ( $col_classes, $col_content ) = _parsley_render_col_card( $fields, [ 'header', 'body', 'footer' ] );
 	return sprintf( '<div class="col-type-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
-function parsley_render_col_listg ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	list( $col_classes, $col_content ) = _parsley_render_col_listg();
+function parsley_render_col_listg ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list( $col_classes, $col_content ) = _parsley_render_col_listg( $fields );
 	return sprintf( '<div class="col-type-list-group %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
-function parsley_render_col_listgcard ( &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
-	list ( $col_classes, $col_content ) = _parsley_render_col_card( [ 'header', 'list-group', 'footer' ] );
+function parsley_render_col_listgcard ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+	list ( $col_classes, $col_content ) = _parsley_render_col_card( $fields, [ 'header', 'list-group', 'footer' ] );
 	return sprintf( '<div class="col-type-list-group-card %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
-function parsley_render_section ( $count, $nested=false, $nested_type=false, &$menu='' ) {
+function parsley_render_section ( $post_id, $count, $fields=null, $nested=false, $nested_type=false, &$menu='' ) {
 
-	if ( get_sub_field('hidden') ) {
+	if ( $fields === null ) {
+		if ( $nested ) {
+			wp_die('huh?');
+		}
+		$all_sections = parsley_get_sections_data( $post_id );
+		$fields       = $all_sections[ $count - 1 ];
+	}
+
+	if ( $fields['hidden'] ) {
 		return '';
 	}
 
-	$wpautop = ! get_sub_field( 'exact_html' );
+	$wpautop = ! $fields['exact_html'];
 
-	$contain = get_sub_field( 'full_width' );
+	$contain = $fields['full_width'];
 	if ( $contain == 'wide' ) {
 		$contain = false;
 	}
 
 	$attrs   = '';
 	$classes = '';
-	$id      = get_sub_field( 'id' );
-	$content = get_sub_field( 'content', false, false );
+	$id      = $fields['id'];
+	$content = $fields['content'];
 
 	if ( empty($id) ) {
 		if ( $nested ) {
@@ -307,7 +313,7 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$classes .= ' section-nested';
 		$contain = false;
 
-		$S = get_sub_field( 'style' );
+		$S = $fields['style'];
 		if ( $S['background_colour'] || $S['border_colour'] ) {
 			$paddingtype = 'p';
 		}
@@ -324,16 +330,16 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		}
 	}
 
-	$classes .= _parsley_render_styles( get_sub_field( 'style' ), $paddingtype );
+	$classes .= _parsley_render_styles( $fields['style'], $paddingtype );
 
-	$heading = get_sub_field( 'heading' );
+	$heading = $fields['heading'];
 	$heading_tag = 'h2';
 	$heading_classes = 'section-title';
 	if ( empty($heading) ) {
 		$heading_tag = 'none';
 	}
 	else {
-		$heading_level = get_sub_field( 'heading_level' );
+		$heading_level = $fields['heading_level'];
 		if ( $heading_level['real'] ) {
 			$heading_tag = $heading_level['real'];
 		}
@@ -342,12 +348,12 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 
 	if ( $nested ) {
 		$icon = '';
-		if ( $iconname = get_sub_field('icon') ) {
-			$icon = sprintf( '<i class="fa fa-%s hvr-icon"></i> ', htmlspecialchars($iconname) );
+		if ( $iconname = $fields['icon'] ) {
+			$icon = sprintf( '<i class="fa fa-%s hvr-icon"></i> ', esc_html($iconname) );
 		}
 
 		$link_class = '';
-		if ( $lc = get_sub_field('link_class') ) {
+		if ( $lc = $fields['link_class'] ) {
 			$link_class = " $lc";
 		}
 
@@ -356,23 +362,23 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				'<a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
 				( ( $count == 1 ) ? ' active' : '' ),
 				$link_class,
-				htmlspecialchars($id),
+				esc_html($id),
 				'pill',
-				htmlspecialchars($id),
-				htmlspecialchars($id),
+				esc_html($id),
+				esc_html($id),
 				( ( $count == 1 ) ? 'true' : 'false' ),
 				$icon,
-				htmlspecialchars($heading)
+				esc_html($heading)
 			);
 		}
 		elseif ( $nested_type === 'accordion' ) {
 			$menu .= sprintf(
 				'<button class="btn btn-link btn-block text-left%s" type="button" data-toggle="collapse" data-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-right">%s</span>%s</button>',
 				$link_class,
-				htmlspecialchars($id),
-				htmlspecialchars($id),
+				esc_html($id),
+				esc_html($id),
 				$icon,
-				htmlspecialchars($heading)
+				esc_html($heading)
 			);
 		}
 		else {
@@ -380,29 +386,29 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 				'<li class="nav-item"><a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
 				( ( $count == 1 ) ? ' active' : '' ),
 				$link_class,
-				htmlspecialchars($id),
+				esc_html($id),
 				$nested_type,
-				htmlspecialchars($id),
-				htmlspecialchars($id),
+				esc_html($id),
+				esc_html($id),
 				( ( $count == 1 ) ? 'true' : 'false' ),
 				$icon,
-				htmlspecialchars($heading)
+				esc_html($heading)
 			);
 		}
 
 		if ( $nested_type != 'slick' ) {
 			$classes .= ' tab-pane fade';
-			$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', htmlspecialchars($id) );
+			$attrs   .= sprintf( ' role="tabpanel" aria-labelledby="%s-tab"', esc_html($id) );
 			if ( $count == 1 ) {
 				$classes .= ' show active';
 			}
 		}
 	}
 
-	$layout  = get_row_layout();
+	$layout  = $fields['acf_fc_layout'];
 	$content = 'CONTENT';
 	if ( $layout == 'html_content' ) {
-		$content = get_sub_field( 'content', false, false );
+		$content = $fields['content'];
 		$classes .= ' section-type-html-content';
 		if ( $wpautop ) {
 			$content  = wpautop( $content );
@@ -411,8 +417,8 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$content = do_shortcode( $content );
 	}
 	elseif ( $layout == 'columns' || $layout == 'columns2' ) {
-		$before = get_sub_field( 'before_columns', false, false );
-		$after  = get_sub_field( 'after_columns',  false, false );
+		$before = $fields['before_columns'];
+		$after  = $fields['after_columns'];
 		$classes .= ' section-type-columns';
 		if ( $wpautop ) {
 			$before   = wpautop( $before );
@@ -421,20 +427,19 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		}
 		$content  = do_shortcode( $before );
 		$content .= '<div class="row">';
-		$heading_in_column = get_sub_field('heading_in_column');
-		while ( have_rows('columns') ) {
-			the_row();
+		$heading_in_column = $fields['heading_in_column'];
+		foreach ( $fields['columns'] as $coldata ) {
 
 			if ( $layout === 'columns' ) {
 				$col_type = 'col_html';
 			}
 			else {
-				$col_type = get_row_layout();
+				$col_type = $coldata['acf_fc_layout'];
 			}
 
 			$got = call_user_func_array(
 				'App\parsley_render_' . $col_type,
-				[ &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ] 
+				[ $coldata, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ] 
 			);
 
 			$content .= ( $got === false ) ? '<div class="col">ERROR</div>' : $got;
@@ -443,7 +448,6 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$content .= do_shortcode( $after );
 	}
 	elseif ( $layout == 'primary_content' ) {
-		$post_id = get_the_ID();
 		$content = get_the_content( false, false, $post_id );
 		$classes .= ' section-type-primary-content';
 		if ( ! get_field( 'disable_wpautop', $post_id ) ) {
@@ -453,10 +457,10 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$content = do_shortcode( $content );
 	}
 	elseif ( $layout == 'post' ) {
-		$post_id = get_sub_field('post_id');
-		$content = get_the_content( false, false, $post_id );
+		$other   = $fields['post_id'];
+		$content = get_the_content( false, false, $other );
 		$classes .= ' section-type-post';
-		if ( ! get_field( 'disable_wpautop', $post_id ) ) {
+		if ( ! get_field( 'disable_wpautop', $other ) ) {
 			$content  = wpautop( $content );
 			$classes .= ' section-wpautop';
 		}
@@ -467,7 +471,7 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$classes .= ' section-type-foogallery';
 		if ( function_exists( 'foogallery_render_gallery' ) ) {
 			ob_start();
-			foogallery_render_gallery( get_sub_field('gallery_id') );
+			foogallery_render_gallery( $fields['gallery_id'] );
 			$content = ob_get_contents();
 			ob_end_clean();
 		}
@@ -477,23 +481,21 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		$heading_tag = 'none';
 		$contain = false;
 		$iatts = [ 'loading' => 'lazy' ];
-		if ( get_sub_field('img_class') ) {
-			$iatts['class'] = get_sub_field('img_class');
+		if ( $fields['img_class'] ) {
+			$iatts['class'] = $fields['img_class'];
 		}
-		if ( get_sub_field('img_id') ) {
-			$iatts['id'] = get_sub_field('img_id');
+		if ( $fields['img_id'] ) {
+			$iatts['id'] = $fields['img_id'];
 		}
-		$content = wp_get_attachment_image( get_sub_field('image'), 'full', false, $iatts );
+		$content = wp_get_attachment_image( $fields['image'], 'full', false, $iatts );
 	}
 	elseif ( $layout == 'tabs' ) {
 		$classes .= ' section-type-tabs';
 
-		$tabtype = get_sub_field( 'tab_type' );
+		$tabtype = $fields['tab_type'];
 
-		$before = get_sub_field( 'before_tabs', false, false );
-		$after  = get_sub_field( 'after_tabs', false, false );
-                $before = do_shortcode( $before );
-                $after  = do_shortcode( $after );
+		$before = do_shortcode( $fields['before_tabs'] );
+		$after  = do_shortcode( $fields['after_tabs'] );
 
 		if ( $wpautop ) {
 			$before = wpautop( $before );
@@ -502,11 +504,11 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 		}
 
 		if ( $tabtype === 'pill' ) {
-			$tabmenu  = sprintf( '<ul class="nav nav-pills mb-1" id="%s-tablist">', htmlspecialchars($id) );
+			$tabmenu  = sprintf( '<ul class="nav nav-pills mb-1" id="%s-tablist">', esc_html($id) );
 			$tabmenuend = '</ul>';
 		}
 		elseif ( $tabtype === 'pill-left' || $tabtype === 'pill-right' ) {
-			$tabmenu = sprintf( '<nav class="nav nav-pills flex-column" id="%s-tablist" role="tablist" aria-orientation="vertical">', htmlspecialchars($id) );
+			$tabmenu = sprintf( '<nav class="nav nav-pills flex-column" id="%s-tablist" role="tablist" aria-orientation="vertical">', esc_html($id) );
 			$tabmenuend = '</nav>';
 		}
 		elseif ( $tabtype === 'accordion' ) {
@@ -514,38 +516,35 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			$tabmenuend = '';
 		}
 		else {
-			$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', htmlspecialchars($id) );
+			$tabmenu  = sprintf( '<ul class="nav nav-tabs" id="%s-tablist" role="tablist">', esc_html($id) );
 			$tabmenuend = '</ul>';
 		}
 
 		$tabcount = 0;
 		if ( $tabtype == 'accordion' ) {
-			$tabpanes = sprintf( '<div class="accordion %s" id="%s-tabcontent">', htmlspecialchars( get_sub_field('accordion_class') ), htmlspecialchars($id) );
+			$tabpanes = sprintf( '<div class="accordion %s" id="%s-tabcontent">', esc_html( $fields['accordion_class'] ), esc_html($id) );
 			$tabpanesend = '</div>';
 		}
 		elseif ( $tabtype == 'slick' ) {
-			$opts = get_sub_field('slick_options');
-			$tabpanes = sprintf( '<div class="slick-carousel slick-tabs" id="%s-tabcontent">', htmlspecialchars($id) );
-			$tabpanesend = sprintf( '</div><script>document.getElementById("%s-tabcontent").setAttribute("data-slick", JSON.stringify(%s));</script>', htmlspecialchars($id), $opts );
+			$opts = $fields['slick_options'];
+			$tabpanes = sprintf( '<div class="slick-carousel slick-tabs" id="%s-tabcontent">', esc_html($id) );
+			$tabpanesend = sprintf( '</div><script>document.getElementById("%s-tabcontent").setAttribute("data-slick", JSON.stringify(%s));</script>', esc_html($id), $opts );
 		}
 		else {
-			$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', htmlspecialchars($id) );
+			$tabpanes = sprintf( '<div class="tab-content" id="%s-tabcontent">', esc_html($id) );
 			$tabpanesend = '</div>';
 		}
 
-		$pill_class     = get_sub_field( 'pill_class' );
-		$content_class  = get_sub_field( 'content_class' );
+		$pill_class     = $fields['pill_class'];
+		$content_class  = $fields['content_class'];
 
-		while ( have_rows('design_sections') ) {
-			the_row();
-			if ( get_row_layout() == 'end_tabs' ) {
-				break;
-			}
+		foreach ( $fields['tabs'] as $tabdata ) {
+			
 			if ( $tabtype === 'accordion' ) {
 				$button_html = '';
-				$pane_html   = parsley_render_section( ++$tabcount, $id, $tabtype, $button_html );
+				$pane_html   = parsley_render_section( $post_id, ++$tabcount, $tabdata, $id, $tabtype, $button_html );
 				$tabpanes .= '<div class="card">';
-				$tabpanes .= sprintf( '<div class="card-header" id="%s-tabheader">', htmlspecialchars($id) );
+				$tabpanes .= sprintf( '<div class="card-header" id="%s-tabheader">', esc_html($id) );
 				$tabpanes .= $button_html;
 				$tabpanes .= '</div>';
 				$tabpanes .= $pane_html;
@@ -553,10 +552,10 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 			}
 			elseif ( $tabtype === 'slick' ) {
 				// Slick needs the section to be wrapped because of width issues
-				$tabpanes .= '<div>' . parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu ) . '</div>';
+				$tabpanes .= '<div>' . parsley_render_section( $post_id, ++$tabcount, $tabdata, $id, $tabtype, $tabmenu ) . '</div>';
 			}
 			else {
-				$tabpanes .= parsley_render_section( ++$tabcount, $id, $tabtype, $tabmenu );
+				$tabpanes .= parsley_render_section( $post_id, ++$tabcount, $tabdata, $id, $tabtype, $tabmenu );
 			}
 		}
 
@@ -609,14 +608,53 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 	return $html;
 }
 
-function parsley_render_sections () {
-	$count = 0;
-	$html = '';
-	$html .= sprintf( '<!-- %s -->', htmlspecialchars( print_r( get_field('design_sections'), true ) ) );
-	while ( have_rows('design_sections') ) {
-		the_row();
-		$html .= parsley_render_section( ++$count );
+function parsley_get_sections_data ( $post_id=null ) {
+	
+	if ( $post_id === null ) {
+		$post_id = get_the_ID();
 	}
+	
+	$processed = [];
+	$in_tabs   = false;	
+	$sections  = get_field( 'design_sections', $post_id );
+	
+	foreach ( $sections as $s ) {
+		if ( $in_tabs ) {
+			$processed[ array_key_last($processed) ]['tabs'] []= $s;
+		}
+		elseif ( $s['acf_fc_layout'] == 'tabs' ) {
+			$s['tabs'] = [];
+			$processed []= $s;
+			$in_tabs = true;
+		}
+		elseif ( $s['acf_fc_layout'] == 'end_tabs' ) {
+			$in_tabs = false;
+		}
+		else {
+			$processed[] = $s;
+		}
+	}
+	
+	return $processed;
+}
+
+function parsley_render_sections ( $post_id=null ) {
+	
+	if ( $post_id === null ) {
+		$post_id = get_the_ID();
+	}
+	
+	$count    = 0;
+	$html     = '';
+	$sections = parsley_get_sections_data( $post_id );
+	
+	foreach ( $sections as $s ) {
+		$html .= parsley_render_section( $post_id, ++$count, $s );		
+	}
+	
+	$html .= sprintf( '<!-- %s -->', esc_html( print_r( $sections, true ) ) );
+	
 	return $html;
 }
+
 
