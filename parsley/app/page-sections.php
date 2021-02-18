@@ -612,6 +612,7 @@ function parsley_render_section ( $count, $nested=false, $nested_type=false, &$m
 function parsley_render_sections () {
 	$count = 0;
 	$html = '';
+	$html .= sprintf( '<!-- %s -->', htmlspecialchars( print_r( get_field('design_sections'), true ) ) );
 	while ( have_rows('design_sections') ) {
 		the_row();
 		$html .= parsley_render_section( ++$count );
