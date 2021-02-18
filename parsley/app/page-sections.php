@@ -619,16 +619,16 @@ function parsley_get_sections_data ( $post_id=null ) {
 	$sections  = get_field( 'design_sections', $post_id );
 	
 	foreach ( $sections as $s ) {
-		if ( $in_tabs ) {
+		if ( $s['acf_fc_layout'] == 'end_tabs' ) {
+			$in_tabs = false;
+		}
+		elseif ( $in_tabs ) {
 			$processed[ array_key_last($processed) ]['tabs'] []= $s;
 		}
 		elseif ( $s['acf_fc_layout'] == 'tabs' ) {
 			$s['tabs'] = [];
 			$processed []= $s;
 			$in_tabs = true;
-		}
-		elseif ( $s['acf_fc_layout'] == 'end_tabs' ) {
-			$in_tabs = false;
 		}
 		else {
 			$processed[] = $s;
