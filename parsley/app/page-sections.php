@@ -630,7 +630,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		$html .= '<div class="' . $contain . '">';
 	}
 	if ( $heading_tag != 'none' ) {
-		$html .= sprintf( '<%s id="%s_heading" class="%s"><span>%s</span></%s>', $id, $heading_tag, $heading_classes, $heading, $heading_tag );
+		$html .= sprintf( '<%s id="%s_heading" class="%s"><span>%s</span></%s>', $heading_tag, $id, $heading_classes, $heading, $heading_tag );
 	}
 	$html .= $content;
 	if ( $contain ) {
@@ -639,7 +639,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 	$html .= "</section>\n";
 
 	if ( $fields['extra_css'] ) {
-		$html .= parsley_render_extra_css( $id, $fields['extra_css'] );
+		$html = parsley_render_extra_css( $id, $fields['extra_css'] ) . $html;
 	}
 
 	return $html;
@@ -649,6 +649,19 @@ function parsley_render_extra_css ( $id, $css ) {
 	$replacements = [
 		'#this'      => "#$id",
 		'#heading'   => "#${id}_heading",
+		'SM-UP'      => '@media (min-width: 576px)',
+		'MD-UP'      => '@media (min-width: 768px)',
+		'LG-UP'      => '@media (min-width: 992px)',
+		'XL-UP'      => '@media (min-width: 1200px)',
+		'XS-DOWN'    => '@media (max-width: 575.98px)',
+		'SM-DOWN'    => '@media (max-width: 767.98px)',
+		'MD-DOWN'    => '@media (max-width: 991.98px)',
+		'LG-DOWN'    => '@media (max-width: 1199.98px)',
+		'XS-ONLY'    => '@media (max-width: 575.98px)',
+		'SM-ONLY'    => '@media (min-width: 576px) and (max-width: 767.98px)',
+		'MD-ONLY'    => '@media (min-width: 768px) and (max-width: 991.98px)',
+		'LG-ONLY'    => '@media (min-width: 992px) and (max-width: 1199.98px)',
+		'XL-ONLY'    => '@media (min-width: 1200px)',
 	];
 	foreach ( \App\theme_colours() as $c ) {
 		$replacements["\$$c"] = \App\theme_get_option( "colour-$c" );
@@ -694,6 +707,8 @@ function parsley_get_sections_data ( $post_id=null ) {
 }
 
 function parsley_render_sections ( $post_id=null ) {
+
+	remove_filter( 'acf_the_content', 'wpautop' );
 
 	if ( $post_id === null ) {
 		$post_id = get_the_ID();

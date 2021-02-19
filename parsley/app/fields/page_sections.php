@@ -262,7 +262,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 	$builder->addTextArea( 'extra_css', [
 		'label'         => 'Extra CSS',
 		'rows'          => 8,
-		'instructions'  => '<code>#this</code> will refer to the section element, <code>#heading</code> refers to the main heading for the section, <code>$primary</code>, etc can be used to refer to colours, <code>$serif</code>, etc refer to fonts',
+		'instructions'  => '<code>#this</code> will refer to the section element, <code>#heading</code> refers to the main heading for the section, <code>$primary</code>, etc can be used to refer to colours, <code>$serif</code>, etc refer to fonts, and <code>SM-UP</code>, <code>MD-ONLY</code>, <code>LG-DOWN</code>, etc can be used to refer to media breakpoints.',
 	] );
 
 	return $builder;
