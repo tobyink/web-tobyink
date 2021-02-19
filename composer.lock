@@ -368,7 +368,7 @@
         },
         {
             "name": "wpackagist-plugin/foogallery",
-            "version": "1.9.53",
+            "version": "1.10.0",
             "source": {
                 "type": "svn",
                 "url": "https://plugins.svn.wordpress.org/foogallery/",
@@ -376,7 +376,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://downloads.wordpress.org/plugin/foogallery.zip?timestamp=1611407802"
+                "url": "https://downloads.wordpress.org/plugin/foogallery.zip?timestamp=1613666750"
             },
             "require": {
                 "composer/installers": "~1.0"
