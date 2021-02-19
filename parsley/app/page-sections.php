@@ -272,6 +272,40 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		$fields       = $all_sections[ $count - 1 ];
 	}
 
+	$layout  = $fields['acf_fc_layout'];
+	$source_post_id = $post_id;
+
+	if ( $layout == 'post_section' ) {
+		$ext_data = parsley_get_sections_data( $fields['post_id'] );
+		$ext_id   = $fields['section_id'];
+		$found_data = false;
+		foreach ( $ext_data as $s ) {
+			if ( $s['id'] == $ext_id ) {
+				$found_data = $s;
+			}
+			elseif ( $s['real_index'] == $ext_id ) {
+				$found_data = $s;
+			}
+			elseif ( count($s['tabs']) ) {
+				foreach ( $s['tabs'] as $s2 ) {
+					if ( $s2['id'] == $ext_id )              { $found_data = $s2; }
+					elseif ( $s2['real_index'] == $ext_id )  { $found_data = $s2; }
+				}
+			}
+			if ( $found_data ) {
+				break;
+			}
+		}
+		if ( $found_data ) {
+			$source_post_id = $fields['post_id'];
+			$fields = $found_data;
+			$layout = $fields['acf_fc_layout'];
+		}
+		else {
+			return sprintf('<!-- error loading external section -->');
+		}
+	}
+
 	if ( $fields['hidden'] ) {
 		return '';
 	}
@@ -405,7 +439,6 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		}
 	}
 
-	$layout  = $fields['acf_fc_layout'];
 	$content = 'CONTENT';
 	if ( $layout == 'html_content' ) {
 		$content = $fields['content'];
@@ -448,9 +481,9 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		$content .= do_shortcode( $after );
 	}
 	elseif ( $layout == 'primary_content' ) {
-		$content = get_the_content( false, false, $post_id );
+		$content = get_the_content( false, false, $source_post_id );
 		$classes .= ' section-type-primary-content';
-		if ( ! get_field( 'disable_wpautop', $post_id ) ) {
+		if ( ! get_field( 'disable_wpautop', $source_post_id ) ) {
 			$content  = wpautop( $content );
 			$classes .= ' section-wpautop';
 		}
@@ -539,7 +572,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		$content_class  = $fields['content_class'];
 
 		foreach ( $fields['tabs'] as $tabdata ) {
-			
+
 			if ( $tabtype === 'accordion' ) {
 				$button_html = '';
 				$pane_html   = parsley_render_section( $post_id, ++$tabcount, $tabdata, $id, $tabtype, $button_html );
@@ -561,7 +594,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 
 		$tabmenu  .= $tabmenuend;
 		$tabpanes .= $tabpanesend;
-		
+
 		if ( $tabtype === 'pill-left' ) {
 			$content = sprintf(
 				'%s<div class="row"><div class="%s">%s</div><div class="%s">%s</div></div>%s',
@@ -629,16 +662,18 @@ function parsley_render_extra_css ( $id, $css ) {
 }
 
 function parsley_get_sections_data ( $post_id=null ) {
-	
+
 	if ( $post_id === null ) {
 		$post_id = get_the_ID();
 	}
-	
+
 	$processed = [];
-	$in_tabs   = false;	
+	$in_tabs   = false;
 	$sections  = get_field( 'design_sections', $post_id );
-	
+	$realidx   = 0;
+
 	foreach ( $sections as $s ) {
+		$s['real_index'] = ++$realidx;
 		if ( $s['acf_fc_layout'] == 'end_tabs' ) {
 			$in_tabs = false;
 		}
@@ -654,26 +689,26 @@ function parsley_get_sections_data ( $post_id=null ) {
 			$processed[] = $s;
 		}
 	}
-	
+
 	return $processed;
 }
 
 function parsley_render_sections ( $post_id=null ) {
-	
+
 	if ( $post_id === null ) {
 		$post_id = get_the_ID();
 	}
-	
+
 	$count    = 0;
 	$html     = '';
 	$sections = parsley_get_sections_data( $post_id );
-	
+
 	foreach ( $sections as $s ) {
-		$html .= parsley_render_section( $post_id, ++$count, $s );		
+		$html .= parsley_render_section( $post_id, ++$count, $s );
 	}
-	
+
 	$html .= sprintf( '<!-- %s -->', esc_html( print_r( $sections, true ) ) );
-	
+
 	return $html;
 }
 

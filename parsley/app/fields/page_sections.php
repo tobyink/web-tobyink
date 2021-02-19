@@ -338,7 +338,7 @@ $SEC[] = parsley_acf_section_definition(
 
 $SEC[] = parsley_acf_section_definition(
 	new FieldsBuilder( 'post', [
-		'label'   => 'Another Post',
+		'label'   => 'External Post',
 		'display' => 'block',
 	] ),
 	[],
@@ -355,6 +355,26 @@ $SEC[] = parsley_acf_section_definition(
 
 	}
 );
+
+$ext_section = new FieldsBuilder( 'post_section', [
+	'label'   => 'External Section',
+	'display' => 'block',
+] );
+$ext_section->addTab( 'Section' );
+$ext_section->addPostObject( 'post_id', [
+	'label'         => 'Post',
+	'required'      => 1,
+	'return_format' => 'id',
+	'ui'            => 1,
+	'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+] );
+$ext_section->addText( 'section_id', [
+	'label'         => 'Section',
+	'required'      => 1,
+	'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+	'instructions'  => 'Section ID or numeric index',
+] );
+$SEC[] = $ext_section;
 
 $SEC[] = parsley_acf_section_definition(
 	new FieldsBuilder( 'columns2', [
@@ -788,6 +808,7 @@ $SEC[] = new FieldsBuilder( 'end_tabs', [
 	'label'   => 'End Tabs',
 	'display' => 'block',
 ] );
+
 
 $SEC[] = parsley_acf_section_definition(
 	new FieldsBuilder( 'columns', [
