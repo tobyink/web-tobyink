@@ -597,7 +597,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		$html .= '<div class="' . $contain . '">';
 	}
 	if ( $heading_tag != 'none' ) {
-		$html .= sprintf( '<%s class="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag );
+		$html .= sprintf( '<%s id="%s_heading" class="%s"><span>%s</span></%s>', $id, $heading_tag, $heading_classes, $heading, $heading_tag );
 	}
 	$html .= $content;
 	if ( $contain ) {
@@ -605,7 +605,27 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 	}
 	$html .= "</section>\n";
 
+	if ( $fields['extra_css'] ) {
+		$html .= parsley_render_extra_css( $id, $fields['extra_css'] );
+	}
+
 	return $html;
+}
+
+function parsley_render_extra_css ( $id, $css ) {
+	$replacements = [
+		'#this'      => "#$id",
+		'#heading'   => "#${id}_heading",
+	];
+	foreach ( \App\theme_colours() as $c ) {
+		$replacements["\$$c"] = \App\theme_get_option( "colour-$c" );
+	}
+	foreach ( [ 'serif', 'sans', 'display', 'monospace' ] as $f ) {
+		$replacements["\$$f"] = \App\theme_get_option( "font-$f" );
+	}
+	$css = strtr( $css, $replacements );
+
+	return sprintf( '<style type="text/css">%s</style>', $css );
 }
 
 function parsley_get_sections_data ( $post_id=null ) {
