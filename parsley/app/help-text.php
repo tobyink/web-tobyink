@@ -3,7 +3,7 @@
 if ( is_admin() ) {
   add_action( 'admin_menu', function () {
     add_submenu_page(
-      'themes.php',
+      'index.php',
       'Theme Help',
       'Theme Help',
       'manage_options',
