@@ -1,13 +1,16 @@
 .banner {
-  @extend .bg-primary, .text-white, .shadow-lg;
+  @extend .shadow-lg;
+
+  background: $wp-theme-header-bg !important;
+  color: $wp-theme-header-text !important;
 
   a {
     @extend .text-white;
   }
 
   button { border: 1px solid !important; }
-  button, a { color: theme-color-level(primary, -10); }
-  button:hover, a:hover, .current-menu-item a { color: $white; }
+  button, a { color: $wp-theme-header-text !important; }
+  button:hover, a:hover, .current-menu-item a { color: $wp-theme-header-hover !important; }
   button { border: 1px solid !important; }
   button span { position: relative; top: 0.333rem }
   
@@ -20,10 +23,13 @@
   }
 
   .dropdown-menu {
-    background: theme-color("primary");
+    background: $wp-theme-header-dropdown-bg !important;
+    color: $wp-theme-header-dropdown-text !important;
+    button, a { color: $wp-theme-header-dropdown-text !important; }
     .dropdown-item:hover {
-      color: $white;
-      background: lighten(theme-color("primary"), 10%);
+      button, a { color: lighten($wp-theme-header-dropdown-text, 10%) !important; }
+      color: lighten($wp-theme-header-dropdown-text, 10%) !important;
+      background: lighten($wp-theme-header-dropdown-bg, 10%) !important;
     }
   }
 }
