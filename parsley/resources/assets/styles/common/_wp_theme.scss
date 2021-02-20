@@ -1,5 +1,10 @@
 @import url(https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400%3B0,700%3B1,400%3B1,700&family=Sansita+Swashed:wght@600&display=swap);
-
+$wp-theme-font-serif: Georgia, 'Times New Roman', Times, serif;
+$wp-theme-font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$wp-theme-font-monospace: Menlo, Monaco, Consolas, 'Courier New', monospace;
+$wp-theme-font-display: "Sansita Swashed", serif;
+$wp-theme-font-base: $wp-theme-font-sans;
+$wp-theme-font-headings: $wp-theme-font-display;
 $wp-theme-colour-primary: #4b2d73;
 $wp-theme-colour-secondary: #882d61;
 $wp-theme-colour-tertiary: #2e4272;
@@ -18,11 +23,3 @@ $wp-theme-floating-icons-bg: $wp-theme-colour-secondary;
 $wp-theme-floating-icons-text: white;
 $wp-theme-floating-icons-hover: lighten($wp-theme-colour-secondary, 10%);
 $wp-theme-floating-icons-class: floating-icons-left;
-$wp-theme-font-serif: Georgia, 'Times New Roman', Times, serif;
-$wp-theme-font-sans: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$wp-theme-font-monospace: Menlo, Monaco, Consolas, 'Courier New', monospace;
-$wp-theme-font-display: "Sansita Swashed", serif;
-
-$wp-theme-font-headings: $wp-theme-font-display;
-$wp-theme-font-base: $wp-theme-font-sans;
-
