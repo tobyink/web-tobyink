@@ -34,7 +34,11 @@ function theme_write_sass () {
 		$sass [] = sprintf( '$wp-theme-colour-%s: %s;', $c, theme_get_option( "colour-$c" ) );
 	}
 
-	foreach ( [ 'page-bg', 'page-text', 'page-link', 'page-muted', 'header-bg', 'header-text', 'header-hover', 'header-dropdown-bg', 'header-dropdown-text', 'floating-icons-bg', 'floating-icons-text', 'floating-icons-hover', 'floating-icons-class' ] as $opt ) {
+	foreach ( [
+			'page-bg', 'page-text', 'page-link', 'page-muted',
+			'header-bg', 'header-text', 'header-hover', 'header-dropdown-bg', 'header-dropdown-text',
+			'floating-icons-bg', 'floating-icons-text', 'floating-icons-hover', 'floating-icons-class',
+		] as $opt ) {
 		$sass [] = sprintf( '$wp-theme-%s: %s;', $opt, theme_get_option( $opt ) );
 	}
 
@@ -68,14 +72,13 @@ add_action( 'acf/init', function () {
 
 	acf_add_options_page( [
 		'page_title' => 'Parsley Options',
-		'menu_title' => 'Parsley Options',
 		'menu_slug'  => 'parsley-options',
 		'capability' => 'edit_theme_options',
 		'position'   => '61',
 		'autoload'   => true,
 	] );
 
-	$opts = new FieldsBuilder( 'colours' );
+	$opts = new FieldsBuilder( 'colours', [ 'order' => 10 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 
 	$colour_defaults = [
@@ -125,7 +128,7 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'fonts' );
+	$opts = new FieldsBuilder( 'fonts', [ 'order' => 20 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 
 	$font_defaults = [
@@ -163,29 +166,31 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'floating_menu' );
+	$opts = new FieldsBuilder( 'footer', [ 'order' => 300 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 
+	$opts->addTrueFalse( 'parsley_scroll_to_top', [ 'label' => 'Show "Scroll to Top"', 'default_value' => true ] );
+
 	$opts->addText( 'parsley_floating_icons_bg', [
-		'label'          => 'Background Colour',
+		'label'          => 'Floating Menu Background Colour',
 		'default_value'  => '$wp-theme-colour-primary',
 		'wrapper'        => [ 'width' => '50%', 'id' => '', 'class' => '' ],
 	] );
 
 	$opts->addText( 'parsley_floating_icons_text', [
-		'label'          => 'Foreground Colour',
+		'label'          => 'Floating Menu Foreground Colour',
 		'default_value'  => 'white',
 		'wrapper'        => [ 'width' => '50%', 'id' => '', 'class' => '' ],
 	] );
 
 	$opts->addText( 'parsley_floating_icons_hover', [
-		'label'          => 'Hover Background Colour',
+		'label'          => 'Floating Menu Hover Background Colour',
 		'default_value'  => 'lighten($wp-theme-colour-primary, 10%)',
 		'wrapper'        => [ 'width' => '50%', 'id' => '', 'class' => '' ],
 	] );
 
 	$opts->addSelect( 'parsley_floating_icons_class', [
-		'label'          => 'Class',
+		'label'          => 'Floating Menu Class',
 		'default_value'  => 'floating-icons-left',
 		'choices'        => [ 'floating-icons-left', 'floating-icons-right' ],
 		'wrapper'        => [ 'width' => '50%', 'id' => '', 'class' => '' ],
@@ -193,21 +198,17 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'header' );
+	$opts = new FieldsBuilder( 'header', [ 'order' => 100 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 	$opts->addTextarea( 'parsley_header_html', [ 'label' => 'HTML Above Banner' ] );
 	$opts->addImage( 'parsley_header_image', [ 'label' => 'Banner Branding Icon', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'return_format' => 'id', 'instructions' => 'A maximum size of 220 by 60 pixels is recommended.' ] );
 	$opts->addText( 'parsley_header_title', [ 'label' => 'Banner Branding Title', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ] ] );
-	$opts->addSelect( 'parsley_header_style', [ 'label' => 'Banner Branding Style', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'text', 'choices' => [ 'text', 'image' ] ] );
+	$opts->addSelect( 'parsley_header_style', [ 'label' => 'Banner Branding Style', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'text', 'choices' => [ 'text', 'image', 'none' ] ] );
 	$opts->addText( 'parsley_header_bg', [ 'label' => 'Banner Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-primary' ] );
 	$opts->addText( 'parsley_header_text', [ 'label' => 'Banner Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] );
 	$opts->addText( 'parsley_header_hover', [ 'label' => 'Banner Hover/Active Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'white' ] );
+	$opts->addText( 'parsley_header_menu_class', [ 'label' => 'Banner Menu Extra Classes', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'ml-auto', 'instructions' => 'Recommended <code>ml-auto</code>' ] );
 	$opts->addText( 'parsley_header_dropdown_bg', [ 'label' => 'Banner Dropdown Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-secondary' ] );
 	$opts->addText( 'parsley_header_dropdown_text', [ 'label' => 'Banner Dropdown Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] );
-	acf_add_local_field_group( $opts->build() );
-
-	$opts = new FieldsBuilder( 'footer' );
-	$opts->setLocation( 'options_page', '==', 'parsley-options' );
-	$opts->addTrueFalse( 'parsley_scroll_to_top', [ 'label' => 'Show "Scroll to Top"', 'default_value' => true ] );
 	acf_add_local_field_group( $opts->build() );
 } );

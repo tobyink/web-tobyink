@@ -38,7 +38,7 @@ class App extends Controller
             'container'         => 'div',
             'container_class'   => 'collapse navbar-collapse',
             'container_id'      => 'navbar-primary',
-            'menu_class'        => 'navbar-nav ml-auto',
+            'menu_class'        => 'navbar-nav ' . \App\theme_get_option( 'header-menu-class' ),
             'fallback_cb'       => 'wp_bootstrap4_navwalker::fallback',
             'walker'            => new \App\wp_bootstrap4_navwalker(),
         ];

@@ -5,7 +5,7 @@ namespace App;
 use StoutLogic\AcfBuilder\FieldsBuilder;
 
 function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style', $paddingsize=false ) {
-	
+
 	$g = $builder->addGroup( $group_name, [
 		'label'         => $group_label,
 		'layout'        => 'table',
@@ -898,7 +898,7 @@ $TOP = new FieldsBuilder( 'page_sections', [
 	'title'         => 'Advanced Page Layout',
 ] );
 
-$TOP->setLocation('post_type', '==', 'page');
+$TOP->setLocation( 'post_type', '==', 'page' );
 
 $l = $TOP->addFlexibleContent( 'design_sections', [
 	'title'         => 'Design Sections',
