@@ -276,7 +276,14 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 	$source_post_id = $post_id;
 
 	if ( $layout == 'post_section' ) {
-		$ext_data = parsley_get_sections_data( $fields['post_id'] );
+		if ( $fields['section_source'] == 'common' ) {
+			$ext_data = parsley_get_sections_data( 'option' );
+			$is_common = true;
+		}
+		else {
+			$ext_data = parsley_get_sections_data( $fields['post_id'] );
+			$is_common = false;
+		}
 		$ext_id   = $fields['section_id'];
 		$found_data = false;
 		foreach ( $ext_data as $s ) {
@@ -297,7 +304,9 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 			}
 		}
 		if ( $found_data ) {
-			$source_post_id = $fields['post_id'];
+			if ( ! $is_common ) {
+				$source_post_id = $fields['post_id'];
+			}
 			$fields = $found_data;
 			$layout = $fields['acf_fc_layout'];
 		}

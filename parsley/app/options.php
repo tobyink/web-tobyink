@@ -48,8 +48,17 @@ function theme_write_sass () {
 	}
 
 	$file = __DIR__ . '/../resources/assets/styles/common/_wp_theme.scss';
-	file_put_contents( $file, $final );
-	system( "chmod g+rwX '$file'" );
+
+	$orig = file_get_contents( $file );
+
+	if ( $final != $orig ) {
+		file_put_contents( $file, $final );
+		system( "chmod g+rwX '$file'" );
+		return true; // SASS was changed
+	}
+
+	// SASS is unchanged, so doesn't need recompiling
+	return false;
 }
 
 function theme_compile_sass () {
@@ -62,23 +71,34 @@ function theme_compile_sass () {
 
 add_action( 'acf/save_post', function () {
 	$screen = get_current_screen();
-	if ( strpos( $screen->id, "parsley-options" ) == true ) {
-		theme_write_sass();
-		theme_compile_sass();
+	if ( strpos( $screen->id, "parsley-" ) == true ) {
+		if ( theme_write_sass() ) {
+			theme_compile_sass();
+		}
 	}
 }, 99 );
 
 add_action( 'acf/init', function () {
 
 	acf_add_options_page( [
-		'page_title' => 'Parsley Options',
+		'page_title' => 'Theme Options',
 		'menu_slug'  => 'parsley-options',
 		'capability' => 'edit_theme_options',
 		'position'   => '61',
 		'autoload'   => true,
+		'icon_url'   => 'dashicons-admin-generic',
 	] );
 
-	$opts = new FieldsBuilder( 'colours', [ 'order' => 10 ] );
+	acf_add_options_page( [
+		'page_title' => 'Sections',
+		'menu_slug'  => 'parsley-sections',
+		'capability' => 'edit_theme_options',
+		'position'   => 61,
+		'autoload'   => true,
+		'icon_url'   => 'dashicons-table-row-before',
+	] );
+
+	$opts = new FieldsBuilder( 'colours', [ 'menu_order' => 10 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 
 	$colour_defaults = [
@@ -128,7 +148,7 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'fonts', [ 'order' => 20 ] );
+	$opts = new FieldsBuilder( 'fonts', [ 'menu_order' => 20 ] );
 	$opts->setLocation( 'options_page', '==', 'parsley-options' );
 
 	$font_defaults = [
@@ -166,8 +186,8 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'footer', [ 'order' => 300 ] );
-	$opts->setLocation( 'options_page', '==', 'parsley-options' );
+	$opts = new FieldsBuilder( 'footer', [ 'menu_order' => 100, 'seamless' => 1 ] );
+	$opts->setLocation( 'options_page', '==', 'parsley-sections' );
 
 	$opts->addTrueFalse( 'parsley_scroll_to_top', [ 'label' => 'Show "Scroll to Top"', 'default_value' => true ] );
 
@@ -198,17 +218,18 @@ add_action( 'acf/init', function () {
 
 	acf_add_local_field_group( $opts->build() );
 
-	$opts = new FieldsBuilder( 'header', [ 'order' => 100 ] );
-	$opts->setLocation( 'options_page', '==', 'parsley-options' );
-	$opts->addTextarea( 'parsley_header_html', [ 'label' => 'HTML Above Banner' ] );
-	$opts->addImage( 'parsley_header_image', [ 'label' => 'Banner Branding Icon', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'return_format' => 'id', 'instructions' => 'A maximum size of 220 by 60 pixels is recommended.' ] );
-	$opts->addText( 'parsley_header_title', [ 'label' => 'Banner Branding Title', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ] ] );
-	$opts->addSelect( 'parsley_header_style', [ 'label' => 'Banner Branding Style', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'text', 'choices' => [ 'text', 'image', 'none' ] ] );
-	$opts->addText( 'parsley_header_bg', [ 'label' => 'Banner Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-primary' ] );
-	$opts->addText( 'parsley_header_text', [ 'label' => 'Banner Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] );
-	$opts->addText( 'parsley_header_hover', [ 'label' => 'Banner Hover/Active Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'white' ] );
-	$opts->addText( 'parsley_header_menu_class', [ 'label' => 'Banner Menu Extra Classes', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'ml-auto', 'instructions' => 'Recommended <code>ml-auto</code>' ] );
-	$opts->addText( 'parsley_header_dropdown_bg', [ 'label' => 'Banner Dropdown Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-secondary' ] );
-	$opts->addText( 'parsley_header_dropdown_text', [ 'label' => 'Banner Dropdown Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] );
+	$opts = new FieldsBuilder( 'header', [ 'menu_order' => 10 ] );
+	$opts->setLocation( 'options_page', '==', 'parsley-sections' );
+	$opts->addTextarea( 'parsley_header_html', [ 'label' => 'HTML Header', 'instructions' => 'Can use the <code>[common_section]</code> shortcode (and other shortcodes).' ] );
+	$opts->addTrueFalse( 'parsley_header_menubar', [ 'label' => 'Show Menu Bar', 'default_value' => 1, 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ] ] );
+	$opts->addSelect( 'parsley_header_style', [ 'label' => 'Menu Bar Branding Style', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'text', 'choices' => [ 'text', 'image', 'none' ] ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addImage( 'parsley_header_image', [ 'label' => 'Menu Bar Icon', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'return_format' => 'id', 'instructions' => 'A maximum size of 220 by 60 pixels is recommended.' ] )->conditional( 'parsley_header_menubar', '==', 1 )->and( 'parsley_header_style', '!=', 'none' );
+	$opts->addText( 'parsley_header_title', [ 'label' => 'Menu Bar Title', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ] ] )->conditional( 'parsley_header_menubar', '==', 1 )->and( 'parsley_header_style', '!=', 'none' );
+	$opts->addText( 'parsley_header_bg', [ 'label' => 'Menu Bar Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-primary' ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addText( 'parsley_header_text', [ 'label' => 'Menu Bar Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addText( 'parsley_header_hover', [ 'label' => 'Menu Bar Hover/Active Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'white' ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addText( 'parsley_header_menu_class', [ 'label' => 'Menu Extra Classes', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => 'ml-auto', 'instructions' => 'Recommended <code>ml-auto</code>' ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addText( 'parsley_header_dropdown_bg', [ 'label' => 'Dropdown Background Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-secondary' ] )->conditional( 'parsley_header_menubar', '==', 1 );
+	$opts->addText( 'parsley_header_dropdown_text', [ 'label' => 'Dropdown Foreground Colour', 'wrapper' => [ 'width' => '50%', 'id' => '', 'class' => '' ], 'default_value' => '$wp-theme-colour-light' ] )->conditional( 'parsley_header_menubar', '==', 1 );
 	acf_add_local_field_group( $opts->build() );
 } );

@@ -1,8 +1,10 @@
 @if ( ! get_field( 'hide_header', \App\acf_page_id() ) )
 
 @php
-  echo \App\theme_get_option( 'header_html' );
+  echo do_shortcode( \App\theme_get_option( 'header_html' ) );
 @endphp
+
+@if ( \App\theme_get_option( 'header_menubar' ) )
 
 <header class="banner sticky-top">
   <div class="container">
@@ -38,6 +40,8 @@
     </div>
   </div>
 </header>
+
+@endif
 
 @endif
 

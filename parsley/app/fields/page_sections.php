@@ -361,17 +361,24 @@ $ext_section = new FieldsBuilder( 'post_section', [
 	'display' => 'block',
 ] );
 $ext_section->addTab( 'Section' );
+$ext_section->addSelect( 'section_source', [
+	'label'         => 'Section',
+	'required'      => 1,
+	'choices'       => [ 'post', 'common' ],
+	'default_value' => 'post',
+	'wrapper'       => [ 'width' => '34', 'class' => '', 'id' => '' ],
+] );
 $ext_section->addPostObject( 'post_id', [
 	'label'         => 'Post',
 	'required'      => 1,
 	'return_format' => 'id',
 	'ui'            => 1,
-	'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
-] );
+	'wrapper'       => [ 'width' => '33', 'class' => '', 'id' => '' ],
+] )->conditional( 'section_source', '==', 'post' );
 $ext_section->addText( 'section_id', [
 	'label'         => 'Section',
 	'required'      => 1,
-	'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
+	'wrapper'       => [ 'width' => '33', 'class' => '', 'id' => '' ],
 	'instructions'  => 'Section ID or numeric index',
 ] );
 $SEC[] = $ext_section;
@@ -898,7 +905,7 @@ $TOP = new FieldsBuilder( 'page_sections', [
 	'title'         => 'Advanced Page Layout',
 ] );
 
-$TOP->setLocation( 'post_type', '==', 'page' );
+$TOP->setLocation( 'post_type', '==', 'page' )->or( 'options_page', '==', 'parsley-sections' );
 
 $l = $TOP->addFlexibleContent( 'design_sections', [
 	'title'         => 'Design Sections',
