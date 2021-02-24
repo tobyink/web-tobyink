@@ -2,26 +2,48 @@
 
 namespace App;
 
-function _parsley_render_styles ( $style, $padding_type='p' ) {
+function _parsley_render_styles ( $style, $padding_type='p', &$css ) {
 	$classes = '';
+	if ( empty($css) ) $css = '';
 
 	if ( is_array($style) ) {
 		if ( ! empty($style['text_colour']) ) {
 			$classes .= ' text-' . $style['text_colour'];
 		}
-		if ( ! empty($style['background_colour']) ) {
+
+		if ( $style['background_colour'] == 'custom' ) {
+			$css .= sprintf( 'background-color: %s !important; ', $style['background_colour_custom'] );
+		}
+		elseif ( ! empty($style['background_colour']) ) {
 			$classes .= ' bg-' . $style['background_colour'];
 		}
+
+		if ( $style['background_effect'] == 'gradient' ) {
+			$css .= sprintf( 'background-image: linear-gradient(%s); ', parsley_render_extra_css( 'XXX', $style['background_gradient'], false ) );
+		}
+		elseif ( $style['background_effect'] == 'image' ) {
+			$css .= sprintf( 'background-image: url(%s); ', $style['background_image']['url'] );
+			$css .= sprintf( 'background-attachment: %s; ', $style['background_attachment'] );
+			$css .= sprintf( 'background-position: %s ', $style['background_position'] );
+			$css .= sprintf( 'background-repeat: %s; ', $style['background_repeat'] );
+			$css .= sprintf( 'background-size: %s; ', $style['background_size'] );
+		}
+
 		if ( ! empty($style['border_colour']) ) {
 			$classes .= ' border border-' . $style['border_colour'];
 		}
 		if ( ! empty($style['padding']) ) {
 			$classes .= ' ' . $padding_type . '-' . $style['padding'];
 		}
+		if ( ! empty($style['text_alignment']) ) {
+			$classes .= ' text-' . $style['text_alignment'];
+		}
 		if ( ! empty($style['additional_classes']) ) {
 			$classes .= ' ' . $style['additional_classes'];
 		}
 	}
+
+	$css = trim( $css );
 
 	return $classes;
 }
@@ -37,6 +59,9 @@ function _parsley_render_heading ( $heading_level, $heading_tag ) {
 		}
 		if ( ! empty($heading_level['padding']) ) {
 			$classes .= ' p-0 my-' . $heading_level['padding'];
+		}
+		if ( ! empty($heading_level['text_alignment']) ) {
+			$classes .= ' text-' . $heading_level['text_alignment'];
 		}
 		if ( ! empty($heading_level['additional_classes']) ) {
 			$classes .= ' ' . $heading_level['additional_classes'];
@@ -132,20 +157,23 @@ function _parsley_render_col_listg ( $fields, $starting_class='list-group' ) {
 		'border_colour'      => $S['border_colour'],
 		'additional_classes' => $S['additional_classes'],
 	];
-	$lg_item_style = [
-		'text_colour'        => $S['text_colour'],
-		'background_colour'  => $S['background_colour'],
-		'padding'            => $S['padding'],
-	];
+	unset( $S['border_colour'] );
+	unset( $S['additional_classes'] );
+	$lg_item_style = $S;
 
+	$lg_css = ' ';
+	$lg_item_css = ' ';
 	$lg_classes = $starting_class ;
-	$lg_classes .= _parsley_render_styles( $lg_style );
-
-	$lg_item_style = _parsley_render_styles( $lg_item_style );
+	$lg_classes .= _parsley_render_styles( $lg_style, 'p', $lg_css );
+	$lg_item_style = _parsley_render_styles( $lg_item_style, 'p', $lg_item_css );
 
 	$default_item_class = $fields['lg_item_class'];
 
-	$col_content = "<ul class=\"$lg_classes\">";
+	$col_content = sprintf(
+		'<ul class="%s"%s>',
+		$lg_classes,
+		( empty($lg_css) ? '' : sprintf( ' style="%s"', $lg_css  ) )
+	);
 	foreach ( $fields['item'] as $itemdata ) {
 
 		$item_classes = $itemdata['class'];
@@ -155,8 +183,9 @@ function _parsley_render_col_listg ( $fields, $starting_class='list-group' ) {
 		$item_classes .= $lg_item_style;
 
 		$col_content .= sprintf(
-			'<li class="list-group-item %s">',
-			esc_html( $item_classes )
+			'<li class="list-group-item %s"%s>',
+			esc_html( $item_classes ),
+			( empty($lg_item_css) ? '' : sprintf( ' style="%s"', $lg_item_css  ) )
 		);
 		$nugget = $itemdata['nugget'];
 		if ( $nugget ) {
@@ -236,9 +265,15 @@ function _parsley_render_col_card ( $fields, $chunklist ) {
 			$col_content .= $got[1];
 		}
 		elseif ( $content ) {
+			$chunkstyling = ' ';
 			$chunkclasses = "card-$chunk";
-			$chunkclasses .= _parsley_render_styles( $fields[ $chunk . '_style' ] );
-			$col_content .= sprintf('<div class="%s">%s</div>', $chunkclasses, $content);
+			$chunkclasses .= _parsley_render_styles( $fields[ $chunk . '_style' ], 'p', $chunkstyling );
+			$col_content .= sprintf(
+				'<div class="%s"%s>%s</div>',
+				$chunkclasses,
+				( empty($chunkstyling) ? '' : sprintf( ' style="%s"', $chunkstyling ) ),
+				$content,
+			);
 		}
 	}
 
@@ -373,7 +408,8 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		}
 	}
 
-	$classes .= _parsley_render_styles( $fields['style'], $paddingtype );
+	$styling = ' ';
+	$classes .= _parsley_render_styles( $fields['style'], $paddingtype, $styling );
 
 	$heading = $fields['heading'];
 	$heading_tag = 'h2';
@@ -387,6 +423,13 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 			$heading_tag = $heading_level['real'];
 		}
 		$heading_classes .= _parsley_render_heading( $heading_level, $heading_tag );
+	}
+
+	if ( ! empty($fields['extra_classes']) ) {
+		$classes .= ' ' . $fields['extra_classes'];
+	}
+	if ( ! empty($fields['aria_role']) ) {
+		$attrs .= sprintf( ' role="%s"', $fields['aria_role'] );
 	}
 
 	if ( $nested ) {
@@ -634,7 +677,16 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		}
 	}
 
-	$html .= sprintf( '<section id="%s" class="page-section %s"%s>', $id, $classes, $attrs );
+	if ( $styling ) {
+		$attrs .= sprintf( ' style="%s"', $styling );
+	}
+
+	$tag = 'section';
+	if ( ! empty($fields['tag']) ) {
+		$tag = $fields['tag'];
+	}
+
+	$html .= sprintf( '<%s id="%s" class="page-section %s"%s>', $tag, $id, $classes, $attrs );
 	if ( $contain ) {
 		$html .= '<div class="' . $contain . '">';
 	}
@@ -645,7 +697,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 	if ( $contain ) {
 		$html .= '</div>';
 	}
-	$html .= "</section>\n";
+	$html .= "</$tag>\n";
 
 	if ( $fields['extra_css'] ) {
 		$html = parsley_render_extra_css( $id, $fields['extra_css'] ) . $html;
@@ -654,7 +706,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 	return $html;
 }
 
-function parsley_render_extra_css ( $id, $css ) {
+function parsley_render_extra_css ( $id, $css, $wrapper=true ) {
 	$replacements = [
 		'#this'      => "#$id",
 		'#heading'   => "#${id}_heading",
@@ -679,6 +731,10 @@ function parsley_render_extra_css ( $id, $css ) {
 		$replacements["\$$f"] = \App\theme_get_option( "font-$f" );
 	}
 	$css = strtr( $css, $replacements );
+
+	if ( ! $wrapper ) {
+		return $css;
+	}
 
 	return sprintf( '<style type="text/css">%s</style>', $css );
 }
@@ -731,7 +787,7 @@ function parsley_render_sections ( $post_id=null ) {
 		$html .= parsley_render_section( $post_id, ++$count, $s );
 	}
 
-	$html .= sprintf( '<!-- %s -->', esc_html( print_r( $sections, true ) ) );
+	// $html .= sprintf( '<!-- %s -->', esc_html( print_r( $sections, true ) ) );
 
 	return $html;
 }

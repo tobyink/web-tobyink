@@ -8,7 +8,7 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 
 	$g = $builder->addGroup( $group_name, [
 		'label'         => $group_label,
-		'layout'        => 'table',
+		'layout'        => 'row',
 	] );
 
 	$g->addSelect( 'text_colour', [
@@ -52,10 +52,36 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 			'warning' => 'warning',
 			'info' => 'info',
 			'white' => 'white',
+			'custom' => 'custom',
 		),
 		'default_value' => false,
 		'return_format' => 'value',
 	] );
+
+	$g->addColorPicker( 'background_colour_custom', [
+		'label'         => 'Custom background colour',
+		'allow_null'    => 0,
+		'default_value' => \App\theme_get_option('colour-primary'),
+	] )->conditional( 'background_colour', '==', 'custom' );
+
+	$g->addSelect( 'background_effect', [
+		'label'         => 'Background effect',
+		'choices'       => [ 'none', 'image', 'gradient' ],
+		'default_value' => 'none',
+		'return_format' => 'value',
+	] );
+
+	$g->addText( 'background_gradient', [
+		'label'         => 'Linear gradient (CSS)',
+		'default_value' => '$secondary, white',
+		'required'      => 1,
+	] )->conditional( 'background_effect', '==', 'gradient' );
+
+	$g->addImage( 'background_image', [ 'required' => 1, 'return_format' => 'array' ] )->conditional( 'background_effect', '==', 'image' );
+	$g->addSelect( 'background_attachment', [ 'required' => 1, 'choices' => [ 'scroll', 'fixed', 'local' ], 'default_value' => 'scroll' ] )->conditional( 'background_effect', '==', 'image' );
+	$g->addSelect( 'background_position', [ 'required' => 1, 'choices' => [ 'top left', 'top', 'top right', 'left', 'center', 'right', 'bottom left', 'bottom', 'bottom right' ], 'default_value' => 'top left' ] )->conditional( 'background_effect', '==', 'image' );
+	$g->addSelect( 'background_repeat', [ 'required' => 1, 'choices' => [ 'repeat', 'repeat-x', 'repeat-y', 'no-repeat' ], 'default_value' => 'repeat' ] )->conditional( 'background_effect', '==', 'image' );
+	$g->addText( 'background_size', [ 'required' => 1, 'default_value' => 'auto' ] )->conditional( 'background_effect', '==', 'image' );
 
 	$g->addSelect( 'border_colour', [
 		'label'         => 'Border colour',
@@ -88,6 +114,12 @@ function _parsley_acf_style ( $builder, $group_name='style', $group_label='Style
 		'step'          => 1,
 	] );
 
+	$g->addSelect( 'text_alignment', [
+		'choices'       => [ 'left', 'center', 'right' ],
+		'default_value' => null,
+		'allow_null'    => 1,
+	] );
+
 	$g->addText( 'additional_classes', [
 		'label'         => 'Additional classes',
 	] );
@@ -103,7 +135,7 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 
 	$g = $builder->addGroup( $group_name . '_level', [
 		'label'  => $group_label . ' Style',
-		'layout' => 'table',
+		'layout' => 'row',
 	] )->conditional( $group_name, '!=empty', '' );
 
 	$g->addSelect( 'real', [
@@ -116,6 +148,7 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 			'h5' => 'h5',
 			'h6' => 'h6',
 			'div' => 'div',
+			'p'  => 'p',
 			'none' => 'none',
 		),
 		'default_value' => $default_level,
@@ -149,7 +182,13 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 		'max'           => 5,
 		'step'          => 1,
 	] )->conditional( 'real', '!=', 'none' );
-	
+
+	$g->addSelect( 'text_alignment', [
+		'choices'       => [ 'left', 'center', 'right' ],
+		'default_value' => null,
+		'allow_null'    => 1,
+	] )->conditional( 'real', '!=', 'none' );
+
 	$g->addText( 'additional_classes', [
 		'label'         => 'Additional classes',
 	] )->conditional( 'real', '!=', 'none' );
@@ -206,14 +245,34 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 
 	$builder->addTab( 'Section Options' );
 
+	$builder->addSelect( 'tag', [
+		'instructions'  => 'HTML tag',
+		'choices'       => [ 'section', 'main', 'article', 'aside', 'nav', 'header', 'footer', 'div' ],
+		'default_value' => 'section',
+		'required'      => 1,
+		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+	] );
+
 	$builder->addText( 'id', [
-		'label'         => 'ID',
+		'label'         => 'HTML ID',
 		'instructions'  => 'HTML `id` attribute for styling and scripting',
+		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+	] );
+
+	$builder->addText( 'extra_classes', [
+		'instructions'  => 'Space-separated list of classes',
+		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
+	] );
+
+	$builder->addText( 'aria_role', [
+		'label'         => 'ARIA Role',
+		'instructions'  => 'Role (accessibility)',
 		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 	] );
 
 	$builder->addSelect( 'full_width', [
 		'label'         => 'Width',
+		'instructions'  => 'Full width or contained',
 		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 		'allow_null'    => 0,
 		'required'      => 1,
@@ -224,6 +283,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 
 	$builder->addTrueFalse( 'hidden', [
 		'label'         => 'Hidden',
+		'instructions'  => 'Do not show this section',
 		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 		'default_value' => 0,
 		'ui'            => 1,
@@ -233,7 +293,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 
 	$builder->addTrueFalse( 'exact_html', [
 		'label'         => 'Exact HTML',
-		'instructions'  => 'If exact HTML, will avoid Wordpress paragraph munging.',
+		'instructions'  => 'Avoid WP paragraph munging.',
 		'wrapper'       => [ 'width' => '25', 'class' => '', 'id' => '' ],
 		'default_value' => 0,
 		'ui'            => 1,
