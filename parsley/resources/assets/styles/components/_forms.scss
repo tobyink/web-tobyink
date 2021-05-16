@@ -1,19 +1,23 @@
-/** Search form */
 .search-form {
-  @extend .form-inline;
-}
+  @extend .row, .gx-0, .mb-3;
+  flex-wrap: nowrap;
 
-.search-form label {
-  @extend .form-group;
+  label {
+    font-weight: normal;
+    width: 75%;
+  }
 
-  font-weight: normal;
-}
+  .search-field {
+    @extend .form-control;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 
-.search-form .search-field {
-  @extend .form-control;
-}
-
-.search-form .search-submit {
-  @extend .btn;
-  @extend .btn-secondary;
+  .search-submit {
+    @extend .btn;
+    @extend .btn-secondary;
+    width: 25%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
 }

@@ -4,7 +4,7 @@ export default {
     $('.slick-carousel').slick();
 
     /* popovers */
-    $('[data-toggle="popover"]').popover();
+    $('[data-bs-toggle="popover"]').popover();
 
     /* floating icons */
     $('#floating-icons').addClass('floating-icons-collapse').addClass('floating-icons-js').find('h2').click( function () {

@@ -119,6 +119,11 @@ add_filter('sage/display_sidebar', function ($display) {
     return $display;
 });
 
+add_filter( 'upload_mimes', function ( $m ) {
+	$m['json'] = 'application/json';
+	return $m;
+} );
+
 add_filter( 'woocommerce_form_field_args', function ( $args, $key, $value = null ) {
 
 	/* This is not meant to be here, but it serves as a reference

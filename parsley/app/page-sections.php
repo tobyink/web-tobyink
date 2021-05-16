@@ -2,6 +2,15 @@
 
 namespace App;
 
+function _parsley_align ( $align ) {
+	static $class = [
+		'left'   => 'text-start',
+		'center' => 'text-center',
+		'right'  => 'text-right',
+	];
+	return $class[$align];
+}
+
 function _parsley_render_styles ( $style, $padding_type='p', &$css ) {
 	$classes = '';
 	if ( empty($css) ) $css = '';
@@ -36,7 +45,7 @@ function _parsley_render_styles ( $style, $padding_type='p', &$css ) {
 			$classes .= ' ' . $padding_type . '-' . $style['padding'];
 		}
 		if ( ! empty($style['text_alignment']) ) {
-			$classes .= ' text-' . $style['text_alignment'];
+			$classes .= ' ' . _parsley_align( $style['text_alignment'] );
 		}
 		if ( ! empty($style['additional_classes']) ) {
 			$classes .= ' ' . $style['additional_classes'];
@@ -61,7 +70,7 @@ function _parsley_render_heading ( $heading_level, $heading_tag ) {
 			$classes .= ' p-0 my-' . $heading_level['padding'];
 		}
 		if ( ! empty($heading_level['text_alignment']) ) {
-			$classes .= ' text-' . $heading_level['text_alignment'];
+			$classes .= ' ' . _parsley_align( $heading_level['text_alignment'] );
 		}
 		if ( ! empty($heading_level['additional_classes']) ) {
 			$classes .= ' ' . $heading_level['additional_classes'];
@@ -94,6 +103,36 @@ function parsley_render_col_html ( $fields, &$classes, &$heading_in_column, &$he
 	}
 
 	return sprintf( '<div class="col-type-html %s">%s</div>', $col_classes, do_shortcode($col_content) );
+}
+
+function parsley_render_col_lottie ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
+
+	$opts = $fields['options'];
+	$col_classes =  $opts['classes'];
+
+	$col_content = sprintf(
+		'<script src="%s"></script><lottie-player src="%s" background="transparent" speed="%d" style="%s"%s%s%s%s></lottie-player>',
+		'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
+		$fields['lottie'],
+		$fields['speed'],
+		$fields['style'],
+		( $fields['controls'] ? ' controls' : '' ),
+		( $fields['autoplay'] ? ' autoplay' : '' ),
+		( $fields['hover']    ? ' hover'    : '' ),
+		( $fields['loop']     ? ' loop'     : '' )
+	);
+
+	if ( $heading_in_column ) {
+		$classes .= ' section-with-heading-in-column';
+		$col_classes .= ' column-containing-the-heading';
+		if ( $heading_tag != 'none' ) {
+			$heading_classes .= ' heading-in-column';
+			$col_content = sprintf( '<%s class="%s"><span>%s</span></%s>', $heading_tag, $heading_classes, $heading, $heading_tag ) . $col_content;
+			$heading_tag = 'none'; // prevent duplicate heading
+		}
+	}
+
+	return sprintf( '<div class="col-type-lottie %s">%s</div>', $col_classes, do_shortcode($col_content) );
 }
 
 function parsley_render_col_break ( $fields, &$classes, &$heading_in_column, &$heading_tag, &$heading_classes, &$heading ) {
@@ -190,13 +229,13 @@ function _parsley_render_col_listg ( $fields, $starting_class='list-group' ) {
 		$nugget = $itemdata['nugget'];
 		if ( $nugget ) {
 			if ( $nugget === 'text' ) {
-				$col_content .= sprintf( '<span class="float-right hvr-icon">%s</span>', $itemdata['nugget_detail'] );
+				$col_content .= sprintf( '<span class="float-end hvr-icon">%s</span>', $itemdata['nugget_detail'] );
 			}
 			elseif ( $nugget === 'icon' ) {
-				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', $itemdata['nugget_detail'] );
+				$col_content .= sprintf( '<i class="fa %s float-end hvr-icon"></i>', $itemdata['nugget_detail'] );
 			}
 			else {
-				$col_content .= sprintf( '<i class="fa %s float-right hvr-icon"></i>', $nugget );
+				$col_content .= sprintf( '<i class="fa %s float-end hvr-icon"></i>', $nugget );
 			}
 		}
 		$col_content .= $itemdata['html'];
@@ -404,7 +443,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 				$classes .= ' show';
 			}
 			$attrs .= sprintf( ' aria-labelledby="%s-tabheader"', $id );
-			$attrs .= sprintf( ' data-parent="#%s-tabcontent"', $nested );
+			$attrs .= sprintf( ' data-bs-parent="#%s-tabcontent"', $nested );
 		}
 	}
 
@@ -445,7 +484,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 
 		if ( $nested_type === 'pill-left' || $nested_type === 'pill-right' ) {
 			$menu .= sprintf(
-				'<a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
+				'<a class="nav-link%s%s" id="%s-tab" data-bs-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a>',
 				( ( $count == 1 ) ? ' active' : '' ),
 				$link_class,
 				esc_html($id),
@@ -459,7 +498,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		}
 		elseif ( $nested_type === 'accordion' ) {
 			$menu .= sprintf(
-				'<button class="btn btn-link btn-block text-left%s" type="button" data-toggle="collapse" data-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-right">%s</span>%s</button>',
+				'<button class="btn btn-link btn-block text-left%s" type="button" data-bs-toggle="collapse" data-bs-target="#%s" aria-expanded="true" aria-controls="%s"><span class="float-end">%s</span>%s</button>',
 				$link_class,
 				esc_html($id),
 				esc_html($id),
@@ -469,7 +508,7 @@ function parsley_render_section ( $post_id, $count, $fields=null, $nested=false,
 		}
 		else {
 			$menu .= sprintf(
-				'<li class="nav-item"><a class="nav-link%s%s" id="%s-tab" data-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
+				'<li class="nav-item"><a class="nav-link%s%s" id="%s-tab" data-bs-toggle="%s" href="#%s" role="tab" aria-controls="%s" aria-selected="%s">%s%s</a></li>',
 				( ( $count == 1 ) ? ' active' : '' ),
 				$link_class,
 				esc_html($id),

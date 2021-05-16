@@ -43,7 +43,7 @@ add_shortcode( 'alert', function ( $arg, $content='Attention!' ) {
 
   if ( array_key_exists( 'icon', $atts ) && strlen( $atts['icon'] ) ) {
     $class .= ' alert-with-icon';
-    $content = sprintf( '<i class="float-right hvr-icon fa fa-%s"></i> %s', $atts['icon'], $content );
+    $content = sprintf( '<i class="float-end hvr-icon fa fa-%s"></i> %s', $atts['icon'], $content );
   }
 
   return sprintf( '<%s class="%s" role="alert">%s</%s>', $tag, trim($class), $content, $tag );

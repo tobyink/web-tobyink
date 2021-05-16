@@ -7,7 +7,7 @@
 }
 
 .comment-form p {
-  @extend .form-group;
+  @extend .mb-3;
 }
 
 .comment-form input[type="text"],

@@ -145,4 +145,5 @@ function acf_page_id () {
         $id = get_option( 'page_for_posts' );
       }
     }
+    return $id;
 }

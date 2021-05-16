@@ -30,13 +30,13 @@ add_shortcode( 'badge', function ( $arg, $content='0' ) {
   $found = false;
   foreach ( App\theme_colours() as $colour ) {
     if ( array_key_exists( $colour, $atts ) && $atts[$colour] ) {
-      $class .= " badge-$colour";
+      $class .= " bg-$colour";
       $found = true;
       break;
     }
   }
   if ( ! $found ) {
-    $class .= ' badge-primary';
+    $class .= ' bg-primary';
   }
 
   if ( array_key_exists( 'pill', $atts ) && $atts['pill'] ) {

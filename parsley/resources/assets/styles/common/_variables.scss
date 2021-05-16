@@ -39,10 +39,6 @@ $font-family-monospace:  $wp-theme-font-monospace;
 $font-family-base:       $wp-theme-font-base;
 $headings-font-family:   $wp-theme-font-headings;
 
-/** Bootstrap navbar fix (https://git.io/fADqW) */
-$navbar-dark-toggler-icon-bg: none;
-$navbar-light-toggler-icon-bg: none;
-
 /* Make things available as CSS vars */
 :root {
   --font-family-sans-serif: #{inspect($font-family-sans-serif)};

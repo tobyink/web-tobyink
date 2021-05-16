@@ -140,17 +140,11 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 
 	$g->addSelect( 'real', [
 		'label'         => 'Real tag',
-		'choices'       => array(
-			'h1' => 'h1',
-			'h2' => 'h2',
-			'h3' => 'h3',
-			'h4' => 'h4',
-			'h5' => 'h5',
-			'h6' => 'h6',
-			'div' => 'div',
-			'p'  => 'p',
-			'none' => 'none',
-		),
+		'choices'       => [
+			'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+			'div', 'p',
+			'none',
+		],
 		'default_value' => $default_level,
 		'allow_null'    => 0,
 		'return_format' => 'value',
@@ -158,15 +152,11 @@ function _parsley_acf_heading ( $builder, $group_name='heading', $group_label='H
 
 	$g->addSelect( 'visual', [
 		'label'         => 'Displayed as',
-		'choices'       => array(
-			'h1' => 'h1',
-			'h2' => 'h2',
-			'h3' => 'h3',
-			'h4' => 'h4',
-			'h5' => 'h5',
-			'h6' => 'h6',
-			'd-none' => 'd-none',
-		),
+		'choices'       => [
+			'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+			'display-1', 'display-2', 'display-3', 'display-4', 'display-5', 'display-6',
+			'd-none',
+		],
 		'default_value' => false,
 		'allow_null'    => 1,
 		'return_format' => 'value',
@@ -301,7 +291,7 @@ function parsley_acf_section_definition ( $builder, $opts=array(), $callback=fal
 		'ui_off_text'   => 'Munge',
 	] );
 
-	if ( $opts['styling'] ) {		
+	if ( $opts['styling'] ) {
 		_parsley_acf_style( $builder, 'style', 'Style', 3 );
 	}
 
@@ -363,7 +353,7 @@ function parsley_acf_column_definition ( $builder, $opts=array(), $callback=fals
 	if ( array_key_exists( 'options_callback', $opts ) ) {
 		call_user_func( $opts['options_callback'], $builder );
 	}
-	
+
 	return $builder;
 }
 
@@ -450,7 +440,7 @@ $SEC[] = parsley_acf_section_definition(
 	] ),
 	[
 		'heading_callback' => function ( $builder ) {
-			
+
 			$builder->addTrueFalse( 'heading_in_column', [
 				'label'         => 'Heading in First Column',
 				'instructions'  => 'Inserts the heading into the first column instead of before the columns.',
@@ -458,7 +448,7 @@ $SEC[] = parsley_acf_section_definition(
 				'ui_on_text'    => 'Yes',
 				'ui_off_text'   => 'No',
 			] )->conditional( 'heading', '!=empty', '' );
-			
+
 		},
 	],
 	function ( $builder ) {
@@ -541,6 +531,24 @@ $SEC[] = parsley_acf_section_definition(
 					'instructions'  => 'Additional HTML attributes (img tag)',
 					'wrapper'       => [ 'width' => '50', 'class' => '', 'id' => '' ],
 				] );
+			}
+		) );
+
+		$f->addLayout( parsley_acf_column_definition(
+			new FieldsBuilder( 'col_lottie', [
+				'label'   => 'Lottie',
+				'display' => 'block',
+			] ),
+			[ ],
+			function ( $builder ) {
+				$builder->addTab( 'Animation' );
+				$builder->addFile( 'lottie', [ 'label' => 'Lottie File (JSON)', 'return_format' => 'url', 'required' => 1 ] );
+				$builder->addTrueFalse( 'loop', [ 'default_value' => 1 ] );
+				$builder->addTrueFalse( 'controls', [ 'default_value' => 0 ] );
+				$builder->addTrueFalse( 'autoplay', [ 'default_value' => 1 ] );
+				$builder->addTrueFalse( 'hover', [ 'default_value' => 0 ] );
+				$builder->addText( 'speed', [ 'default_value' => '1', 'required' => 1 ] );
+				$builder->addText( 'style', [ 'default_value' => 'height: 300px; width: 300px;' ] );
 			}
 		) );
 

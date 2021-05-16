@@ -9,7 +9,7 @@ class FloatingIconsWalker extends Walker_Nav_Menu {
   }
   public function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
     $output .= sprintf(
-      "<li><a href=\"%s\" target=\"%s\" title=\"%s\" data-content=\"%s\" data-trigger=\"hover\" data-toggle=\"popover\"><i class=\"%s\"></i> <span>%s</span></a></li>",
+      "<li><a href=\"%s\" target=\"%s\" title=\"%s\" data-bs-content=\"%s\" data-bs-trigger=\"hover\" data-bs-toggle=\"popover\"><i class=\"%s\"></i> <span>%s</span></a></li>",
       htmlspecialchars( $item->url ),
       htmlspecialchars( $item->target ? $item->target : '_self' ),
       htmlspecialchars( $item->attr_title ? $item->attr_title : $item->post_title ),
