@@ -4,6 +4,7 @@
 		"wpackagist-theme/twentytwenty": "*",
 		"wpackagist-plugin/widget-logic": "*",
 		"wpackagist-plugin/classic-editor": "*",
+		"wpackagist-plugin/classic-widgets": "*",
 		"wpackagist-plugin/breadcrumb-navxt": "*",
 		"wpackagist-plugin/foogallery": "*",
                 "tobyink/foogallery-bootstrapped-gallery-template": "*",
