@@ -6,6 +6,8 @@ ExpiresByType image/jpeg "access plus 6 months"
 ExpiresByType image/gif "access plus 6 months"
 ExpiresByType image/png "access plus 6 months"
 
+RewriteRule "^/?xmpp-status" "http://toby.ink:5280/status/me" [P,L]
+
 # BEGIN WordPress
 # The directives (lines) between "BEGIN WordPress" and "END WordPress" are
 # dynamically generated, and should only be modified via WordPress filters.
